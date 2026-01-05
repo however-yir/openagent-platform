@@ -22,3 +22,4 @@ This log materializes planned 2026Q1 commit cadence into concrete commits.
 - [C18] 2026-03-21 测试 :: test(core): add/adjust smoke and regression coverage 18
 - [C19] 2026-03-24 文档/部署 :: docs(deploy): finalize docs and release checklist 19
 - [C20] 2026-03-28 文档/部署 :: docs(deploy): finalize docs and release checklist 20
+- [GF-20260105-1] 2026-01-05 gap-fill :: keep interval <= 2 days
