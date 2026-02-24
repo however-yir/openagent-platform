@@ -13,3 +13,4 @@ This log materializes planned 2026Q1 commit cadence into concrete commits.
 - [C09] 2026-02-09 核心功能 :: feat(core): deliver core capability slice 9
 - [C10] 2026-02-14 核心功能 :: feat(core): deliver core capability slice 10
 - [C11] 2026-02-19 核心功能 :: feat(core): deliver core capability slice 11
+- [C12] 2026-02-24 核心功能 :: feat(core): deliver core capability slice 12
