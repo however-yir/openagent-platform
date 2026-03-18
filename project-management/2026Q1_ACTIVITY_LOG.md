@@ -18,3 +18,4 @@ This log materializes planned 2026Q1 commit cadence into concrete commits.
 - [C14] 2026-03-06 修复 :: fix(core): resolve regression and edge case 14
 - [C15] 2026-03-10 修复 :: fix(core): resolve regression and edge case 15
 - [C16] 2026-03-14 测试 :: test(core): add/adjust smoke and regression coverage 16
+- [C17] 2026-03-18 测试 :: test(core): add/adjust smoke and regression coverage 17
