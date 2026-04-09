@@ -1,0 +1,15 @@
+<svg width="640" height="220" viewBox="0 0 640 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">OpenAgent Logo</title>
+  <desc id="desc">Gradient badge logo for OpenAgent Platform</desc>
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0ea5e9"/>
+      <stop offset="100%" stop-color="#2563eb"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="640" height="220" rx="24" fill="#0b1220"/>
+  <circle cx="108" cy="110" r="64" fill="url(#g)"/>
+  <path d="M82 120 L102 138 L136 84" fill="none" stroke="#ffffff" stroke-width="12" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="200" y="98" fill="#e2e8f0" font-size="44" font-family="Arial, Helvetica, sans-serif" font-weight="700">OpenAgent</text>
+  <text x="200" y="142" fill="#93c5fd" font-size="24" font-family="Arial, Helvetica, sans-serif">Agent Development Platform</text>
+</svg>
