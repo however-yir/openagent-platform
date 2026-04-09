@@ -112,8 +112,8 @@ optional-dependencies.third_party_runtimes = [
   "modal>=0.66.26,<1.2",
   "runloop-api-client==0.50",
 ]
-urls.Homepage = "https://github.com/liuzhuoran/lz-agent-workbench"
-urls.Repository = "https://github.com/liuzhuoran/lz-agent-workbench"
+urls.Homepage = "https://github.com/however-yir/lz-agent-workbench"
+urls.Repository = "https://github.com/however-yir/lz-agent-workbench"
 
 [dependency-groups]
 dev = [
@@ -150,7 +150,7 @@ description = "LZ Agent Workbench: local-first autonomous software agent platfor
 authors = [ "Liu Zhuoran <dev@lz-agent.local>" ]
 license = "MIT"
 readme = "README.md"
-repository = "https://github.com/liuzhuoran/lz-agent-workbench"
+repository = "https://github.com/however-yir/lz-agent-workbench"
 packages = [
   { include = "lz_agent_workbench/**/*" },
   { include = "openhands/**/*" },
