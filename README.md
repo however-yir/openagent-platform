@@ -2,7 +2,7 @@
 
 <div align="center">
   <img src="docs/assets/openagent-logo.svg" alt="OpenAgent Logo" width="320">
-  <h1 align="center" style="border-bottom: none">开放智能体平台（OpenAgent Platform）</h1>
+  <h1 align="center" style="border-bottom: none">openagent-platform</h1>
 </div>
 
 <p align="center">
