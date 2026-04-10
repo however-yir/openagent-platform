@@ -237,3 +237,19 @@ npm run dev
 - 社区补充协议：见 [LICENSE-OPENAGENT-COMMUNITY.md](LICENSE-OPENAGENT-COMMUNITY.md)
 
 <p align="right">(<a href="#readme-top">回到顶部</a>)</p>
+
+## Baseline Maintenance
+
+### Environment
+
+- Put runtime credentials in environment variables.
+- Use `.env.example` as the configuration template.
+
+### CI
+
+- `baseline-ci.yml` provides a unified pipeline with `lint + build + test + secret scan`.
+
+### Repo Hygiene
+
+- Keep generated files (`dist/`, `build/`, `__pycache__/`, `.idea/`, `.DS_Store`) out of version control.
+
