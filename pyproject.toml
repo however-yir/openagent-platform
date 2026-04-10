@@ -152,11 +152,9 @@ license = "MIT"
 readme = "README.md"
 repository = "https://github.com/however-yir/lz-agent-workbench"
 packages = [
-  { include = "lz_agent_workbench/**/*" },
-  { include = "openhands/**/*" },
-  { include = "third_party/**/*" },
-  { include = "pyproject.toml", to = "lz_agent_workbench" },
-  { include = "poetry.lock", to = "lz_agent_workbench" },
+  { include = "openhands" },
+  { include = "third_party" },
+  { include = "enterprise" },
 ]
 include = [
   "skills/**/*",
