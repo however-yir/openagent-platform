@@ -260,7 +260,7 @@ jobs:
 
   update_pr_description:
     name: Update PR Description
-    if: github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork && github.actor != 'dependabot[bot]'
+    if: github.event_name == 'pull_request' && !github.event.pull_request.head.repo.fork && github.actor != 'dependabot[bot]' && github.event.pull_request.user.login != 'dependabot[bot]'
     needs: [ghcr_build_runtime]
     runs-on: ubuntu-22.04
     steps:
