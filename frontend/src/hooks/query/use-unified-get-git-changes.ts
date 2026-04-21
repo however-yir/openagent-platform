@@ -44,6 +44,7 @@ export const useUnifiedGetGitChanges = () => {
       conversationId,
       isV1Conversation,
       conversationUrl,
+      sessionApiKey,
       gitPath,
     ],
     queryFn: async () => {

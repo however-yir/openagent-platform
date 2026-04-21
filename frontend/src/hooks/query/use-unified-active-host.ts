@@ -26,22 +26,25 @@ export const useUnifiedActiveHost = () => {
 
   // Fetch sandbox data for V1 conversations
   const sandboxesQuery = useBatchSandboxes(sandboxId ? [sandboxId] : []);
+  const sandbox = sandboxesQuery.data?.[0];
 
   // Get worker URLs from V1 sandbox or legacy web hosts from V0
   const { data, isLoading: hostsQueryLoading } = useQuery({
-    queryKey: [conversationId, "unified", "hosts", isV1Conversation, sandboxId],
+    queryKey: [
+      conversationId,
+      "unified",
+      "hosts",
+      isV1Conversation,
+      sandboxId,
+      sandbox,
+    ],
     queryFn: async () => {
       // V1: Get worker URLs from sandbox exposed_urls
       if (isV1Conversation) {
-        if (
-          !sandboxesQuery.data ||
-          sandboxesQuery.data.length === 0 ||
-          !sandboxesQuery.data[0]
-        ) {
+        if (!sandbox) {
           return { hosts: [] };
         }
 
-        const sandbox = sandboxesQuery.data[0];
         const workerUrls =
           sandbox.exposed_urls
             ?.filter((url) => url.name.startsWith("WORKER_"))
@@ -55,9 +58,7 @@ export const useUnifiedActiveHost = () => {
       return { hosts };
     },
     enabled:
-      runtimeIsReady &&
-      !!conversationId &&
-      (!isV1Conversation || !!sandboxesQuery.data),
+      runtimeIsReady && !!conversationId && (!isV1Conversation || !!sandbox),
     initialData: { hosts: [] },
     meta: {
       disableToast: true,

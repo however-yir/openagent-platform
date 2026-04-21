@@ -2,10 +2,7 @@ import { Settings } from "#/types/settings";
 
 export const LATEST_SETTINGS_VERSION = 5;
 
-const readEnvString = (
-  value: string | undefined,
-  fallback: string,
-): string => {
+const readEnvString = (value: string | undefined, fallback: string): string => {
   if (!value) {
     return fallback;
   }
