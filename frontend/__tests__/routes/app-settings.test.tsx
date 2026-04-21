@@ -92,6 +92,24 @@ describe("Form submission", () => {
     vi.clearAllMocks();
   });
 
+  const getLanguageLabelFromValue = (value: string) => {
+    const language = AvailableLanguages.find((lang) => lang.value === value);
+    if (!language) {
+      throw new Error(`Language not found for value: ${value}`);
+    }
+    return language.label;
+  };
+
+  const getAlternateLanguage = (currentValue: string) => {
+    const alternateLanguage = AvailableLanguages.find(
+      (lang) => lang.value !== currentValue,
+    );
+    if (!alternateLanguage) {
+      throw new Error("No alternate language found in AvailableLanguages");
+    }
+    return alternateLanguage;
+  };
+
   it("should submit the form with the correct values", async () => {
     const saveSettingsSpy = vi.spyOn(SettingsService, "saveSettings");
     const getSettingsSpy = vi.spyOn(SettingsService, "getSettings");
@@ -105,15 +123,21 @@ describe("Form submission", () => {
       "enable-sound-notifications-switch",
     );
 
-    expect(language).toHaveValue("English");
+    const initialLanguageLabel = getLanguageLabelFromValue(
+      MOCK_DEFAULT_USER_SETTINGS.language,
+    );
+    expect(language).toHaveValue(initialLanguageLabel);
     expect(analytics).not.toBeChecked();
     expect(sound).not.toBeChecked();
 
     // change language
+    const alternateLanguage = getAlternateLanguage(
+      MOCK_DEFAULT_USER_SETTINGS.language,
+    );
     await userEvent.click(language);
-    const norsk = screen.getByText("Norsk");
-    await userEvent.click(norsk);
-    expect(language).toHaveValue("Norsk");
+    const languageOption = screen.getByText(alternateLanguage.label);
+    await userEvent.click(languageOption);
+    expect(language).toHaveValue(alternateLanguage.label);
 
     // toggle options
     await userEvent.click(analytics);
@@ -126,7 +150,7 @@ describe("Form submission", () => {
     await userEvent.click(submit);
     expect(saveSettingsSpy).toHaveBeenCalledWith(
       expect.objectContaining({
-        language: "no",
+        language: alternateLanguage.value,
         user_consents_to_analytics: true,
         enable_sound_notifications: true,
       }),
@@ -144,14 +168,20 @@ describe("Form submission", () => {
 
     // Language check
     const language = await screen.findByTestId("language-input");
+    const initialLanguageLabel = getLanguageLabelFromValue(
+      MOCK_DEFAULT_USER_SETTINGS.language,
+    );
+    const alternateLanguage = getAlternateLanguage(
+      MOCK_DEFAULT_USER_SETTINGS.language,
+    );
     await userEvent.click(language);
-    const norsk = screen.getByText("Norsk");
-    await userEvent.click(norsk);
+    const alternateLanguageOption = screen.getByText(alternateLanguage.label);
+    await userEvent.click(alternateLanguageOption);
     expect(submit).not.toBeDisabled();
 
     await userEvent.click(language);
-    const english = screen.getByText("English");
-    await userEvent.click(english);
+    const initialLanguageOption = screen.getByText(initialLanguageLabel);
+    await userEvent.click(initialLanguageOption);
     expect(submit).toBeDisabled();
 
     // Analytics check
