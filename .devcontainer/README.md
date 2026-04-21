@@ -22,4 +22,3 @@ This way of running OpenHands is not officially supported. It is maintained by t
 
 - Install dependencies for this module before execution.
 - Use the standard project command to build and run (for example Maven, Gradle, npm, or Python entrypoint scripts in this repository).
-
