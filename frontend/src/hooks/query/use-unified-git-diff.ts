@@ -61,6 +61,8 @@ export const useUnifiedGitDiff = (config: UseUnifiedGitDiffConfig) => {
       config.type,
       isV1Conversation,
       conversationUrl,
+      sessionApiKey,
+      absoluteFilePath,
     ],
     queryFn: async () => {
       if (!conversationId) throw new Error("No conversation ID");

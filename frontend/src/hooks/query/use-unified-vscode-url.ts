@@ -36,6 +36,8 @@ export const useUnifiedVSCodeUrl = () => {
 
   // Fetch sandbox data for V1 conversations
   const sandboxesQuery = useBatchSandboxes(sandboxId ? [sandboxId] : []);
+  const sandbox = sandboxesQuery.data?.[0];
+  const vscodeUrlUnavailableError = t(I18nKey.VSCODE$URL_NOT_AVAILABLE);
 
   const mainQuery = useQuery<VSCodeUrlResult>({
     queryKey: [
@@ -44,24 +46,21 @@ export const useUnifiedVSCodeUrl = () => {
       conversationId,
       isV1Conversation,
       sandboxId,
+      sandbox,
+      vscodeUrlUnavailableError,
     ],
     queryFn: async () => {
       if (!conversationId) throw new Error("No conversation ID");
 
       // V1: Get VSCode URL from sandbox exposed_urls
       if (isV1Conversation) {
-        if (
-          !sandboxesQuery.data ||
-          sandboxesQuery.data.length === 0 ||
-          !sandboxesQuery.data[0]
-        ) {
+        if (!sandbox) {
           return {
             url: null,
-            error: t(I18nKey.VSCODE$URL_NOT_AVAILABLE),
+            error: vscodeUrlUnavailableError,
           };
         }
 
-        const sandbox = sandboxesQuery.data[0];
         const vscodeUrl = sandbox.exposed_urls?.find(
           (url) => url.name === "VSCODE",
         );
@@ -69,7 +68,7 @@ export const useUnifiedVSCodeUrl = () => {
         if (!vscodeUrl) {
           return {
             url: null,
-            error: t(I18nKey.VSCODE$URL_NOT_AVAILABLE),
+            error: vscodeUrlUnavailableError,
           };
         }
 
@@ -91,13 +90,11 @@ export const useUnifiedVSCodeUrl = () => {
 
       return {
         url: null,
-        error: t(I18nKey.VSCODE$URL_NOT_AVAILABLE),
+        error: vscodeUrlUnavailableError,
       };
     },
     enabled:
-      runtimeIsReady &&
-      !!conversationId &&
-      (!isV1Conversation || !!sandboxesQuery.data),
+      runtimeIsReady && !!conversationId && (!isV1Conversation || !!sandbox),
     refetchOnMount: true,
     retry: 3,
   });
