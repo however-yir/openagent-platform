@@ -159,16 +159,17 @@ describe("useWebSocket", () => {
 
     const { result } = renderHook(() => useWebSocket(baseUrl, { queryParams }));
 
-    // Wait for connection to be established
+    // Wait for the socket instance to be created so we can inspect its URL.
     await waitFor(() => {
-      expect(result.current.isConnected).toBe(true);
+      expect(result.current.socket).toBeTruthy();
     });
 
-    // Verify that the WebSocket was created with query parameters
-    expect(result.current.socket).toBeTruthy();
-    expect(result.current.socket!.url).toBe(
-      "ws://acme.com/ws?token=abc123&userId=user456&version=v1",
-    );
+    // Verify that query parameters are present regardless of connection timing.
+    const wsUrl = new URL(result.current.socket!.url);
+    expect(`${wsUrl.protocol}//${wsUrl.host}${wsUrl.pathname}`).toBe(baseUrl);
+    expect(wsUrl.searchParams.get("token")).toBe("abc123");
+    expect(wsUrl.searchParams.get("userId")).toBe("user456");
+    expect(wsUrl.searchParams.get("version")).toBe("v1");
   });
 
   it("should call onOpen handler when WebSocket connection opens", async () => {
