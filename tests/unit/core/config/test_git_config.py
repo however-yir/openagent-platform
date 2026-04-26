@@ -13,8 +13,8 @@ class TestGitConfig:
     def test_default_git_config(self):
         """Test that default git configuration is set correctly."""
         config = OpenHandsConfig()
-        assert config.git_user_name == 'openhands'
-        assert config.git_user_email == 'openhands@all-hands.dev'
+        assert config.git_user_name == 'forgepilot-bot'
+        assert config.git_user_email == 'dev@forgepilot.local'
 
     def test_git_config_from_env_vars(self):
         """Test that git configuration can be set via environment variables."""
@@ -82,5 +82,5 @@ class TestGitConfig:
             load_from_env(config, os.environ)
 
             # Empty values should fall back to defaults
-            assert config.git_user_name == 'openhands'
-            assert config.git_user_email == 'openhands@all-hands.dev'
+            assert config.git_user_name == 'forgepilot-bot'
+            assert config.git_user_email == 'dev@forgepilot.local'
