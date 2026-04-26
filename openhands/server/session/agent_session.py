@@ -422,13 +422,13 @@ class AgentSession:
             )
 
         msg = (
-            '\n--------------------------------- OpenHands Configuration ---------------------------------\n'
+            '\n------------------------------- ForgePilot Configuration -------------------------------\n'
             f'LLM: {agent.llm.config.model}\n'
             f'Base URL: {agent.llm.config.base_url}\n'
             f'Agent: {agent.name}\n'
             f'Runtime: {self.runtime.__class__.__name__}\n'
             f'Plugins: {[p.name for p in agent.sandbox_plugins] if agent.sandbox_plugins else "None"}\n'
-            '-------------------------------------------------------------------------------------------'
+            '--------------------------------------------------------------------------------------'
         )
         self.logger.debug(msg)
         initial_state = self._maybe_restore_state()

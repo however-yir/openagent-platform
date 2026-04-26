@@ -10,7 +10,17 @@ export default [
   route("onboarding", "routes/onboarding-form.tsx"),
   route("information-request", "routes/information-request.tsx"),
   layout("routes/root-layout.tsx", [
-    index("routes/home.tsx"),
+    index("routes/task-console.tsx"),
+    route("home", "routes/home.tsx"),
+    route("orchestration", "routes/orchestration.tsx"),
+    route("runtimes", "routes/runtimes.tsx"),
+    route("tools", "routes/tools.tsx"),
+    route("audit", "routes/audit.tsx"),
+    route("cost", "routes/cost.tsx"),
+    route("team", "routes/team.tsx"),
+    route("templates", "routes/templates.tsx"),
+    route("policy", "routes/policy.tsx"),
+    route("delivery", "routes/delivery.tsx"),
     route("accept-tos", "routes/accept-tos.tsx"),
     route("launch", "routes/launch.tsx"),
     route("settings", "routes/settings.tsx", [

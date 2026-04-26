@@ -44,12 +44,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-org/forgepilot-studio.git",
+    "url": "https://github.com/however-yir/forgepilot-studio.git",
     "directory": "openhands-ui"
   },
-  "homepage": "https://github.com/your-org/forgepilot-studio/tree/main/openhands-ui",
+  "homepage": "https://github.com/however-yir/forgepilot-studio/tree/main/openhands-ui",
   "bugs": {
-    "url": "https://github.com/your-org/forgepilot-studio/issues"
+    "url": "https://github.com/however-yir/forgepilot-studio/issues"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^4.0.0",

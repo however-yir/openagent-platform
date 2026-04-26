@@ -9,7 +9,7 @@ on:
 jobs:
   stale:
     runs-on: ubuntu-22.04
-    if: github.repository == 'OpenHands/OpenHands'
+    if: github.repository == 'however-yir/forgepilot-studio'
     steps:
       - uses: actions/stale@v10
         with:

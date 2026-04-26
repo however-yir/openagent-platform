@@ -4,13 +4,13 @@
 
 ## 1) Repository Name
 
-- 建议：`openagent-platform`
-- 备选：`openagent-workbench`
+- 建议：`forgepilot-studio`
+- 备选：`forgepilot-workbench`
 
 ## 2) Description（GitHub 仓库描述）
 
 ```text
-OpenAgent Platform: A Chinese-first AI development platform for local, cloud, and enterprise workflows.
+ForgePilot Studio: 可审计的工程执行工作台，面向 Agent 任务编排、验证与交付。
 ```
 
 ## 3) Topics（建议）
@@ -30,13 +30,14 @@ OpenAgent Platform: A Chinese-first AI development platform for local, cloud, an
 
 ## 4) README 顶部标题建议
 
-- 中文：`开放智能体平台`
-- 英文：`OpenAgent Platform`
+- 中文：`ForgePilot 工程执行工作台`
+- 英文：`ForgePilot Studio`
 
 ## 5) Logo 资源
 
-- 主 Logo：`docs/assets/openagent-logo.svg`
-- UI Logo：`openhands-ui/docs/assets/openagent-ui-logo.svg`
+- 主 Logo：`docs/assets/forgepilot-logo.svg`
+- Social Preview：`docs/assets/forgepilot-social-preview.png`
+- UI Logo：`frontend/src/assets/branding/forgepilot-logo.svg`
 
 ## 6) 发布前检查
 

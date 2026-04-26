@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """
-Find all PRs that went in between two commits in the OpenHands/OpenHands repository.
+Find all PRs that went in between two commits in the ForgePilot repository.
 Handles cherry-picks and different merge strategies.
 
-This script is designed to run from within the OpenHands repository under .github/scripts:
+This script is designed to run from within the ForgePilot repository under .github/scripts:
     .github/scripts/find_prs_between_commits.py
 
 Usage: find_prs_between_commits <older_commit> <newer_commit> [--repo <path>]
@@ -21,7 +21,7 @@ from typing import Optional
 
 def find_openhands_repo() -> Optional[Path]:
     """
-    Find the OpenHands repository.
+    Find the ForgePilot repository.
     Since this script is designed to live in .github/scripts/, it assumes
     the repository root is two levels up from the script location.
     Tries:

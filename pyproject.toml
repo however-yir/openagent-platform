@@ -9,7 +9,7 @@ name = "forgepilot-studio"
 description = "ForgePilot Studio: auditable agentic engineering execution workbench"
 readme = "README.md"
 license = "MIT"
-authors = [ { name = "Liu Zhuoran", email = "dev@lz-agent.local" } ]
+authors = [ { name = "Liu Zhuoran", email = "dev@forgepilot.local" } ]
 requires-python = ">=3.12,<3.14"
 classifiers = [
   "Programming Language :: Python :: 3 :: Only",
@@ -147,7 +147,7 @@ runtime = [
 name = "forgepilot-studio"
 version = "1.6.0"
 description = "ForgePilot Studio: auditable agentic engineering execution workbench"
-authors = [ "Liu Zhuoran <dev@lz-agent.local>" ]
+authors = [ "Liu Zhuoran <dev@forgepilot.local>" ]
 license = "MIT"
 readme = "README.md"
 repository = "https://github.com/however-yir/forgepilot-studio"
