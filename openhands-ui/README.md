@@ -1,19 +1,18 @@
-# 开放智能体组件库（OpenAgent UI Components）
+# ForgePilot UI Kit
 
 <p align="center">
-  <img src="docs/assets/openagent-ui-logo.svg" alt="OpenAgent UI Logo" width="320">
+  <img src="docs/assets/forgepilot-ui-logo.svg" alt="ForgePilot UI Kit Logo" width="360">
 </p>
 
-🔥 面向 Agent 产品与后台系统的 React 组件库（TypeScript + Tailwind CSS）。  
-🚀 提供基础交互组件、主题能力与工程化发布链路。  
-⭐ 可作为主仓库前端与业务系统的统一 UI 基础层。
+面向 Agent 产品、工程控制台和内部运营后台的 React 组件库（TypeScript + Tailwind CSS）。
+它服务于 `ForgePilot Studio` 的操作台体验，重点覆盖任务执行、会话轨迹、工具状态、配置治理和团队权限等界面。
 
 ---
 
 ## 目录
 
 - [1. 项目定位](#1-项目定位)
-- [2. 与上游差异](#2-与上游差异)
+- [2. 差异化方向](#2-差异化方向)
 - [3. 安装与快速接入](#3-安装与快速接入)
 - [4. 组件清单](#4-组件清单)
 - [5. 版本兼容矩阵](#5-版本兼容矩阵)
@@ -27,56 +26,57 @@
 
 ## 1. 项目定位
 
-`OpenAgent UI` 是主仓库的前端组件层，目标是统一以下能力：
+`ForgePilot UI Kit` 是主仓库的前端组件层，目标是统一以下能力：
 
-- 组件 API 规范（可复用、可组合、可测试）
-- 视觉与交互一致性（按钮、输入、提示、滚动容器等）
-- 工程化输出（构建、打包、发布、版本控制）
+- 组件 API 规范：可复用、可组合、可测试。
+- 控制台视觉语言：密度适中、信息清晰、适合长期操作。
+- Agent 专用状态表达：任务、工具、轨迹、成本、风险、运行时。
+- 工程化输出：构建、打包、发布、版本控制和私有 registry 分发。
 
 ---
 
-## 2. 与上游差异
+## 2. 差异化方向
 
 当前子项目已完成的品牌化调整：
 
-1. README 改为中文主叙述并补充双语标题。
-2. 替换为本仓库 Logo 资源（`docs/assets/openagent-ui-logo.svg`）。
-3. `package.json` 描述与关键词更新为统一中性命名。
-4. 仓库元数据（`homepage` / `bugs` / `repository`）改为组织模板地址。
+1. README 改为 ForgePilot 品牌叙述。
+2. 替换为自有 Logo 资源（`docs/assets/forgepilot-ui-logo.svg`）。
+3. `package.json` 描述、关键词、作者与包名更新为 ForgePilot 命名。
+4. 仓库元数据改为 ForgePilot Studio 的仓库地址模板。
 5. 文档补充版本兼容、发布检查、离线使用说明。
 
 ---
 
 ## 3. 安装与快速接入
 
-> 统一命名后的包名：`@openagent/ui`。
+> 统一命名后的包名：`@forgepilot/ui`。
 
 ### 3.1 安装
 
 ```bash
 # npm
-npm install @openagent/ui
+npm install @forgepilot/ui
 
 # yarn
-yarn add @openagent/ui
+yarn add @forgepilot/ui
 
 # pnpm
-pnpm add @openagent/ui
+pnpm add @forgepilot/ui
 
 # bun
-bun add @openagent/ui
+bun add @forgepilot/ui
 ```
 
 ### 3.2 快速接入
 
 ```tsx
-import { Button, Typography } from "@openagent/ui";
-import "@openagent/ui/styles";
+import { Button, Typography } from "@forgepilot/ui";
+import "@forgepilot/ui/styles";
 
 function App() {
   return (
     <div>
-      <Typography.H1>OpenAgent UI</Typography.H1>
+      <Typography.H1>ForgePilot UI</Typography.H1>
       <Button variant="primary">开始使用</Button>
     </div>
   );
@@ -130,7 +130,7 @@ bun run build
 ```bash
 bun run build
 bun pm pack
-npm install path/to/openagent-ui-x.x.x.tgz
+npm install path/to/forgepilot-ui-x.x.x.tgz
 ```
 
 ---
@@ -163,7 +163,7 @@ npm install path/to/openagent-ui-x.x.x.tgz
 确认已引入：
 
 ```ts
-import "@openagent/ui/styles";
+import "@forgepilot/ui/styles";
 ```
 
 ### Q2：peerDependencies 冲突？

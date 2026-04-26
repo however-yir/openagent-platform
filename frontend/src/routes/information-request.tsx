@@ -8,7 +8,7 @@ import {
   RequestType,
 } from "#/components/features/onboarding/information-request-form";
 import { EnterpriseCard } from "#/components/features/onboarding/enterprise-card";
-import OpenHandsLogoWhite from "#/assets/branding/openhands-logo-white.svg?react";
+import ForgePilotLogoWhite from "#/assets/branding/forgepilot-logo-white.svg?react";
 import CloudIcon from "#/icons/cloud-minimal.svg?react";
 import StackedIcon from "#/icons/stacked.svg?react";
 import {
@@ -131,7 +131,7 @@ export default function InformationRequest() {
         )}
       >
         {/* Logo */}
-        <OpenHandsLogoWhite width={56} height={56} />
+        <ForgePilotLogoWhite width={56} height={56} />
 
         {/* Header */}
         <div className={cn("text-center flex flex-col gap-3")}>

@@ -2,7 +2,7 @@
   "lockfileVersion": 1,
   "workspaces": {
     "": {
-      "name": "@openhands/ui",
+      "name": "@forgepilot/ui",
       "dependencies": {
         "@floating-ui/react": "^0.27.12",
         "clsx": "^2.1.1",

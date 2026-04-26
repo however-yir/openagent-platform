@@ -1,0 +1,25 @@
+<svg width="720" height="260" viewBox="0 0 720 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">ForgePilot UI Kit Logo</title>
+  <desc id="desc">Brand mark for the ForgePilot UI Kit component library.</desc>
+  <defs>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#111827"/>
+      <stop offset="100%" stop-color="#20352f"/>
+    </linearGradient>
+    <linearGradient id="tile" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2dd4bf"/>
+      <stop offset="100%" stop-color="#f59e0b"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="720" height="260" rx="28" fill="url(#panel)"/>
+  <g transform="translate(62 58)">
+    <rect x="0" y="0" width="144" height="144" rx="24" fill="url(#tile)"/>
+    <rect x="32" y="34" width="80" height="16" rx="8" fill="#111827"/>
+    <rect x="32" y="66" width="56" height="16" rx="8" fill="#111827"/>
+    <rect x="32" y="98" width="72" height="16" rx="8" fill="#111827"/>
+    <path d="M112 34 128 50 112 66" fill="none" stroke="#111827" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <text x="258" y="112" fill="#f8fafc" font-size="46" font-family="Verdana, Geneva, sans-serif" font-weight="700">ForgePilot UI</text>
+  <text x="258" y="160" fill="#99f6e4" font-size="26" font-family="Verdana, Geneva, sans-serif">Components for Operator Consoles</text>
+  <text x="258" y="198" fill="#fbbf24" font-size="18" font-family="Verdana, Geneva, sans-serif" letter-spacing="2">TOKENS · CONTROLS · STATES · WORKFLOWS</text>
+</svg>

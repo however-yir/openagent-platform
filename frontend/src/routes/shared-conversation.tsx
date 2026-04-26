@@ -9,7 +9,7 @@ import { shouldRenderEvent } from "#/components/v1/chat/event-content-helpers/sh
 import { LoadingSpinner } from "#/components/shared/loading-spinner";
 import { handleEventForUI } from "#/utils/handle-event-for-ui";
 import { OpenHandsEvent } from "#/types/v1/core";
-import OpenHandsLogo from "#/assets/branding/openhands-logo.svg?react";
+import ForgePilotLogo from "#/assets/branding/forgepilot-logo.svg?react";
 import { useInfiniteScroll } from "#/hooks/use-infinite-scroll";
 
 export default function SharedConversation() {
@@ -84,7 +84,7 @@ export default function SharedConversation() {
             className="flex-shrink-0"
             aria-label={t(I18nKey.BRANDING$OPENHANDS_LOGO)}
           >
-            <OpenHandsLogo width={46} height={30} />
+            <ForgePilotLogo width={46} height={30} />
           </Link>
           <div className="flex-1 min-w-0">
             <h1 className="text-xl font-semibold mb-2">

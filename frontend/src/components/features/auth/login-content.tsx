@@ -1,7 +1,7 @@
 import { useTranslation } from "react-i18next";
 import { FaUserShield } from "react-icons/fa";
 import { I18nKey } from "#/i18n/declaration";
-import OpenHandsLogoWhite from "#/assets/branding/openhands-logo-white.svg?react";
+import ForgePilotLogoWhite from "#/assets/branding/forgepilot-logo-white.svg?react";
 import GitHubLogo from "#/assets/branding/github-logo.svg?react";
 import GitLabLogo from "#/assets/branding/gitlab-logo.svg?react";
 import BitbucketLogo from "#/assets/branding/bitbucket-logo.svg?react";
@@ -189,7 +189,7 @@ export function LoginContent({
         data-testid="login-content"
       >
         <div>
-          <OpenHandsLogoWhite width={106} height={72} />
+          <ForgePilotLogoWhite width={106} height={72} />
         </div>
 
         <h1 className="text-[39px] leading-5 font-medium text-white text-center">

@@ -1,0 +1,25 @@
+<svg width="720" height="260" viewBox="0 0 720 260" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">ForgePilot Studio Logo</title>
+  <desc id="desc">Brand mark for ForgePilot Studio, an intelligent engineering execution workbench.</desc>
+  <defs>
+    <linearGradient id="panel" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#101820"/>
+      <stop offset="100%" stop-color="#192b2f"/>
+    </linearGradient>
+    <linearGradient id="mark" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#14b8a6"/>
+      <stop offset="55%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#ef4444"/>
+    </linearGradient>
+  </defs>
+  <rect x="0" y="0" width="720" height="260" rx="28" fill="url(#panel)"/>
+  <g transform="translate(58 46)">
+    <path d="M84 0 168 42v84l-84 42L0 126V42L84 0Z" fill="#0f172a" stroke="#2dd4bf" stroke-width="5"/>
+    <path d="M84 26 139 54v54l-55 28-55-28V54l55-28Z" fill="url(#mark)"/>
+    <path d="M55 102 84 48l29 54H93l-9-18-9 18H55Z" fill="#111827"/>
+    <path d="M48 128h72" stroke="#f8fafc" stroke-width="10" stroke-linecap="round"/>
+  </g>
+  <text x="258" y="112" fill="#f8fafc" font-size="48" font-family="Verdana, Geneva, sans-serif" font-weight="700">ForgePilot</text>
+  <text x="258" y="160" fill="#99f6e4" font-size="26" font-family="Verdana, Geneva, sans-serif">Studio for Agentic Engineering</text>
+  <text x="258" y="198" fill="#fbbf24" font-size="18" font-family="Verdana, Geneva, sans-serif" letter-spacing="2">PLAN · EXECUTE · VERIFY · REPLAY</text>
+</svg>

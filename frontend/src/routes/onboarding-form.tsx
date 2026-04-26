@@ -5,7 +5,7 @@ import StepHeader from "#/components/features/onboarding/step-header";
 import { StepContent } from "#/components/features/onboarding/step-content";
 import { BrandButton } from "#/components/features/settings/brand-button";
 import { I18nKey } from "#/i18n/declaration";
-import OpenHandsLogoWhite from "#/assets/branding/openhands-logo-white.svg?react";
+import ForgePilotLogoWhite from "#/assets/branding/forgepilot-logo-white.svg?react";
 import { useSubmitOnboarding } from "#/hooks/mutation/use-submit-onboarding";
 import { useTracking } from "#/hooks/use-tracking";
 import { ENABLE_ONBOARDING } from "#/utils/feature-flags";
@@ -185,7 +185,7 @@ function OnboardingForm() {
       className="w-[500px] max-w-[calc(100vw-2rem)] mx-auto p-4 sm:p-6 flex flex-col justify-center overflow-hidden"
     >
       <div className="flex flex-col items-center mb-4">
-        <OpenHandsLogoWhite width={55} height={55} />
+        <ForgePilotLogoWhite width={55} height={55} />
       </div>
       <StepHeader
         title={t(currentStep.questionKey)}
