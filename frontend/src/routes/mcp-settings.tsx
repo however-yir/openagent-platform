@@ -138,7 +138,9 @@ function MCPSettingsScreen() {
     setServerToDelete(null);
   };
 
-  const getServerPreference = (server: MCPServerConfig): MCPServerPreference => {
+  const getServerPreference = (
+    server: MCPServerConfig,
+  ): MCPServerPreference => {
     const key = getMCPServerRegistryKey(server);
     return withDefaultPreference(preferences, key);
   };
@@ -153,7 +155,9 @@ function MCPSettingsScreen() {
     permission: MCPPermissionLevel,
   ) => {
     const key = getMCPServerRegistryKey(server);
-    setPreferences((current) => updateServerPermission(current, key, permission));
+    setPreferences((current) =>
+      updateServerPermission(current, key, permission),
+    );
   };
 
   const handleTestConnection = async (server: MCPServerConfig) => {

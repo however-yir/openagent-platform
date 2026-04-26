@@ -1,4 +1,10 @@
-import { TASK_STATE_STYLES, RISK_STYLES, workflowBadges } from "./workbench-data";
+import { useTranslation } from "react-i18next";
+import { I18nKey } from "#/i18n/declaration";
+import {
+  TASK_STATE_STYLES,
+  RISK_STYLES,
+  workflowBadges,
+} from "./workbench-data";
 import type { WorkbenchPageConfig } from "./workbench-data";
 
 interface WorkbenchPageProps {
@@ -22,6 +28,7 @@ function StatusPill({
 }
 
 export function WorkbenchPage({ config }: WorkbenchPageProps) {
+  const { t } = useTranslation();
   const PageIcon = config.icon;
 
   return (
@@ -74,7 +81,7 @@ export function WorkbenchPage({ config }: WorkbenchPageProps) {
         <div className="min-w-0">
           <div className="mb-3 flex items-center justify-between">
             <h2 className="text-sm font-semibold uppercase tracking-normal text-[#dce7eb]">
-              当前队列
+              {t(I18nKey.FORGEPILOT$WORKBENCH_CURRENT_QUEUE)}
             </h2>
             <StatusPill
               label="operator-ready"
@@ -122,7 +129,10 @@ export function WorkbenchPage({ config }: WorkbenchPageProps) {
           </h2>
           <div className="mt-4 grid gap-3">
             {config.secondaryItems.map((item) => (
-              <div key={item.title} className="border-l-2 border-[#2dd4bf] pl-3">
+              <div
+                key={item.title}
+                className="border-l-2 border-[#2dd4bf] pl-3"
+              >
                 <p className="text-sm font-semibold text-white">{item.title}</p>
                 <p className="mt-1 text-sm leading-6 text-[#aebbc0]">
                   {item.detail}

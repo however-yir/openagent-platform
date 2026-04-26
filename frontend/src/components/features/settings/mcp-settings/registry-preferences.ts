@@ -62,7 +62,10 @@ export async function testMCPServerConnection(
     };
   }
 
-  const timeoutMs = Math.min(Math.max((server.timeout || 8) * 1000, 1000), 30000);
+  const timeoutMs = Math.min(
+    Math.max((server.timeout || 8) * 1000, 1000),
+    30000,
+  );
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), timeoutMs);
 
@@ -74,7 +77,8 @@ export async function testMCPServerConnection(
     });
     return { health: "healthy" };
   } catch (error) {
-    const message = error instanceof Error ? error.message : "Network probe failed.";
+    const message =
+      error instanceof Error ? error.message : "Network probe failed.";
     return { health: "unreachable", error: message };
   } finally {
     clearTimeout(timer);

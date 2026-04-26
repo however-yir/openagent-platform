@@ -18,7 +18,12 @@ import {
 } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 
-export type TaskState = "planned" | "running" | "blocked" | "verified" | "shipped";
+export type TaskState =
+  | "planned"
+  | "running"
+  | "blocked"
+  | "verified"
+  | "shipped";
 export type RiskLevel = "safe" | "review" | "danger" | "blocked";
 
 export interface ConsoleMetric {
@@ -293,7 +298,11 @@ export const workbenchPages: Record<string, WorkbenchPageConfig> = {
     icon: Layers3,
     metrics: [
       { label: "空间", value: "3", detail: "personal / platform / infra" },
-      { label: "角色", value: "4", detail: "owner / maintainer / reviewer / viewer" },
+      {
+        label: "角色",
+        value: "4",
+        detail: "owner / maintainer / reviewer / viewer",
+      },
       { label: "共享模板", value: "11", detail: "团队可复用" },
       { label: "待审批", value: "2", detail: "高风险执行请求" },
     ],
@@ -324,8 +333,7 @@ export const workbenchPages: Record<string, WorkbenchPageConfig> = {
   templates: {
     eyebrow: "Template Library",
     title: "任务模板库",
-    description:
-      "沉淀 bugfix、代码审查、文档生成、测试补全等可复用执行模板。",
+    description: "沉淀 bugfix、代码审查、文档生成、测试补全等可复用执行模板。",
     icon: PackageCheck,
     metrics: [
       { label: "模板", value: "14", detail: "按语言和场景分类" },
@@ -360,8 +368,7 @@ export const workbenchPages: Record<string, WorkbenchPageConfig> = {
   policy: {
     eyebrow: "Execution Policy",
     title: "执行策略",
-    description:
-      "管理确认模式、危险命令、网络访问、文件边界和失败自愈次数。",
+    description: "管理确认模式、危险命令、网络访问、文件边界和失败自愈次数。",
     icon: ShieldCheck,
     metrics: [
       { label: "确认模式", value: "on", detail: "高风险命令必审" },

@@ -85,7 +85,9 @@ export function Sidebar() {
                     aria-label={label}
                     className={cn(
                       "flex h-9 w-9 items-center justify-center rounded-md border border-transparent text-[#B1B9D3] transition-colors hover:border-[#2dd4bf]/40 hover:bg-[#2dd4bf]/10 hover:text-white",
-                      (to === "/" ? pathname === "/" : pathname.startsWith(to)) &&
+                      (to === "/"
+                        ? pathname === "/"
+                        : pathname.startsWith(to)) &&
                         "border-[#2dd4bf]/50 bg-[#2dd4bf]/15 text-white",
                     )}
                   >

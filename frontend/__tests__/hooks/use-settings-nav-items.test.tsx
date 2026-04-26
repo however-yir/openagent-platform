@@ -158,9 +158,8 @@ describe("useSettingsNavItems", () => {
       // Wait for config to load (check that any SAAS item is present)
       await waitFor(() => {
         expect(result.current.length).toBeGreaterThan(0);
-        expect(
-          findItemByPath(result.current, "/settings/user"),
-        ).toBeDefined();
+        expect(findItemByPath(result.current, "/settings/api-keys")).toBeDefined();
+        expect(findItemByPath(result.current, "/settings/user")).toBeDefined();
       });
 
       // Org routes should be included for team org admin
@@ -208,9 +207,8 @@ describe("useSettingsNavItems", () => {
       // Wait for config to load
       await waitFor(() => {
         expect(result.current.length).toBeGreaterThan(0);
-        expect(
-          findItemByPath(result.current, "/settings/user"),
-        ).toBeDefined();
+        expect(findItemByPath(result.current, "/settings/api-keys")).toBeDefined();
+        expect(findItemByPath(result.current, "/settings/user")).toBeDefined();
       });
 
       // Org routes should be hidden for members
@@ -234,9 +232,8 @@ describe("useSettingsNavItems", () => {
       // Wait for config to load
       await waitFor(() => {
         expect(result.current.length).toBeGreaterThan(0);
-        expect(
-          findItemByPath(result.current, "/settings/user"),
-        ).toBeDefined();
+        expect(findItemByPath(result.current, "/settings/api-keys")).toBeDefined();
+        expect(findItemByPath(result.current, "/settings/user")).toBeUndefined();
       });
 
       // Org routes should be hidden when no org is selected

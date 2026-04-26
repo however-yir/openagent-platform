@@ -174,7 +174,7 @@ describe("UserActions", () => {
     );
     // Verify nav items are present (e.g., settings nav items)
     expect(screen.getByTestId("user-context-menu")).toHaveTextContent(
-      "SETTINGS$NAV_USER",
+      "COMMON$LANGUAGE_MODEL_LLM",
     );
     // Verify admin-only items are NOT present for user role
     expect(

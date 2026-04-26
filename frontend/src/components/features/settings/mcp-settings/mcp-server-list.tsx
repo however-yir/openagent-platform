@@ -56,7 +56,7 @@ export function MCPServerList({
               {t(I18nKey.SETTINGS$MCP_SERVER_DETAILS)}
             </th>
             <th className="text-right p-3 text-sm font-medium">
-              Registry
+              {t(I18nKey.SETTINGS$MCP_REGISTRY_COLUMN)}
             </th>
           </tr>
         </thead>

@@ -54,9 +54,7 @@ describe("useAppTitle", () => {
 
     const { result } = renderAppTitleHook();
 
-    await waitFor(() =>
-      expect(result.current).toBe("ForgePilot Studio Cloud"),
-    );
+    await waitFor(() => expect(result.current).toBe("ForgePilot Studio Cloud"));
   });
 
   it("should return '{some title} | ForgePilot Studio' if is OSS and in /conversations", async () => {

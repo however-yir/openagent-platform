@@ -80,7 +80,8 @@ export function useSettingsNavItems(): SettingsNavRenderedItem[] {
   } else {
     // In OSS mode we don't expose team/billing pages in settings nav
     items = items.filter(
-      (item) => item.to !== "/settings/org" && item.to !== "/settings/org-members",
+      (item) =>
+        item.to !== "/settings/org" && item.to !== "/settings/org-members",
     );
   }
 

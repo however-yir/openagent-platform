@@ -35,7 +35,7 @@ export const createMockWebClientConfig = (
 });
 
 export const MOCK_DEFAULT_USER_SETTINGS: Settings = {
-  llm_model: DEFAULT_SETTINGS.llm_model,
+  llm_model: "openhands/claude-opus-4-5-20251101",
   llm_base_url: DEFAULT_SETTINGS.llm_base_url,
   llm_api_key: null,
   llm_api_key_set: DEFAULT_SETTINGS.llm_api_key_set,

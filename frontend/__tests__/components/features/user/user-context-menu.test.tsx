@@ -205,7 +205,8 @@ describe("UserContextMenu", () => {
       (item) =>
         item.to !== "/settings/org-members" &&
         item.to !== "/settings/org" &&
-        item.to !== "/settings/billing",
+        item.to !== "/settings/billing" &&
+        item.to !== "/settings/user",
     );
 
     await waitFor(() => {
@@ -350,7 +351,7 @@ describe("UserContextMenu", () => {
 
       await waitFor(() => {
         // Other nav items should still be visible
-        expect(screen.getByText("SETTINGS$NAV_USER")).toBeInTheDocument();
+        expect(screen.getByText("SETTINGS$NAV_APPLICATION")).toBeInTheDocument();
         // LLM settings (to: "/settings") should NOT be visible
         expect(
           screen.queryByText("COMMON$LANGUAGE_MODEL_LLM"),

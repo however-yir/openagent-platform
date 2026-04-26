@@ -214,7 +214,7 @@ describe("Content", () => {
       const apiKey = screen.getByTestId("llm-api-key-input");
 
       await waitFor(() => {
-        expect(provider).toHaveValue("OpenHands");
+        expect(provider).toHaveValue("ForgePilot");
         expect(model).toHaveValue("claude-opus-4-5-20251101");
 
         expect(apiKey).toHaveValue("");
@@ -505,7 +505,7 @@ describe("Content", () => {
   it.todo("should render an indicator if the llm api key is set");
 
   describe("API key visibility in Basic Settings", () => {
-    it("should hide API key input when SaaS mode is enabled and OpenHands provider is selected", async () => {
+    it("should hide API key input when SaaS mode is enabled and ForgePilot provider is selected", async () => {
       // SaaS mode is already the default from beforeEach, but let's be explicit
       mockUseConfig.mockReturnValue({
         data: { app_mode: "saas" },
@@ -518,12 +518,12 @@ describe("Content", () => {
       const basicForm = screen.getByTestId("llm-settings-form-basic");
       const provider = within(basicForm).getByTestId("llm-provider-input");
 
-      // Verify OpenHands is selected by default
+      // Verify ForgePilot is selected by default
       await waitFor(() => {
-        expect(provider).toHaveValue("OpenHands");
+        expect(provider).toHaveValue("ForgePilot");
       });
 
-      // API key input should not be visible when OpenHands provider is selected in SaaS mode
+      // API key input should not be visible when ForgePilot provider is selected in SaaS mode
       expect(
         within(basicForm).queryByTestId("llm-api-key-input"),
       ).not.toBeInTheDocument();
@@ -532,7 +532,7 @@ describe("Content", () => {
       ).not.toBeInTheDocument();
     });
 
-    it("should show API key input when SaaS mode is enabled and non-OpenHands provider is selected", async () => {
+    it("should show API key input when SaaS mode is enabled and non-ForgePilot provider is selected", async () => {
       // SaaS mode is already the default from beforeEach, but let's be explicit
       mockUseConfig.mockReturnValue({
         data: { app_mode: "saas" },
@@ -554,7 +554,7 @@ describe("Content", () => {
         expect(provider).toHaveValue("OpenAI");
       });
 
-      // API key input should be visible when non-OpenHands provider is selected in SaaS mode
+      // API key input should be visible when non-ForgePilot provider is selected in SaaS mode
       expect(
         within(basicForm).getByTestId("llm-api-key-input"),
       ).toBeInTheDocument();
@@ -563,7 +563,7 @@ describe("Content", () => {
       ).toBeInTheDocument();
     });
 
-    it("should show API key input when OSS mode is enabled and OpenHands provider is selected", async () => {
+    it("should show API key input when OSS mode is enabled and ForgePilot provider is selected", async () => {
       mockUseConfig.mockReturnValue({
         data: { app_mode: "oss" },
         isLoading: false,
@@ -575,12 +575,12 @@ describe("Content", () => {
       const basicForm = screen.getByTestId("llm-settings-form-basic");
       const provider = within(basicForm).getByTestId("llm-provider-input");
 
-      // Verify OpenHands is selected by default
+      // Verify ForgePilot is selected by default
       await waitFor(() => {
-        expect(provider).toHaveValue("OpenHands");
+        expect(provider).toHaveValue("ForgePilot");
       });
 
-      // API key input should be visible when OSS mode is enabled (even with OpenHands provider)
+      // API key input should be visible when OSS mode is enabled (even with ForgePilot provider)
       expect(
         within(basicForm).getByTestId("llm-api-key-input"),
       ).toBeInTheDocument();
@@ -589,7 +589,7 @@ describe("Content", () => {
       ).toBeInTheDocument();
     });
 
-    it("should show API key input when OSS mode is enabled and non-OpenHands provider is selected", async () => {
+    it("should show API key input when OSS mode is enabled and non-ForgePilot provider is selected", async () => {
       mockUseConfig.mockReturnValue({
         data: { app_mode: "oss" },
         isLoading: false,
@@ -619,7 +619,7 @@ describe("Content", () => {
       ).toBeInTheDocument();
     });
 
-    it("should hide API key input when switching from non-OpenHands to OpenHands provider in SaaS mode", async () => {
+    it("should hide API key input when switching from non-ForgePilot to ForgePilot provider in SaaS mode", async () => {
       // SaaS mode is already the default from beforeEach, but let's be explicit
       mockUseConfig.mockReturnValue({
         data: { app_mode: "saas" },
@@ -646,13 +646,13 @@ describe("Content", () => {
         within(basicForm).getByTestId("llm-api-key-input"),
       ).toBeInTheDocument();
 
-      // Switch to OpenHands provider
+      // Switch to ForgePilot provider
       await userEvent.click(provider);
-      const openHandsOption = screen.getByText("OpenHands");
+      const openHandsOption = screen.getByText("ForgePilot");
       await userEvent.click(openHandsOption);
 
       await waitFor(() => {
-        expect(provider).toHaveValue("OpenHands");
+        expect(provider).toHaveValue("ForgePilot");
       });
 
       // API key input should now be hidden
@@ -664,7 +664,7 @@ describe("Content", () => {
       ).not.toBeInTheDocument();
     });
 
-    it("should show API key input when switching from OpenHands to non-OpenHands provider in SaaS mode", async () => {
+    it("should show API key input when switching from ForgePilot to non-ForgePilot provider in SaaS mode", async () => {
       // SaaS mode is already the default from beforeEach, but let's be explicit
       mockUseConfig.mockReturnValue({
         data: { app_mode: "saas" },
@@ -677,12 +677,12 @@ describe("Content", () => {
       const basicForm = screen.getByTestId("llm-settings-form-basic");
       const provider = within(basicForm).getByTestId("llm-provider-input");
 
-      // Verify OpenHands is selected by default
+      // Verify ForgePilot is selected by default
       await waitFor(() => {
-        expect(provider).toHaveValue("OpenHands");
+        expect(provider).toHaveValue("ForgePilot");
       });
 
-      // API key input should be hidden with OpenHands
+      // API key input should be hidden with ForgePilot
       expect(
         within(basicForm).queryByTestId("llm-api-key-input"),
       ).not.toBeInTheDocument();
@@ -1005,7 +1005,7 @@ describe("Form submission", () => {
 
     expect(submitButton).toBeDisabled();
 
-    // Switch to a non-OpenHands provider first so API key input is visible
+    // Switch to a non-ForgePilot provider first so API key input is visible
     const provider = screen.getByTestId("llm-provider-input");
     await userEvent.click(provider);
     const providerOption = screen.getByText("OpenAI");
@@ -1085,7 +1085,7 @@ describe("Form submission", () => {
 
     // select provider
     await userEvent.click(provider);
-    const providerOption = screen.getByText("OpenHands");
+    const providerOption = screen.getByText("ForgePilot");
     await userEvent.click(providerOption);
 
     // select model
@@ -1266,7 +1266,7 @@ describe("Status toasts", () => {
       renderLlmSettingsScreen();
       await screen.findByTestId("llm-settings-screen");
 
-      // Switch to a non-OpenHands provider so API key input is visible
+      // Switch to a non-ForgePilot provider so API key input is visible
       const provider = screen.getByTestId("llm-provider-input");
       await userEvent.click(provider);
       const providerOption = screen.getByText("OpenAI");
@@ -1311,7 +1311,7 @@ describe("Status toasts", () => {
       renderLlmSettingsScreen();
       await screen.findByTestId("llm-settings-screen");
 
-      // Switch to a non-OpenHands provider so API key input is visible
+      // Switch to a non-ForgePilot provider so API key input is visible
       const provider = screen.getByTestId("llm-provider-input");
       await userEvent.click(provider);
       const providerOption = screen.getByText("OpenAI");
@@ -1467,7 +1467,7 @@ describe("Role-based permissions", () => {
         expect(modelInput).toBeDisabled();
       });
 
-      // API key input may be hidden if OpenHands provider is selected in SaaS mode
+      // API key input may be hidden if ForgePilot provider is selected in SaaS mode
       // If it exists, it should be disabled
       const apiKeyInput = within(basicForm).queryByTestId("llm-api-key-input");
       if (apiKeyInput) {
@@ -1542,7 +1542,7 @@ describe("Role-based permissions", () => {
         expect(modelInput).not.toBeDisabled();
       });
 
-      // API key input may be hidden if OpenHands provider is selected in SaaS mode
+      // API key input may be hidden if ForgePilot provider is selected in SaaS mode
       // If it exists, it should be enabled
       const apiKeyInput = within(basicForm).queryByTestId("llm-api-key-input");
       if (apiKeyInput) {
@@ -1585,7 +1585,7 @@ describe("Role-based permissions", () => {
         expect(confirmationSwitch).not.toBeDisabled();
       });
 
-      // API key input may be hidden if OpenHands provider is selected in SaaS mode
+      // API key input may be hidden if ForgePilot provider is selected in SaaS mode
       // If it exists, it should be enabled
       const apiKeyInput =
         within(advancedForm).queryByTestId("llm-api-key-input");
@@ -1698,7 +1698,7 @@ describe("Role-based permissions", () => {
         expect(modelInput).not.toBeDisabled();
       });
 
-      // API key input may be hidden if OpenHands provider is selected in SaaS mode
+      // API key input may be hidden if ForgePilot provider is selected in SaaS mode
       // If it exists, it should be enabled
       const apiKeyInput = within(basicForm).queryByTestId("llm-api-key-input");
       if (apiKeyInput) {
@@ -1741,7 +1741,7 @@ describe("Role-based permissions", () => {
         expect(confirmationSwitch).not.toBeDisabled();
       });
 
-      // API key input may be hidden if OpenHands provider is selected in SaaS mode
+      // API key input may be hidden if ForgePilot provider is selected in SaaS mode
       // If it exists, it should be enabled
       const apiKeyInput =
         within(advancedForm).queryByTestId("llm-api-key-input");

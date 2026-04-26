@@ -135,7 +135,7 @@ export function MCPServerListItem({
                 checked={preference.enabled}
                 onChange={(event) => onToggleEnabled(event.target.checked)}
               />
-              启用
+              {t(I18nKey.SETTINGS$MCP_ENABLED)}
             </label>
 
             <select
