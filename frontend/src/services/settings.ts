@@ -24,11 +24,11 @@ const DEFAULT_LLM_BASE_URL = readEnvString(
 );
 const DEFAULT_GIT_USER_NAME = readEnvString(
   import.meta.env.VITE_DEFAULT_GIT_USER_NAME,
-  "openagent-bot",
+  "forgepilot-bot",
 );
 const DEFAULT_GIT_USER_EMAIL = readEnvString(
   import.meta.env.VITE_DEFAULT_GIT_USER_EMAIL,
-  "dev@openagent.local",
+  "dev@forgepilot.local",
 );
 
 export const DEFAULT_SETTINGS: Settings = {

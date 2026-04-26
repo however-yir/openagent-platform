@@ -1,0 +1,8 @@
+<svg width="1365" height="1365" viewBox="0 0 94 60" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ForgePilot">
+  <path d="M30 3 57 17v26L30 57 3 43V17L30 3Z" fill="#0b1220" stroke="#99f6e4" stroke-width="3"/>
+  <path d="M30 13 48 22v18L30 49 12 40V22L30 13Z" fill="#fbbf24"/>
+  <path d="M21 39 30 20l9 19h-6l-3-7-3 7h-6Z" fill="#0b1220"/>
+  <path d="M64 18h21" stroke="#f8fafc" stroke-width="5" stroke-linecap="round"/>
+  <path d="M64 30h17" stroke="#99f6e4" stroke-width="5" stroke-linecap="round"/>
+  <path d="M64 42h25" stroke="#fbbf24" stroke-width="5" stroke-linecap="round"/>
+</svg>

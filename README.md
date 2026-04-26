@@ -1,18 +1,18 @@
 <a name="readme-top"></a>
 
 <div align="center">
-  <img src="docs/assets/openagent-logo.svg" alt="OpenAgent Logo" width="320">
-  <h1 align="center" style="border-bottom: none">openagent-platform</h1>
+  <img src="docs/assets/forgepilot-logo.svg" alt="ForgePilot Studio Logo" width="360">
+  <h1 align="center" style="border-bottom: none">ForgePilot Studio</h1>
 </div>
 
 <p align="center">
-面向研发团队的智能开发平台（CLI / GUI / SDK / Self-Hosted）。
+面向研发团队的智能工程执行工作台（CLI / GUI / SDK / Self-Hosted）。
 </p>
 
 <div align="center">
   <img src="https://img.shields.io/badge/Python-3.12%2B-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python">
-  <img src="https://img.shields.io/badge/FastAPI-App%20Server-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI">
-  <img src="https://img.shields.io/badge/React-Frontend-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React">
+  <img src="https://img.shields.io/badge/FastAPI-Control%20Plane-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI">
+  <img src="https://img.shields.io/badge/React-Operator%20Console-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React">
   <img src="https://img.shields.io/badge/Runtime-Docker%20%2F%20K8s-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Runtime">
 </div>
 
@@ -21,53 +21,52 @@
 ## 目录
 
 - [1. 项目定位](#1-项目定位)
-- [2. 与原版区别](#2-与原版区别)
+- [2. 与上游项目的差异化方向](#2-与上游项目的差异化方向)
 - [3. 功能全景](#3-功能全景)
 - [4. 架构总览](#4-架构总览)
 - [5. 项目结构](#5-项目结构)
 - [6. 快速开始](#6-快速开始)
-- [7. 配置说明（DB / Redis / Ollama / LLM）](#7-配置说明db--redis--ollama--llm)
+- [7. 配置说明](#7-配置说明)
 - [8. 部署方式](#8-部署方式)
-- [9. 重构与演进建议](#9-重构与演进建议)
+- [9. 深度改造路线图](#9-深度改造路线图)
 - [10. 依赖治理](#10-依赖治理)
 - [11. 安全与运维基线](#11-安全与运维基线)
 - [12. FAQ](#12-faq)
-- [13. 协议与声明](#13-协议与声明)
+- [13. 协议与来源](#13-协议与来源)
 
 ---
 
 ## 1. 项目定位
 
-`OpenAgent Platform` 是一个以“智能研发执行链路”为核心的工程平台，覆盖以下能力：
+`ForgePilot Studio` 是一个以“可审计的智能研发执行链路”为核心的工程平台。它更像团队内部的 AI 工程操作台，而不是单纯的聊天式代码助手。
 
-- Agent 任务执行（命令、编辑、代码生成、运行验证）
-- 多模型接入（OpenAI 兼容网关、Ollama、本地与云端模型）
-- 多运行形态（CLI、Local GUI、容器运行、Kubernetes）
-- 可扩展工具接入（MCP）与会话状态管理
+核心能力：
 
-该仓库的目标是提供可长期维护、可二次开发、可团队化部署的智能体工程骨架。
+- 工程任务执行：命令运行、代码编辑、补丁生成、验证闭环。
+- 工作流编排：把需求拆成计划、执行、检查、回放四个阶段。
+- 多模型接入：兼容 OpenAI 风格网关、Ollama、本地模型和云端模型。
+- 多运行形态：CLI、本地控制台、容器运行、Kubernetes 部署。
+- 扩展工具接入：通过 MCP、脚本插件和自定义工具链连接团队系统。
+- 过程治理：会话状态、轨迹回放、成本阈值、审计日志与权限边界。
+
+该仓库的目标是提供一套可长期维护、可团队化部署、可二次开发的智能工程平台骨架。
 
 ---
 
-## 2. 与原版区别
+## 2. 与上游项目的差异化方向
 
-本仓库基于上游 OpenHands 进行品牌化与工程化改造，已完成的差异包括：
+本仓库正在从通用开源 Agent 项目演进为独立的工程执行产品。当前已完成或明确的差异化方向：
 
-1. 文档改为中文主叙述，中英结合标题。
-2. 顶部 Logo、仓库命名与品牌元数据改为统一中性命名。
-3. 新增 `.env.fork.example` 与 `.env.local.example`，集中管理 DB/Redis/Ollama/LLM 配置。
-4. `docker-compose.yml` 与 `containers/dev/compose.yml` 支持镜像名、容器名参数化。
-5. `config.template.toml` 补充非 localhost 的生产配置示例。
-6. 新增 fork 深改清单（每项目 50+ 项）：`docs/fork-customization-roadmap.zh-CN.md`。
+1. 对外名称改为 `ForgePilot Studio`，强调工程编排与研发执行。
+2. 顶部 Logo、仓库描述、组件库名称与包名统一换成 ForgePilot 品牌。
+3. README 改为中文主叙述，面向私有化交付和团队内部使用场景。
+4. 配置模板集中管理 DB、Redis、Ollama、LLM 网关、镜像与工作区路径。
+5. Docker Compose 支持镜像名、容器名、Agent Server 镜像仓库参数化。
+6. 差异化路线图作为独立文档维护，README 不展开长清单。
 
-上游参考：
+上游来源参考：
 
 - Upstream Repo: [OpenHands/OpenHands](https://github.com/OpenHands/OpenHands)
-
-> **非官方声明（Non-Affiliation）**
-> 本仓库为社区维护的衍生/二次开发版本，与上游项目及其权利主体不存在官方关联、授权背书或从属关系。
-> **商标声明（Trademark Notice）**
-> 相关项目名称、Logo 与商标归其各自权利人所有。本仓库仅用于说明兼容/来源，不主张任何商标权利。
 
 ---
 
@@ -75,17 +74,18 @@
 
 ### 3.1 运行模式
 
-- `CLI Mode`：终端驱动，适合脚本化与流水线。
-- `Local GUI`：可视化会话与调试。
-- `Container Runtime`：隔离执行环境。
-- `Kubernetes Runtime`：团队化部署与弹性扩展。
+- `CLI Mode`：终端驱动，适合脚本化、CI 和批处理任务。
+- `Operator Console`：可视化会话、任务进度、运行日志和调试信息。
+- `Container Runtime`：隔离执行环境，降低本机污染和权限风险。
+- `Kubernetes Runtime`：支持团队化部署、弹性扩展和资源配额。
 
 ### 3.2 平台能力
 
-- 模型配置：`model`、`base_url`、`api_key`、重试与超时
-- 会话与轨迹：会话上下文、轨迹回放
-- 外部扩展：MCP（SSE/SHTTP/stdio）
-- 持久化：SQLite（默认）/ PostgreSQL（生产）
+- 模型配置：`model`、`base_url`、`api_key`、重试、超时与预算。
+- 会话与轨迹：会话上下文、任务步骤、执行日志、结果回放。
+- 工具扩展：MCP（SSE/SHTTP/stdio）、自定义脚本、内部系统 API。
+- 持久化：SQLite（默认）/ PostgreSQL（生产）。
+- 运维控制：Redis、审计日志、限流策略、健康检查与告警入口。
 
 ---
 
@@ -93,13 +93,14 @@
 
 ```mermaid
 flowchart LR
-  U["开发者 / Team"] --> C["CLI / GUI"]
-  C --> A["App Server (FastAPI)"]
-  A --> M["LLM Gateway / Provider"]
-  A --> R["Runtime Sandbox"]
-  A --> D["SQLite or PostgreSQL"]
-  A --> K["MCP Servers"]
-  A --> S["File Store / Workspace"]
+  U["Developer Team"] --> C["CLI / Operator Console"]
+  C --> A["ForgePilot Control Plane"]
+  A --> P["Planner & Policy Layer"]
+  P --> M["LLM Gateway / Provider"]
+  P --> R["Runtime Sandbox"]
+  P --> D["SQLite or PostgreSQL"]
+  P --> K["MCP & Tool Servers"]
+  P --> S["Workspace / File Store"]
 ```
 
 ---
@@ -122,6 +123,8 @@ flowchart LR
 ├── enterprise/
 └── tests/
 ```
+
+> 说明：底层 Python 包名仍保留 `openhands/`，方便先稳定运行与测试。后续可按路线图逐步做命名空间迁移。
 
 ---
 
@@ -156,7 +159,7 @@ npm run dev
 
 ---
 
-## 7. 配置说明（DB / Redis / Ollama / LLM）
+## 7. 配置说明
 
 建议优先维护 `.env.fork.example`：
 
@@ -164,7 +167,9 @@ npm run dev
 - `OLLAMA_BASE_URL`
 - `DB_HOST` / `DB_PORT` / `DB_NAME` / `DB_USER` / `DB_PASS`
 - `REDIS_HOST` / `REDIS_PORT` / `REDIS_PASSWORD`
-- `OPENHANDS_IMAGE_NAME` / `OPENHANDS_CONTAINER_NAME`
+- `FORGEPILOT_IMAGE_NAME` / `FORGEPILOT_CONTAINER_NAME`
+
+兼容说明：部分底层运行时变量仍沿用上游命名，迁移期通过模板和文档统一收口。
 
 ---
 
@@ -172,7 +177,7 @@ npm run dev
 
 ### 8.1 单机 Docker Compose
 
-适合开发与 PoC 场景。
+适合开发、演示和 PoC 场景。
 
 ### 8.2 Kubernetes
 
@@ -182,37 +187,41 @@ npm run dev
 - Secret 管理
 - 资源请求/限制
 - 日志与监控
+- 模型调用预算与租户隔离
 
 ---
 
-## 9. 重构与演进建议
+## 9. 深度改造路线图
 
-建议按三阶段推进：
+建议按四阶段推进：
 
-1. 品牌层：命名、Logo、README、仓库描述。
-2. 配置层：环境模板、密钥治理、配置校验。
-3. 架构层：模块重构、依赖升级策略、CI 完整化。
+1. 品牌层：名称、Logo、README、仓库描述、组件包名。
+2. 配置层：环境模板、密钥治理、配置校验、镜像参数化。
+3. 产品层：任务台、审计台、工具市场、团队权限、成本面板。
+4. 架构层：命名空间迁移、插件系统、CI 完整化、可观测性。
 
-详细清单见：`docs/fork-customization-roadmap.zh-CN.md`。
+详细清单作为独立文档维护，README 仅保留阶段概览。
 
 ---
 
 ## 10. 依赖治理
 
-- 每周处理安全补丁（patch）
-- 每月评估次版本（minor）
-- 每季度评估主版本（major）
-- 升级前后均执行 smoke test 与回归测试
+- 每周处理安全补丁（patch）。
+- 每月评估次版本（minor）。
+- 每季度评估主版本（major）。
+- 升级前后均执行 smoke test 与回归测试。
+- 高风险依赖加入兼容矩阵与回滚说明。
 
 ---
 
 ## 11. 安全与运维基线
 
-- 禁止提交真实密钥
-- 生产环境禁用弱口令
-- 外网统一 HTTPS
-- 关键操作记录审计日志
-- 设置模型调用预算与限流
+- 禁止提交真实密钥。
+- 生产环境禁用弱口令。
+- 外网统一 HTTPS。
+- 关键操作记录审计日志。
+- 设置模型调用预算与限流。
+- 沙箱权限、文件访问和网络访问必须有明确边界。
 
 ---
 
@@ -220,26 +229,28 @@ npm run dev
 
 ### Q1：是否必须立刻修改所有包名与命名空间？
 
-不必须。建议先完成文档与配置层改造，再进行代码级全量 rename。
+不必须。建议先完成展示层、配置层和部署层改造，再进行代码级全量 rename。
 
 ### Q2：如何切换自定义镜像仓库？
 
 在 `.env` 中配置：
 
+- `FORGEPILOT_IMAGE_NAME`
+- `FORGEPILOT_CONTAINER_NAME`
 - `AGENT_SERVER_IMAGE_REPOSITORY`
 - `AGENT_SERVER_IMAGE_TAG`
-- `OPENHANDS_IMAGE_NAME`
 
 ### Q3：是否支持离线/半离线部署？
 
-支持。可通过私有制品仓库与私有镜像仓库进行离线发布。
+支持。可通过私有制品仓库、私有镜像仓库和本地模型服务进行离线发布。
 
 ---
 
-## 13. 协议与声明
+## 13. 协议与来源
 
-- 原始开源许可证：见 [LICENSE](LICENSE)
-- 社区补充协议：见 [LICENSE-OPENAGENT-COMMUNITY.md](LICENSE-OPENAGENT-COMMUNITY.md)
+- 原始开源许可证：见 [LICENSE](LICENSE)。
+- 社区补充协议：见 [LICENSE-OPENAGENT-COMMUNITY.md](LICENSE-OPENAGENT-COMMUNITY.md)。
+- 上游来源参考：[OpenHands/OpenHands](https://github.com/OpenHands/OpenHands)。
 
 <p align="right">(<a href="#readme-top">回到顶部</a>)</p>
 

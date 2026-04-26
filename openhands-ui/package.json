@@ -1,19 +1,20 @@
 {
-  "name": "@openagent/ui",
+  "name": "@forgepilot/ui",
   "publishConfig": {
     "access": "public"
   },
   "license": "MIT",
   "authors": [
     {
-      "name": "OpenAgent Maintainers",
-      "email": "maintainers@openagent.dev"
+      "name": "ForgePilot Maintainers",
+      "email": "maintainers@forgepilot.dev"
     }
   ],
   "version": "1.0.0-beta.9",
-  "description": "OpenAgent UI Components",
+  "description": "ForgePilot UI Kit for agent operator consoles",
   "keywords": [
-    "openagent",
+    "forgepilot",
+    "operator-console",
     "agent-ui",
     "design-system",
     "component-library",
@@ -43,12 +44,12 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-org/openagent-platform.git",
+    "url": "https://github.com/your-org/forgepilot-studio.git",
     "directory": "openhands-ui"
   },
-  "homepage": "https://github.com/your-org/openagent-platform/tree/main/openhands-ui",
+  "homepage": "https://github.com/your-org/forgepilot-studio/tree/main/openhands-ui",
   "bugs": {
-    "url": "https://github.com/your-org/openagent-platform/issues"
+    "url": "https://github.com/your-org/forgepilot-studio/issues"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^4.0.0",

@@ -3,7 +3,7 @@ import { useLocation } from "react-router";
 import { useTranslation } from "react-i18next";
 import { useGitUser } from "#/hooks/query/use-git-user";
 import { UserActions } from "./user-actions";
-import { OpenHandsLogoButton } from "#/components/shared/buttons/openhands-logo-button";
+import { ForgePilotLogoButton } from "#/components/shared/buttons/forgepilot-logo-button";
 import { NewProjectButton } from "#/components/shared/buttons/new-project-button";
 import { ConversationPanelButton } from "#/components/shared/buttons/conversation-panel-button";
 import { SettingsModal } from "#/components/shared/modals/settings/settings-modal";
@@ -73,7 +73,7 @@ export function Sidebar() {
         <nav className="flex flex-row md:flex-col items-center justify-between w-full h-auto md:w-auto md:h-full">
           <div className="flex flex-row md:flex-col items-center gap-[26px]">
             <div className="flex items-center justify-center">
-              <OpenHandsLogoButton />
+              <ForgePilotLogoButton />
             </div>
             <div className="flex items-center justify-center">
               <NewProjectButton disabled={settings?.email_verified === false} />

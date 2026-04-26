@@ -11,7 +11,7 @@ import {
 } from "#/utils/local-storage";
 import { cn } from "#/utils/utils";
 import { FormInput } from "./form-input";
-import OpenHandsLogoWhite from "#/assets/branding/openhands-logo-white.svg?react";
+import ForgePilotLogoWhite from "#/assets/branding/forgepilot-logo-white.svg?react";
 import CloudIcon from "#/icons/cloud-minimal.svg?react";
 import StackedIcon from "#/icons/stacked.svg?react";
 
@@ -95,7 +95,7 @@ export function InformationRequestForm({
     >
       {/* Header */}
       <div className={cn("w-full flex flex-col items-center gap-4")}>
-        <OpenHandsLogoWhite width={56} height={56} />
+        <ForgePilotLogoWhite width={56} height={56} />
         <div className={cn("text-center flex flex-col gap-2")}>
           <Typography.H1 className={cn("text-2xl font-semibold")}>
             {title}

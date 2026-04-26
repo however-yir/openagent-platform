@@ -1,10 +1,10 @@
 import { NavLink } from "react-router";
 import { useTranslation } from "react-i18next";
-import OpenHandsLogo from "#/assets/branding/openhands-logo.svg?react";
+import ForgePilotLogo from "#/assets/branding/forgepilot-logo.svg?react";
 import { I18nKey } from "#/i18n/declaration";
 import { StyledTooltip } from "#/components/shared/buttons/styled-tooltip";
 
-export function OpenHandsLogoButton() {
+export function ForgePilotLogoButton() {
   const { t } = useTranslation();
 
   const tooltipText = t(I18nKey.BRANDING$OPENHANDS);
@@ -13,7 +13,7 @@ export function OpenHandsLogoButton() {
   return (
     <StyledTooltip content={tooltipText}>
       <NavLink to="/" aria-label={ariaLabel}>
-        <OpenHandsLogo width={46} height={30} />
+        <ForgePilotLogo width={46} height={30} />
       </NavLink>
     </StyledTooltip>
   );
