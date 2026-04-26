@@ -80,7 +80,7 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-          cache: poetry
+          cache: pip
 
       - name: Install poetry
         run: python -m pip install poetry
@@ -123,6 +123,8 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
       - name: Run gitleaks
         uses: gitleaks/gitleaks-action@v2
         env:
