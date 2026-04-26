@@ -1,0 +1,14 @@
+{
+  "name": "bugfix-python-service",
+  "protocol": ["plan", "execute", "verify", "report"],
+  "acceptance_criteria": [
+    "单测通过",
+    "回归场景通过",
+    "生成变更摘要"
+  ],
+  "change_boundary": {
+    "allowed_paths": ["openhands/core", "tests/unit/core"],
+    "allowed_file_extensions": [".py", ".md"]
+  },
+  "verify_commands": ["pytest -q tests/unit/core"]
+}

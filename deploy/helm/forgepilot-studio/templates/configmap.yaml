@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{ include "forgepilot.fullname" . }}-config
+  labels:
+    {{- include "forgepilot.labels" . | nindent 4 }}
+data:
+  LLM_MODEL: {{ .Values.app.env.LLM_MODEL | quote }}
+  LLM_BASE_URL: {{ .Values.app.env.LLM_BASE_URL | quote }}
+  OLLAMA_BASE_URL: {{ .Values.app.env.OLLAMA_BASE_URL | quote }}
+  DB_HOST: {{ .Values.app.env.DB_HOST | quote }}
+  DB_PORT: {{ .Values.app.env.DB_PORT | quote }}
+  DB_NAME: {{ .Values.app.env.DB_NAME | quote }}
+  DB_USER: {{ .Values.app.env.DB_USER | quote }}
+  REDIS_HOST: {{ .Values.app.env.REDIS_HOST | quote }}
+  REDIS_PORT: {{ .Values.app.env.REDIS_PORT | quote }}
+  REDIS_DB: {{ .Values.app.env.REDIS_DB | quote }}
+  WORKSPACE_BASE: {{ .Values.app.env.WORKSPACE_BASE | quote }}

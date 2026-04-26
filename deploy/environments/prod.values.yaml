@@ -1,0 +1,33 @@
+replicaCount: 3
+
+image:
+  tag: prod
+
+ingress:
+  enabled: true
+  host: forgepilot.example.com
+  tls:
+    enabled: true
+    secretName: forgepilot-prod-tls
+
+app:
+  env:
+    LLM_BASE_URL: https://llm-gateway.prod.example.com/v1
+  secrets:
+    LLM_API_KEY: "prod-placeholder"
+
+runtimeQuota:
+  enabled: true
+  hard:
+    requests.cpu: "16"
+    requests.memory: 32Gi
+    limits.cpu: "32"
+    limits.memory: 64Gi
+
+resources:
+  requests:
+    cpu: 2
+    memory: 4Gi
+  limits:
+    cpu: 6
+    memory: 12Gi

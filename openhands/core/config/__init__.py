@@ -9,6 +9,7 @@ from openhands.core.config.config_utils import (
     get_field_info,
 )
 from openhands.core.config.extended_config import ExtendedConfig
+from openhands.core.config.forgepilot_execution_config import ForgePilotExecutionConfig
 from openhands.core.config.llm_config import LLMConfig
 from openhands.core.config.mcp_config import MCPConfig
 from openhands.core.config.model_routing_config import ModelRoutingConfig
@@ -39,6 +40,7 @@ __all__ = [
     'SecurityConfig',
     'ModelRoutingConfig',
     'ExtendedConfig',
+    'ForgePilotExecutionConfig',
     'load_openhands_config',
     'load_from_env',
     'load_from_toml',

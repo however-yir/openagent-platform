@@ -93,6 +93,38 @@
 # Maximum age of conversations in seconds before they are automatically closed
 #conversation_max_age_seconds = 864000  # 10 days
 
+######################## ForgePilot Execution Strategy ########################
+# Plan -> Execute -> Verify -> Report protocol and guardrails
+##############################################################################
+[forgepilot_execution]
+# Fixed protocol order. Do not reorder unless all downstream services are aligned.
+#protocol = ["plan", "execute", "verify", "report"]
+
+# confirmation mode: auto | on-request | manual
+#confirmation_mode = "on-request"
+
+# network access policy: deny | allowlist | open
+#network_access_policy = "allowlist"
+
+# Restrict agent edits to explicit boundaries
+#enforce_change_boundary = true
+#allowed_paths = []
+#allowed_file_extensions = [".py", ".ts", ".tsx", ".js", ".jsx", ".md", ".json", ".yml", ".yaml", ".toml"]
+
+# Optional execution modes
+#readonly_research_mode = false
+#review_mode = false
+#handoff_mode = false
+
+# Retry rounds after failed verification
+#max_self_heal_rounds = 2
+
+# Dangerous commands that require explicit review
+#dangerous_command_patterns = ["rm -rf", "dd if=", "mkfs", "shutdown", "reboot", "curl | sh"]
+
+# Language-specific default verification commands
+#auto_verify_command_map = { python = ["pytest -q"], typescript = ["npm run typecheck", "npm test -- --runInBand"], javascript = ["npm test -- --runInBand"], java = ["mvn -q test"], rust = ["cargo test"], go = ["go test ./..."] }
+
 #################################### LLM #####################################
 # Configuration for LLM models (group name starts with 'llm')
 # use 'llm' for the default LLM config
