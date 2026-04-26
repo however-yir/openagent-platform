@@ -12,12 +12,12 @@ from .task_protocol import (
 )
 
 __all__ = [
-    "TaskPhase",
-    "TaskSpec",
-    "ChangeBoundary",
-    "TaskExecutionPolicy",
-    "DEFAULT_TASK_PROTOCOL",
-    "is_valid_phase_transition",
-    "validate_phase_sequence",
-    "select_verification_commands",
+    'TaskPhase',
+    'TaskSpec',
+    'ChangeBoundary',
+    'TaskExecutionPolicy',
+    'DEFAULT_TASK_PROTOCOL',
+    'is_valid_phase_transition',
+    'validate_phase_sequence',
+    'select_verification_commands',
 ]

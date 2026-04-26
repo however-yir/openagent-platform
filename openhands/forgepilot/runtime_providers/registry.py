@@ -13,26 +13,26 @@ class RuntimeProviderSpec:
 
 _RUNTIME_PROVIDERS: tuple[RuntimeProviderSpec, ...] = (
     RuntimeProviderSpec(
-        name="local",
-        runtime_class="CLIRuntime",
+        name='local',
+        runtime_class='CLIRuntime',
         supports_network_policy=False,
         supports_resource_quota=False,
     ),
     RuntimeProviderSpec(
-        name="docker",
-        runtime_class="DockerRuntime",
+        name='docker',
+        runtime_class='DockerRuntime',
         supports_network_policy=True,
         supports_resource_quota=True,
     ),
     RuntimeProviderSpec(
-        name="kubernetes",
-        runtime_class="KubernetesRuntime",
+        name='kubernetes',
+        runtime_class='KubernetesRuntime',
         supports_network_policy=True,
         supports_resource_quota=True,
     ),
     RuntimeProviderSpec(
-        name="remote",
-        runtime_class="RemoteRuntime",
+        name='remote',
+        runtime_class='RemoteRuntime',
         supports_network_policy=True,
         supports_resource_quota=True,
     ),

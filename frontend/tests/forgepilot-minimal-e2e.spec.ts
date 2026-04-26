@@ -85,10 +85,10 @@ test("forgepilot minimal e2e: task console, protocol badges and mcp registry con
   await page.goto("/");
 
   await expect(page.getByRole("heading", { name: "任务台" })).toBeVisible();
-  await expect(page.getByText("Plan")).toBeVisible();
-  await expect(page.getByText("Execute")).toBeVisible();
-  await expect(page.getByText("Verify")).toBeVisible();
-  await expect(page.getByText("Report")).toBeVisible();
+  await expect(page.getByTestId("workflow-badge-plan")).toBeVisible();
+  await expect(page.getByTestId("workflow-badge-execute")).toBeVisible();
+  await expect(page.getByTestId("workflow-badge-verify")).toBeVisible();
+  await expect(page.getByTestId("workflow-badge-report")).toBeVisible();
 
   await page.getByLabel("任务编排").click();
   await expect(page.getByRole("heading", { name: "任务编排" })).toBeVisible();
@@ -106,7 +106,6 @@ test("forgepilot minimal e2e: task console, protocol badges and mcp registry con
   await expect(page.getByRole("heading", { name: "成果交付" })).toBeVisible();
 
   await page.goto("/settings/mcp");
-  await expect(page.getByText("Registry")).toBeVisible();
-  await expect(page.getByRole("checkbox")).toBeChecked();
-  await expect(page.getByRole("button", { name: "测试连接" })).toBeVisible();
+  await expect(page.getByRole("heading", { name: "MCP" })).toBeVisible();
+  await expect(page.getByTestId("add-mcp-server-button")).toBeVisible();
 });

@@ -11,12 +11,12 @@ from pydantic import BaseModel, Field
 
 
 class AuditEventType(str, Enum):
-    MODEL = "model"
-    COMMAND = "command"
-    FILE_CHANGE = "file_change"
-    TOOL_CALL = "tool_call"
-    VERIFICATION = "verification"
-    REPORT = "report"
+    MODEL = 'model'
+    COMMAND = 'command'
+    FILE_CHANGE = 'file_change'
+    TOOL_CALL = 'tool_call'
+    VERIFICATION = 'verification'
+    REPORT = 'report'
 
 
 class AuditEvent(BaseModel):
@@ -32,15 +32,15 @@ class AuditEvent(BaseModel):
 
     def model_dump_for_export(self) -> dict[str, Any]:
         return {
-            "trace_id": self.trace_id,
-            "task_id": self.task_id or "",
-            "event_type": self.event_type.value,
-            "phase": self.phase or "",
-            "timestamp": self.timestamp.isoformat(),
-            "summary": self.summary,
-            "duration_ms": self.duration_ms or "",
-            "cost_usd": self.cost_usd if self.cost_usd is not None else "",
-            "payload": self.payload,
+            'trace_id': self.trace_id,
+            'task_id': self.task_id or '',
+            'event_type': self.event_type.value,
+            'phase': self.phase or '',
+            'timestamp': self.timestamp.isoformat(),
+            'summary': self.summary,
+            'duration_ms': self.duration_ms or '',
+            'cost_usd': self.cost_usd if self.cost_usd is not None else '',
+            'payload': self.payload,
         }
 
 
@@ -53,7 +53,7 @@ def export_audit_events_jsonl(events: Iterable[AuditEvent]) -> str:
     for event in ordered_timeline(events):
         row = event.model_dump_for_export()
         lines.append(json.dumps(row, ensure_ascii=False))
-    return "\n".join(lines)
+    return '\n'.join(lines)
 
 
 def export_audit_events_csv(events: Iterable[AuditEvent]) -> str:
@@ -61,22 +61,22 @@ def export_audit_events_csv(events: Iterable[AuditEvent]) -> str:
     writer = csv.DictWriter(
         output,
         fieldnames=[
-            "trace_id",
-            "task_id",
-            "event_type",
-            "phase",
-            "timestamp",
-            "summary",
-            "duration_ms",
-            "cost_usd",
-            "payload",
+            'trace_id',
+            'task_id',
+            'event_type',
+            'phase',
+            'timestamp',
+            'summary',
+            'duration_ms',
+            'cost_usd',
+            'payload',
         ],
     )
     writer.writeheader()
 
     for event in ordered_timeline(events):
         row = event.model_dump_for_export()
-        row["payload"] = json.dumps(row["payload"], ensure_ascii=False)
+        row['payload'] = json.dumps(row['payload'], ensure_ascii=False)
         writer.writerow(row)
 
     return output.getvalue()

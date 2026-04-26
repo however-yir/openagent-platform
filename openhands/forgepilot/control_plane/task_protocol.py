@@ -7,10 +7,10 @@ from pydantic import BaseModel, Field
 
 
 class TaskPhase(str, Enum):
-    PLAN = "plan"
-    EXECUTE = "execute"
-    VERIFY = "verify"
-    REPORT = "report"
+    PLAN = 'plan'
+    EXECUTE = 'execute'
+    VERIFY = 'verify'
+    REPORT = 'report'
 
 
 DEFAULT_TASK_PROTOCOL: tuple[TaskPhase, ...] = (
@@ -32,8 +32,8 @@ class ChangeBoundary(BaseModel):
 class TaskExecutionPolicy(BaseModel):
     """Execution policy used by ForgePilot for runtime guardrails."""
 
-    confirmation_mode: Literal["auto", "on-request", "manual"] = "on-request"
-    network_access: Literal["deny", "allowlist", "open"] = "allowlist"
+    confirmation_mode: Literal['auto', 'on-request', 'manual'] = 'on-request'
+    network_access: Literal['deny', 'allowlist', 'open'] = 'allowlist'
     readonly_research_mode: bool = False
     review_mode: bool = False
     handoff_mode: bool = False
@@ -45,43 +45,43 @@ class TaskSpec(BaseModel):
 
     title: str
     objective: str
-    language: str = "generic"
+    language: str = 'generic'
     acceptance_criteria: list[str] = Field(default_factory=list)
     change_boundary: ChangeBoundary = Field(default_factory=ChangeBoundary)
     execution_policy: TaskExecutionPolicy = Field(default_factory=TaskExecutionPolicy)
 
 
 _VERIFICATION_COMMANDS: dict[str, list[str]] = {
-    "python": ["pytest -q"],
-    "javascript": ["npm test -- --runInBand"],
-    "typescript": ["npm run typecheck", "npm test -- --runInBand"],
-    "java": ["mvn -q test"],
-    "kotlin": ["./gradlew test"],
-    "go": ["go test ./..."],
-    "rust": ["cargo test"],
-    "csharp": ["dotnet test"],
-    "generic": ["echo 'No built-in verifier; define project-specific command.'"],
+    'python': ['pytest -q'],
+    'javascript': ['npm test -- --runInBand'],
+    'typescript': ['npm run typecheck', 'npm test -- --runInBand'],
+    'java': ['mvn -q test'],
+    'kotlin': ['./gradlew test'],
+    'go': ['go test ./...'],
+    'rust': ['cargo test'],
+    'csharp': ['dotnet test'],
+    'generic': ["echo 'No built-in verifier; define project-specific command.'"],
 }
 
 
 def _normalize_language(language: str) -> str:
     value = language.strip().lower()
     aliases = {
-        "py": "python",
-        "js": "javascript",
-        "ts": "typescript",
-        "node": "javascript",
-        "golang": "go",
-        "cs": "csharp",
+        'py': 'python',
+        'js': 'javascript',
+        'ts': 'typescript',
+        'node': 'javascript',
+        'golang': 'go',
+        'cs': 'csharp',
     }
-    return aliases.get(value, value or "generic")
+    return aliases.get(value, value or 'generic')
 
 
 def select_verification_commands(language: str) -> list[str]:
     """Return default verification commands by project language."""
 
     normalized = _normalize_language(language)
-    return _VERIFICATION_COMMANDS.get(normalized, _VERIFICATION_COMMANDS["generic"])
+    return _VERIFICATION_COMMANDS.get(normalized, _VERIFICATION_COMMANDS['generic'])
 
 
 def is_valid_phase_transition(

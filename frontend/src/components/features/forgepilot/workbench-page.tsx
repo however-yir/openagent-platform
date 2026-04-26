@@ -53,6 +53,7 @@ export function WorkbenchPage({ config }: WorkbenchPageProps) {
             {workflowBadges.map(({ label, icon: Icon }) => (
               <span
                 key={label}
+                data-testid={`workflow-badge-${label.toLowerCase()}`}
                 className="inline-flex h-8 items-center gap-2 rounded-md border border-white/10 bg-white/[0.03] px-3 text-xs text-[#d7e0e4]"
               >
                 <Icon size={14} />

@@ -19,10 +19,10 @@ def test_tool_cost_breakdown_total():
 
 def test_tool_registry_entry_defaults():
     entry = ToolRegistryEntry(
-        tool_id="github.issue.lookup",
-        display_name="GitHub Issue Lookup",
-        provider="github",
-        schema_ref=ToolSchemaRef(location="app://github/schema/issue.lookup"),
+        tool_id='github.issue.lookup',
+        display_name='GitHub Issue Lookup',
+        provider='github',
+        schema_ref=ToolSchemaRef(location='app://github/schema/issue.lookup'),
     )
 
     assert entry.enabled is True
@@ -32,12 +32,12 @@ def test_tool_registry_entry_defaults():
 
 
 def test_summarize_tool_output_truncates_long_text():
-    output = "A" * 1500
+    output = 'A' * 1500
     summary = summarize_tool_output(output, max_chars=200)
-    assert "..." in summary
+    assert '...' in summary
     assert len(summary) < len(output)
 
 
 def test_summarize_tool_output_keeps_short_text():
-    output = "short output"
+    output = 'short output'
     assert summarize_tool_output(output, max_chars=200) == output

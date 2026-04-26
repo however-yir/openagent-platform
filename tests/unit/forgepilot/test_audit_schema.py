@@ -12,30 +12,30 @@ from openhands.forgepilot.audit.schema import (
 def test_ordered_timeline_sorts_by_timestamp():
     now = datetime.now(UTC)
     late = AuditEvent(
-        trace_id="trace-1",
+        trace_id='trace-1',
         event_type=AuditEventType.REPORT,
-        summary="final report",
+        summary='final report',
         timestamp=now + timedelta(seconds=10),
     )
     early = AuditEvent(
-        trace_id="trace-1",
+        trace_id='trace-1',
         event_type=AuditEventType.COMMAND,
-        summary="run tests",
+        summary='run tests',
         timestamp=now,
     )
 
     timeline = ordered_timeline([late, early])
-    assert [event.summary for event in timeline] == ["run tests", "final report"]
+    assert [event.summary for event in timeline] == ['run tests', 'final report']
 
 
 def test_export_audit_events_jsonl():
     event = AuditEvent(
-        trace_id="trace-jsonl",
-        task_id="task-42",
+        trace_id='trace-jsonl',
+        task_id='task-42',
         event_type=AuditEventType.TOOL_CALL,
-        phase="execute",
-        summary="invoke github connector",
-        payload={"tool": "github", "status": "ok"},
+        phase='execute',
+        summary='invoke github connector',
+        payload={'tool': 'github', 'status': 'ok'},
         duration_ms=321,
         cost_usd=0.003,
     )
@@ -48,15 +48,15 @@ def test_export_audit_events_jsonl():
 
 def test_export_audit_events_csv():
     event = AuditEvent(
-        trace_id="trace-csv",
+        trace_id='trace-csv',
         event_type=AuditEventType.VERIFICATION,
-        phase="verify",
-        summary="pytest -q",
-        payload={"exit_code": 0},
+        phase='verify',
+        summary='pytest -q',
+        payload={'exit_code': 0},
     )
 
     content = export_audit_events_csv([event])
     lines = content.strip().splitlines()
-    assert lines[0].startswith("trace_id,task_id,event_type")
-    assert "trace-csv" in lines[1]
-    assert "verification" in lines[1]
+    assert lines[0].startswith('trace_id,task_id,event_type')
+    assert 'trace-csv' in lines[1]
+    assert 'verification' in lines[1]

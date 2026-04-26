@@ -7,15 +7,15 @@ from openhands.forgepilot.control_plane.task_protocol import (
 
 
 def test_select_verification_commands_with_aliases():
-    assert select_verification_commands("py") == ["pytest -q"]
-    assert select_verification_commands("ts") == [
-        "npm run typecheck",
-        "npm test -- --runInBand",
+    assert select_verification_commands('py') == ['pytest -q']
+    assert select_verification_commands('ts') == [
+        'npm run typecheck',
+        'npm test -- --runInBand',
     ]
 
 
 def test_select_verification_commands_fallback():
-    assert select_verification_commands("unknown") == [
+    assert select_verification_commands('unknown') == [
         "echo 'No built-in verifier; define project-specific command.'"
     ]
 

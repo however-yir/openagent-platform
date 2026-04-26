@@ -8,8 +8,8 @@ from .provider_registry import (
 )
 
 __all__ = [
-    "LLMGatewayProvider",
-    "list_gateway_providers",
-    "detect_provider",
-    "normalize_model_identifier",
+    'LLMGatewayProvider',
+    'list_gateway_providers',
+    'detect_provider',
+    'normalize_model_identifier',
 ]

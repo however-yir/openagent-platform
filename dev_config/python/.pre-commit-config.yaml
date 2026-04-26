@@ -8,6 +8,7 @@ repos:
         exclude: ^(docs/|modules/|python/|openhands-ui/|third_party/|enterprise/)
       - id: check-yaml
         args: ["--allow-multiple-documents"]
+        exclude: ^deploy/helm/forgepilot-studio/templates/.*\.ya?ml$
       - id: debug-statements
 
 

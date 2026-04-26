@@ -7,28 +7,28 @@ from pydantic import BaseModel, Field
 
 
 class ToolPermission(str, Enum):
-    READ = "read"
-    WRITE = "write"
-    EXECUTE = "execute"
-    CONFIRM = "confirm"
+    READ = 'read'
+    WRITE = 'write'
+    EXECUTE = 'execute'
+    CONFIRM = 'confirm'
 
 
 class ToolExecutionMode(str, Enum):
-    LIVE = "live"
-    MOCK = "mock"
+    LIVE = 'live'
+    MOCK = 'mock'
 
 
 class ToolHealthStatus(str, Enum):
-    UNKNOWN = "unknown"
-    HEALTHY = "healthy"
-    DEGRADED = "degraded"
-    UNREACHABLE = "unreachable"
+    UNKNOWN = 'unknown'
+    HEALTHY = 'healthy'
+    DEGRADED = 'degraded'
+    UNREACHABLE = 'unreachable'
 
 
 class ToolSchemaRef(BaseModel):
     schema_type: str = Field(
-        default="json_schema",
-        description="json_schema | openapi | protobuf | custom",
+        default='json_schema',
+        description='json_schema | openapi | protobuf | custom',
     )
     location: str
     checksum: str | None = None
@@ -74,4 +74,4 @@ def summarize_tool_output(output: str, max_chars: int = 1200) -> str:
     keep_tail = max_chars - keep_head
     head = normalized[:keep_head].rstrip()
     tail = normalized[-keep_tail:].lstrip()
-    return f"{head}\n...\n{tail}"
+    return f'{head}\n...\n{tail}'

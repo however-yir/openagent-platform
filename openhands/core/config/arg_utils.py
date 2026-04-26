@@ -177,7 +177,8 @@ def get_cli_parser() -> argparse.ArgumentParser:
 
     # Add 'serve' subcommand
     serve_parser = subparsers.add_parser(
-        'serve', help='Launch the ForgePilot Studio GUI server using Docker (web interface)'
+        'serve',
+        help='Launch the ForgePilot Studio GUI server using Docker (web interface)',
     )
     serve_parser.add_argument(
         '--mount-cwd',
