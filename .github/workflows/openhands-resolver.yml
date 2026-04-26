@@ -201,7 +201,7 @@ jobs:
               issue_number: ${{ env.ISSUE_NUMBER }},
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `[OpenHands](https://github.com/OpenHands/OpenHands) started fixing the ${issueType}! You can monitor the progress [here](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}).`
+              body: `[ForgePilot Studio](https://github.com/however-yir/forgepilot-studio) started fixing the ${issueType}! You can monitor the progress [here](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}).`
             });
 
       - name: Install OpenHands

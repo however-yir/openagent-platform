@@ -1,4 +1,5 @@
 import {
+  LinksFunction,
   Links,
   Meta,
   MetaFunction,
@@ -33,8 +34,20 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export const meta: MetaFunction = () => [
-  { title: "OpenHands" },
-  { name: "description", content: "Let's Start Building!" },
+  { title: "ForgePilot Studio" },
+  {
+    name: "description",
+    content: "可审计的工程执行工作台，面向 Agent 任务编排、验证和交付。",
+  },
+];
+
+export const links: LinksFunction = () => [
+  { rel: "icon", href: "/favicon.ico", sizes: "any" },
+  { rel: "icon", type: "image/png", sizes: "16x16", href: "/favicon-16x16.png" },
+  { rel: "icon", type: "image/png", sizes: "32x32", href: "/favicon-32x32.png" },
+  { rel: "apple-touch-icon", sizes: "180x180", href: "/apple-touch-icon.png" },
+  { rel: "manifest", href: "/site.webmanifest" },
+  { rel: "mask-icon", href: "/safari-pinned-tab.svg", color: "#0f766e" },
 ];
 
 export default function App() {

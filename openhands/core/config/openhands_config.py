@@ -126,10 +126,11 @@ class OpenHandsConfig(BaseModel):
     mcp: MCPConfig = Field(default_factory=MCPConfig)
     kubernetes: KubernetesConfig = Field(default_factory=KubernetesConfig)
     git_user_name: str = Field(
-        default='openhands', description='Git user name for commits made by the agent'
+        default='forgepilot-bot',
+        description='Git user name for commits made by the agent',
     )
     git_user_email: str = Field(
-        default='openhands@all-hands.dev',
+        default='dev@forgepilot.local',
         description='Git user email for commits made by the agent',
     )
 

@@ -15,7 +15,7 @@
 ## 设置命令示例（GitHub CLI）
 
 ```bash
-gh repo edit your-org/forgepilot-studio \
+gh repo edit however-yir/forgepilot-studio \
   --description "智能工程执行工作台，支持 Agent 任务编排、运行时沙箱、审计回放、多模型接入与私有化部署。" \
   --add-topic ai-agent \
   --add-topic agentic-engineering \
@@ -30,4 +30,4 @@ gh repo edit your-org/forgepilot-studio \
 ## Logo 使用建议
 
 - README 顶部：`docs/assets/forgepilot-logo.svg`
-- 社交分享图（可选）：`docs/assets/forgepilot-og.png`
+- 社交分享图（可选）：`docs/assets/forgepilot-social-preview.png`

@@ -7,8 +7,8 @@ import { StyledTooltip } from "#/components/shared/buttons/styled-tooltip";
 export function ForgePilotLogoButton() {
   const { t } = useTranslation();
 
-  const tooltipText = t(I18nKey.BRANDING$OPENHANDS);
-  const ariaLabel = t(I18nKey.BRANDING$OPENHANDS_LOGO);
+  const tooltipText = t(I18nKey.BRANDING$FORGEPILOT);
+  const ariaLabel = t(I18nKey.BRANDING$FORGEPILOT_LOGO);
 
   return (
     <StyledTooltip content={tooltipText}>

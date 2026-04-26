@@ -1,5 +1,5 @@
 import React from "react";
-import { useLocation } from "react-router";
+import { NavLink, useLocation } from "react-router";
 import { useTranslation } from "react-i18next";
 import { useGitUser } from "#/hooks/query/use-git-user";
 import { UserActions } from "./user-actions";
@@ -14,6 +14,8 @@ import { useConfig } from "#/hooks/query/use-config";
 import { displayErrorToast } from "#/utils/custom-toast-handlers";
 import { I18nKey } from "#/i18n/declaration";
 import { cn } from "#/utils/utils";
+import { sidebarNavItems } from "#/components/features/forgepilot/workbench-data";
+import { StyledTooltip } from "#/components/shared/buttons/styled-tooltip";
 
 export function Sidebar() {
   const { t } = useTranslation();
@@ -71,11 +73,28 @@ export function Sidebar() {
         )}
       >
         <nav className="flex flex-row md:flex-col items-center justify-between w-full h-auto md:w-auto md:h-full">
-          <div className="flex flex-row md:flex-col items-center gap-[26px]">
+          <div className="flex flex-row md:flex-col items-center gap-3 md:gap-4">
             <div className="flex items-center justify-center">
               <ForgePilotLogoButton />
             </div>
-            <div className="flex items-center justify-center">
+            <div className="hidden md:flex md:flex-col md:items-center md:gap-2">
+              {sidebarNavItems.map(({ to, label, icon: Icon }) => (
+                <StyledTooltip key={to} content={label}>
+                  <NavLink
+                    to={to}
+                    aria-label={label}
+                    className={cn(
+                      "flex h-9 w-9 items-center justify-center rounded-md border border-transparent text-[#B1B9D3] transition-colors hover:border-[#2dd4bf]/40 hover:bg-[#2dd4bf]/10 hover:text-white",
+                      (to === "/" ? pathname === "/" : pathname.startsWith(to)) &&
+                        "border-[#2dd4bf]/50 bg-[#2dd4bf]/15 text-white",
+                    )}
+                  >
+                    <Icon size={18} />
+                  </NavLink>
+                </StyledTooltip>
+              ))}
+            </div>
+            <div className="flex items-center justify-center md:hidden">
               <NewProjectButton disabled={settings?.email_verified === false} />
             </div>
             <ConversationPanelButton

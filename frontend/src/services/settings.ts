@@ -16,7 +16,7 @@ const DEFAULT_LANGUAGE = readEnvString(
 );
 const DEFAULT_MODEL = readEnvString(
   import.meta.env.VITE_DEFAULT_LLM_MODEL,
-  "openhands/claude-opus-4-5-20251101",
+  "openai/gpt-4.1",
 );
 const DEFAULT_LLM_BASE_URL = readEnvString(
   import.meta.env.VITE_DEFAULT_LLM_BASE_URL,

@@ -1,0 +1,37 @@
+<svg width="1280" height="640" viewBox="0 0 1280 640" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">ForgePilot Studio Social Preview</title>
+  <desc id="desc">GitHub social preview image for ForgePilot Studio.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#101417"/>
+      <stop offset="55%" stop-color="#172123"/>
+      <stop offset="100%" stop-color="#2b1d12"/>
+    </linearGradient>
+    <linearGradient id="mark" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#2dd4bf"/>
+      <stop offset="55%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#ef4444"/>
+    </linearGradient>
+  </defs>
+  <rect width="1280" height="640" fill="url(#bg)"/>
+  <path d="M0 520 C260 430 440 600 700 505 C930 422 1010 480 1280 388 V640 H0 Z" fill="#0f172a" opacity="0.72"/>
+  <g transform="translate(92 112)">
+    <path d="M140 0 280 70v140l-140 70L0 210V70L140 0Z" fill="#0f172a" stroke="#2dd4bf" stroke-width="8"/>
+    <path d="M140 44 232 90v100l-92 46-92-46V90l92-46Z" fill="url(#mark)"/>
+    <path d="M92 176 140 78l48 98h-34l-14-30-14 30H92Z" fill="#111827"/>
+    <path d="M74 220h132" stroke="#f8fafc" stroke-width="16" stroke-linecap="round"/>
+  </g>
+  <text x="430" y="210" fill="#f8fafc" font-size="76" font-family="Verdana, Geneva, sans-serif" font-weight="700">ForgePilot Studio</text>
+  <text x="434" y="286" fill="#99f6e4" font-size="34" font-family="Verdana, Geneva, sans-serif">Auditable agentic engineering workbench</text>
+  <g transform="translate(434 354)" fill="none" font-family="Verdana, Geneva, sans-serif" font-size="24">
+    <rect x="0" y="0" width="170" height="50" rx="8" fill="#2dd4bf" fill-opacity="0.14" stroke="#2dd4bf" stroke-opacity="0.55"/>
+    <text x="28" y="33" fill="#ccfbf1">Plan</text>
+    <rect x="190" y="0" width="170" height="50" rx="8" fill="#f59e0b" fill-opacity="0.14" stroke="#f59e0b" stroke-opacity="0.55"/>
+    <text x="218" y="33" fill="#fde68a">Execute</text>
+    <rect x="380" y="0" width="170" height="50" rx="8" fill="#34d399" fill-opacity="0.14" stroke="#34d399" stroke-opacity="0.55"/>
+    <text x="408" y="33" fill="#bbf7d0">Verify</text>
+    <rect x="570" y="0" width="170" height="50" rx="8" fill="#f8fafc" fill-opacity="0.08" stroke="#f8fafc" stroke-opacity="0.35"/>
+    <text x="598" y="33" fill="#e2e8f0">Replay</text>
+  </g>
+  <text x="434" y="482" fill="#fbbf24" font-size="24" font-family="Verdana, Geneva, sans-serif" letter-spacing="3">TASKS · RUNTIMES · TOOLS · AUDIT · COST</text>
+</svg>

@@ -795,7 +795,7 @@ def parse_arguments() -> argparse.Namespace:
     from openhands import get_version
 
     if args.version:
-        print(f'OpenHands version: {get_version()}')
+        print(f'ForgePilot Studio version: {get_version()}')
         sys.exit(0)
 
     return args
