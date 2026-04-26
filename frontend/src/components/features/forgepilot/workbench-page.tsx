@@ -1,15 +1,28 @@
+/* eslint-disable i18next/no-literal-string */
+
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { I18nKey } from "#/i18n/declaration";
 import {
   TASK_STATE_STYLES,
   RISK_STYLES,
   workflowBadges,
+  type WorkbenchPageConfig,
+  type WorkflowStage,
 } from "./workbench-data";
-import type { WorkbenchPageConfig } from "./workbench-data";
 
 interface WorkbenchPageProps {
   config: WorkbenchPageConfig;
 }
+
+const STAGE_ORDER: WorkflowStage[] = ["plan", "execute", "verify", "report"];
+
+const STAGE_LABELS: Record<WorkflowStage, string> = {
+  plan: "Plan",
+  execute: "Execute",
+  verify: "Verify",
+  report: "Report",
+};
 
 function StatusPill({
   label,
@@ -30,6 +43,42 @@ function StatusPill({
 export function WorkbenchPage({ config }: WorkbenchPageProps) {
   const { t } = useTranslation();
   const PageIcon = config.icon;
+  const [showFailedOnly, setShowFailedOnly] = useState(false);
+  const [collapsedStages, setCollapsedStages] = useState<WorkflowStage[]>([]);
+
+  const filteredItems = useMemo(
+    () =>
+      config.primaryItems.filter((item) =>
+        showFailedOnly ? item.failed : true,
+      ),
+    [config.primaryItems, showFailedOnly],
+  );
+
+  const groupedItems = useMemo(
+    () =>
+      filteredItems.reduce<Record<WorkflowStage, typeof filteredItems>>(
+        (groups, item) => {
+          const stage = item.stage ?? "execute";
+          groups[stage].push(item);
+          return groups;
+        },
+        {
+          plan: [],
+          execute: [],
+          verify: [],
+          report: [],
+        },
+      ),
+    [filteredItems],
+  );
+
+  const toggleStageCollapse = (stage: WorkflowStage) => {
+    setCollapsedStages((previous) =>
+      previous.includes(stage)
+        ? previous.filter((value) => value !== stage)
+        : [...previous, stage],
+    );
+  };
 
   return (
     <main className="min-h-full overflow-y-auto bg-[#101417] text-content custom-scrollbar">
@@ -89,39 +138,144 @@ export function WorkbenchPage({ config }: WorkbenchPageProps) {
               className="border-[#fbbf24]/50 bg-[#fbbf24]/10 text-[#fde68a]"
             />
           </div>
-          <div className="grid gap-3">
-            {config.primaryItems.map((item) => (
-              <article
-                key={item.title}
-                className="rounded-md border border-white/10 bg-[#151b1f] p-4 shadow-sm"
-              >
-                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                  <div className="min-w-0">
-                    <h3 className="text-sm font-semibold text-white">
-                      {item.title}
-                    </h3>
-                    <p className="mt-2 text-sm leading-6 text-[#aebbc0]">
-                      {item.detail}
-                    </p>
+          {config.enableTaskFilters ? (
+            <>
+              <div className="mb-3 flex flex-wrap gap-2">
+                <button
+                  type="button"
+                  data-testid="task-filter-failed"
+                  onClick={() => setShowFailedOnly((previous) => !previous)}
+                  className={`rounded-md border px-3 py-1 text-xs ${
+                    showFailedOnly
+                      ? "border-red-300/60 bg-red-300/10 text-red-100"
+                      : "border-white/15 bg-white/[0.03] text-[#c3d0d5]"
+                  }`}
+                >
+                  只看失败步骤
+                </button>
+                {STAGE_ORDER.map((stage) => {
+                  const collapsed = collapsedStages.includes(stage);
+                  return (
+                    <button
+                      key={stage}
+                      type="button"
+                      data-testid={`stage-toggle-${stage}`}
+                      onClick={() => toggleStageCollapse(stage)}
+                      className={`rounded-md border px-3 py-1 text-xs ${
+                        collapsed
+                          ? "border-white/15 bg-white/[0.03] text-[#93a2a8]"
+                          : "border-[#2dd4bf]/40 bg-[#2dd4bf]/10 text-[#9cf0e2]"
+                      }`}
+                    >
+                      {collapsed ? "展开" : "折叠"} {STAGE_LABELS[stage]}
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="grid gap-4">
+                {STAGE_ORDER.map((stage) => {
+                  const items = groupedItems[stage];
+                  if (!items.length) {
+                    return null;
+                  }
+
+                  const collapsed = collapsedStages.includes(stage);
+                  return (
+                    <section
+                      key={stage}
+                      className="rounded-md border border-white/10 bg-[#12181b] p-3"
+                    >
+                      <button
+                        type="button"
+                        onClick={() => toggleStageCollapse(stage)}
+                        className="flex w-full items-center justify-between text-left text-sm font-semibold text-[#dce7eb]"
+                      >
+                        <span>{STAGE_LABELS[stage]}</span>
+                        <span className="text-xs text-[#93a2a8]">
+                          {items.length} steps
+                        </span>
+                      </button>
+                      {!collapsed && (
+                        <div className="mt-3 grid gap-3">
+                          {items.map((item) => (
+                            <article
+                              key={item.title}
+                              className="rounded-md border border-white/10 bg-[#151b1f] p-4 shadow-sm"
+                            >
+                              <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                                <div className="min-w-0">
+                                  <h3 className="text-sm font-semibold text-white">
+                                    {item.title}
+                                  </h3>
+                                  <p className="mt-2 text-sm leading-6 text-[#aebbc0]">
+                                    {item.detail}
+                                  </p>
+                                </div>
+                                <div className="flex shrink-0 flex-wrap gap-2">
+                                  {item.state && (
+                                    <StatusPill
+                                      label={item.state}
+                                      className={TASK_STATE_STYLES[item.state]}
+                                    />
+                                  )}
+                                  {item.risk && (
+                                    <StatusPill
+                                      label={item.risk}
+                                      className={RISK_STYLES[item.risk]}
+                                    />
+                                  )}
+                                </div>
+                              </div>
+                            </article>
+                          ))}
+                        </div>
+                      )}
+                    </section>
+                  );
+                })}
+                {!filteredItems.length && (
+                  <div className="rounded-md border border-white/10 bg-[#12181b] p-4 text-sm text-[#93a2a8]">
+                    当前筛选条件下没有步骤。
                   </div>
-                  <div className="flex shrink-0 flex-wrap gap-2">
-                    {item.state && (
-                      <StatusPill
-                        label={item.state}
-                        className={TASK_STATE_STYLES[item.state]}
-                      />
-                    )}
-                    {item.risk && (
-                      <StatusPill
-                        label={item.risk}
-                        className={RISK_STYLES[item.risk]}
-                      />
-                    )}
+                )}
+              </div>
+            </>
+          ) : (
+            <div className="grid gap-3">
+              {config.primaryItems.map((item) => (
+                <article
+                  key={item.title}
+                  className="rounded-md border border-white/10 bg-[#151b1f] p-4 shadow-sm"
+                >
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+                    <div className="min-w-0">
+                      <h3 className="text-sm font-semibold text-white">
+                        {item.title}
+                      </h3>
+                      <p className="mt-2 text-sm leading-6 text-[#aebbc0]">
+                        {item.detail}
+                      </p>
+                    </div>
+                    <div className="flex shrink-0 flex-wrap gap-2">
+                      {item.state && (
+                        <StatusPill
+                          label={item.state}
+                          className={TASK_STATE_STYLES[item.state]}
+                        />
+                      )}
+                      {item.risk && (
+                        <StatusPill
+                          label={item.risk}
+                          className={RISK_STYLES[item.risk]}
+                        />
+                      )}
+                    </div>
                   </div>
-                </div>
-              </article>
-            ))}
-          </div>
+                </article>
+              ))}
+            </div>
+          )}
         </div>
 
         <aside className="rounded-md border border-white/10 bg-[#151b1f] p-4">
@@ -141,6 +295,40 @@ export function WorkbenchPage({ config }: WorkbenchPageProps) {
               </div>
             ))}
           </div>
+          {config.toolCalls?.length ? (
+            <div className="mt-6 border-t border-white/10 pt-4">
+              <h3 className="text-xs font-semibold uppercase tracking-normal text-[#dce7eb]">
+                MCP 调用卡片
+              </h3>
+              <div className="mt-3 grid gap-3">
+                {config.toolCalls.map((card) => (
+                  <article
+                    key={card.id}
+                    data-testid={`tool-call-card-${card.id}`}
+                    className="rounded-md border border-white/10 bg-[#101417] p-3"
+                  >
+                    <div className="flex items-center justify-between gap-3 text-xs text-[#9ab0b8]">
+                      <span className="font-medium text-white">
+                        {card.toolName}
+                      </span>
+                      <span>{card.durationMs} ms</span>
+                    </div>
+                    <p className="mt-2 text-xs text-[#8ea4ac]">
+                      参数: {card.parameters}
+                    </p>
+                    <p className="mt-2 text-xs text-[#aebbc0]">
+                      摘要: {card.summary}
+                    </p>
+                    {card.error ? (
+                      <p className="mt-2 rounded border border-red-400/40 bg-red-400/10 px-2 py-1 text-xs text-red-100">
+                        错误: {card.error}
+                      </p>
+                    ) : null}
+                  </article>
+                ))}
+              </div>
+            </div>
+          ) : null}
         </aside>
       </section>
     </main>

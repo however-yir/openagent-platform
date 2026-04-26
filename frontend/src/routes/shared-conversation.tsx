@@ -82,7 +82,7 @@ export default function SharedConversation() {
           <Link
             to="/"
             className="flex-shrink-0"
-            aria-label={t(I18nKey.BRANDING$OPENHANDS_LOGO)}
+            aria-label={t(I18nKey.BRANDING$FORGEPILOT_LOGO)}
           >
             <ForgePilotLogo width={46} height={30} />
           </Link>

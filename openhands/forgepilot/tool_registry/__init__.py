@@ -1,5 +1,11 @@
 """ForgePilot tool registry schema and helpers."""
 
+from .registry import (
+    BUILTIN_CONNECTOR_TEMPLATES,
+    ConnectorTemplate,
+    ToolCallRecord,
+    ToolRegistry,
+)
 from .schema import (
     ToolCostBreakdown,
     ToolExecutionMode,
@@ -12,6 +18,10 @@ from .schema import (
 )
 
 __all__ = [
+    'ConnectorTemplate',
+    'ToolCallRecord',
+    'ToolRegistry',
+    'BUILTIN_CONNECTOR_TEMPLATES',
     'ToolPermission',
     'ToolExecutionMode',
     'ToolHealthStatus',

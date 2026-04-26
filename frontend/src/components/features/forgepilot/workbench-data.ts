@@ -25,6 +25,7 @@ export type TaskState =
   | "verified"
   | "shipped";
 export type RiskLevel = "safe" | "review" | "danger" | "blocked";
+export type WorkflowStage = "plan" | "execute" | "verify" | "report";
 
 export interface ConsoleMetric {
   label: string;
@@ -35,8 +36,19 @@ export interface ConsoleMetric {
 export interface WorkbenchItem {
   title: string;
   detail: string;
+  stage?: WorkflowStage;
+  failed?: boolean;
   state?: TaskState;
   risk?: RiskLevel;
+}
+
+export interface ToolCallCard {
+  id: string;
+  toolName: string;
+  parameters: string;
+  durationMs: number;
+  summary: string;
+  error: string | null;
 }
 
 export interface WorkbenchPageConfig {
@@ -46,8 +58,10 @@ export interface WorkbenchPageConfig {
   icon: LucideIcon;
   metrics: ConsoleMetric[];
   primaryItems: WorkbenchItem[];
+  enableTaskFilters?: boolean;
   secondaryTitle: string;
   secondaryItems: WorkbenchItem[];
+  toolCalls?: ToolCallCard[];
 }
 
 export const TASK_STATE_STYLES: Record<TaskState, string> = {
@@ -82,22 +96,29 @@ export const workbenchPages: Record<string, WorkbenchPageConfig> = {
       {
         title: "修复前端 eslint 升级后的类型告警",
         detail: "计划已生成，等待运行 typecheck。",
+        stage: "execute",
+        failed: false,
         state: "running",
         risk: "review",
       },
       {
         title: "补齐 MCP 工具调用错误态",
         detail: "已限制修改范围：frontend/src/components/features/chat。",
+        stage: "plan",
+        failed: false,
         state: "planned",
         risk: "safe",
       },
       {
         title: "重构运行时配置加载",
         detail: "触及配置入口，需要负责人确认。",
+        stage: "verify",
+        failed: true,
         state: "blocked",
         risk: "blocked",
       },
     ],
+    enableTaskFilters: true,
     secondaryTitle: "执行协议",
     secondaryItems: [
       { title: "Plan", detail: "拆解目标、风险、边界和验收标准。" },
@@ -195,18 +216,21 @@ export const workbenchPages: Record<string, WorkbenchPageConfig> = {
       {
         title: "GitHub",
         detail: "issue、PR、checks、release 读写模板。",
+        stage: "execute",
         state: "verified",
         risk: "review",
       },
       {
         title: "Sentry",
         detail: "读取 issue、事件样本和版本上下文。",
+        stage: "plan",
         state: "planned",
         risk: "safe",
       },
       {
         title: "Internal HTTP API",
         detail: "低代码配置 schema、headers 和鉴权方式。",
+        stage: "report",
         state: "planned",
         risk: "review",
       },
@@ -216,6 +240,32 @@ export const workbenchPages: Record<string, WorkbenchPageConfig> = {
       { title: "read", detail: "只读取上下文。" },
       { title: "write", detail: "改远端状态前需要确认。" },
       { title: "execute", detail: "执行外部动作并记录审计事件。" },
+    ],
+    toolCalls: [
+      {
+        id: "tool-call-github-checks",
+        toolName: "github.listChecks",
+        parameters: "repo=however-yir/forgepilot-studio, pr=418",
+        durationMs: 842,
+        summary: "返回 6 条 checks；1 条失败，已关联到任务验证阶段。",
+        error: null,
+      },
+      {
+        id: "tool-call-sentry-issue",
+        toolName: "sentry.getIssue",
+        parameters: "project=forgepilot-studio, issue=FP-2381",
+        durationMs: 1294,
+        summary: "读取到最新异常堆栈并生成根因摘要。",
+        error: null,
+      },
+      {
+        id: "tool-call-internal-http",
+        toolName: "internal.http.invoke",
+        parameters: "service=audit-gateway, path=/v1/exports",
+        durationMs: 411,
+        summary: "请求失败，未读取到 schema 版本。",
+        error: "401 Unauthorized: token scope missing `audit:write`",
+      },
     ],
   },
   audit: {
@@ -397,6 +447,7 @@ export const workbenchPages: Record<string, WorkbenchPageConfig> = {
     secondaryItems: [
       { title: "safe", detail: "可自动执行。" },
       { title: "review", detail: "需要说明和确认。" },
+      { title: "danger", detail: "默认要求人工审核。" },
       { title: "blocked", detail: "默认禁止执行。" },
     ],
   },

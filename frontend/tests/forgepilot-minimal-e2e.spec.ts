@@ -89,6 +89,16 @@ test("forgepilot minimal e2e: task console, protocol badges and mcp registry con
   await expect(page.getByTestId("workflow-badge-execute")).toBeVisible();
   await expect(page.getByTestId("workflow-badge-verify")).toBeVisible();
   await expect(page.getByTestId("workflow-badge-report")).toBeVisible();
+  await expect(page.getByTestId("task-filter-failed")).toBeVisible();
+  await expect(page.getByTestId("stage-toggle-plan")).toBeVisible();
+  await expect(page.getByTestId("stage-toggle-execute")).toBeVisible();
+
+  await page.getByTestId("task-filter-failed").click();
+  await expect(page.getByText("重构运行时配置加载")).toBeVisible();
+  await expect(
+    page.getByText("修复前端 eslint 升级后的类型告警"),
+  ).not.toBeVisible();
+  await page.getByTestId("task-filter-failed").click();
 
   await page.getByLabel("任务编排").click();
   await expect(page.getByRole("heading", { name: "任务编排" })).toBeVisible();
@@ -98,6 +108,9 @@ test("forgepilot minimal e2e: task console, protocol badges and mcp registry con
 
   await page.getByLabel("工具中心").click();
   await expect(page.getByRole("heading", { name: "工具中心" })).toBeVisible();
+  await expect(
+    page.getByTestId("tool-call-card-tool-call-github-checks"),
+  ).toBeVisible();
 
   await page.getByLabel("审计回放").click();
   await expect(page.getByRole("heading", { name: "审计回放" })).toBeVisible();
