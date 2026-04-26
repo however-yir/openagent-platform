@@ -1,0 +1,22 @@
+replicaCount: 1
+
+image:
+  tag: dev
+
+ingress:
+  enabled: false
+
+app:
+  env:
+    LLM_BASE_URL: http://host.docker.internal:11434/v1
+    OLLAMA_BASE_URL: http://host.docker.internal:11434
+  secrets:
+    LLM_API_KEY: "dev-placeholder"
+
+resources:
+  requests:
+    cpu: 300m
+    memory: 512Mi
+  limits:
+    cpu: 1
+    memory: 2Gi

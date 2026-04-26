@@ -19,6 +19,9 @@ from openhands.core.config.config_utils import (
     model_defaults_to_dict,
 )
 from openhands.core.config.extended_config import ExtendedConfig
+from openhands.core.config.forgepilot_execution_config import (
+    ForgePilotExecutionConfig,
+)
 from openhands.core.config.kubernetes_config import KubernetesConfig
 from openhands.core.config.llm_config import LLMConfig
 from openhands.core.config.mcp_config import MCPConfig
@@ -64,6 +67,7 @@ class OpenHandsConfig(BaseModel):
             input is read line by line. When enabled, input continues until /exit command.
         mcp_host: Host for OpenHands' default MCP server
         mcp: MCP configuration settings.
+        forgepilot_execution: ForgePilot execution policy and task protocol settings.
         git_user_name: Git user name for commits made by the agent.
         git_user_email: Git user email for commits made by the agent.
     """
@@ -124,6 +128,9 @@ class OpenHandsConfig(BaseModel):
     )
     mcp_host: str = Field(default=f'localhost:{os.getenv("port", 3000)}')
     mcp: MCPConfig = Field(default_factory=MCPConfig)
+    forgepilot_execution: ForgePilotExecutionConfig = Field(
+        default_factory=ForgePilotExecutionConfig
+    )
     kubernetes: KubernetesConfig = Field(default_factory=KubernetesConfig)
     git_user_name: str = Field(
         default='forgepilot-bot',

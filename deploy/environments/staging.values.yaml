@@ -1,0 +1,25 @@
+replicaCount: 2
+
+image:
+  tag: staging
+
+ingress:
+  enabled: true
+  host: staging.forgepilot.example.com
+  tls:
+    enabled: true
+    secretName: forgepilot-staging-tls
+
+app:
+  env:
+    LLM_BASE_URL: https://llm-gateway.staging.example.com/v1
+  secrets:
+    LLM_API_KEY: "staging-placeholder"
+
+resources:
+  requests:
+    cpu: 1
+    memory: 2Gi
+  limits:
+    cpu: 3
+    memory: 6Gi

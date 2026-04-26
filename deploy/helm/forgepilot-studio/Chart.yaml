@@ -1,0 +1,6 @@
+apiVersion: v2
+name: forgepilot-studio
+description: ForgePilot Studio deployment chart
+type: application
+version: 0.1.0
+appVersion: "1.0.0"

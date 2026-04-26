@@ -1,0 +1,46 @@
+{{- if .Values.redis.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "forgepilot.fullname" . }}-redis
+  labels:
+    {{- include "forgepilot.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ include "forgepilot.fullname" . }}-redis
+  template:
+    metadata:
+      labels:
+        app: {{ include "forgepilot.fullname" . }}-redis
+    spec:
+      containers:
+        - name: redis
+          image: {{ .Values.redis.image }}
+          args:
+            - redis-server
+            - --requirepass
+            - $(REDIS_PASSWORD)
+          env:
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ include "forgepilot.fullname" . }}-secret
+                  key: REDIS_PASSWORD
+          ports:
+            - containerPort: 6379
+          resources:
+            {{- toYaml .Values.redis.resources | nindent 12 }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "forgepilot.fullname" . }}-redis
+spec:
+  selector:
+    app: {{ include "forgepilot.fullname" . }}-redis
+  ports:
+    - port: 6379
+      targetPort: 6379
+{{- end }}

@@ -1,0 +1,11 @@
+{{- if .Values.runtimeQuota.enabled }}
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: {{ include "forgepilot.fullname" . }}-runtime-quota
+  labels:
+    {{- include "forgepilot.labels" . | nindent 4 }}
+spec:
+  hard:
+    {{- toYaml .Values.runtimeQuota.hard | nindent 4 }}
+{{- end }}

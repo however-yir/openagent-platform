@@ -1,0 +1,77 @@
+replicaCount: 1
+
+image:
+  repository: ghcr.io/however-yir/forgepilot-studio
+  tag: latest
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 3000
+
+ingress:
+  enabled: false
+  className: ""
+  host: forgepilot.local
+  path: /
+  tls:
+    enabled: false
+    secretName: ""
+
+app:
+  env:
+    LLM_MODEL: openai/gpt-4.1
+    LLM_BASE_URL: ""
+    OLLAMA_BASE_URL: http://ollama:11434
+    DB_HOST: forgepilot-postgres
+    DB_PORT: "5432"
+    DB_NAME: forgepilot
+    DB_USER: forgepilot
+    REDIS_HOST: forgepilot-redis
+    REDIS_PORT: "6379"
+    REDIS_DB: "0"
+    WORKSPACE_BASE: /data/forgepilot/workspace
+  secrets:
+    LLM_API_KEY: ""
+    DB_PASS: forgepilot
+    REDIS_PASSWORD: ""
+
+postgres:
+  enabled: true
+  image: postgres:16
+  storage:
+    size: 10Gi
+  resources:
+    requests:
+      cpu: 250m
+      memory: 512Mi
+    limits:
+      cpu: 1000m
+      memory: 1Gi
+
+redis:
+  enabled: true
+  image: redis:7
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 500m
+      memory: 512Mi
+
+resources:
+  requests:
+    cpu: 500m
+    memory: 1Gi
+  limits:
+    cpu: 2
+    memory: 4Gi
+
+runtimeQuota:
+  enabled: true
+  hard:
+    requests.cpu: "6"
+    requests.memory: 12Gi
+    limits.cpu: "12"
+    limits.memory: 24Gi
