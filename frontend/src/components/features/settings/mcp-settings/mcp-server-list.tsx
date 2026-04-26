@@ -1,29 +1,33 @@
 import { useTranslation } from "react-i18next";
 import { MCPServerListItem } from "./mcp-server-list-item";
 import { I18nKey } from "#/i18n/declaration";
-
-interface MCPServerConfig {
-  id: string;
-  type: "sse" | "stdio" | "shttp";
-  name?: string;
-  url?: string;
-  api_key?: string;
-  timeout?: number;
-  command?: string;
-  args?: string[];
-  env?: Record<string, string>;
-}
+import {
+  MCPPermissionLevel,
+  MCPServerConfig,
+  MCPServerPreference,
+} from "./types";
 
 interface MCPServerListProps {
   servers: MCPServerConfig[];
+  getPreference: (server: MCPServerConfig) => MCPServerPreference;
   onEdit: (server: MCPServerConfig) => void;
   onDelete: (serverId: string) => void;
+  onToggleEnabled: (server: MCPServerConfig, enabled: boolean) => void;
+  onChangePermission: (
+    server: MCPServerConfig,
+    permission: MCPPermissionLevel,
+  ) => void;
+  onTestConnection: (server: MCPServerConfig) => void;
 }
 
 export function MCPServerList({
   servers,
+  getPreference,
   onEdit,
   onDelete,
+  onToggleEnabled,
+  onChangePermission,
+  onTestConnection,
 }: MCPServerListProps) {
   const { t } = useTranslation();
 
@@ -41,7 +45,7 @@ export function MCPServerList({
     <div className="border border-tertiary rounded-md overflow-hidden">
       <table className="w-full">
         <thead className="bg-base-tertiary">
-          <tr className="grid grid-cols-[minmax(0,0.25fr)_120px_minmax(0,1fr)_120px] gap-4 items-start">
+          <tr className="grid grid-cols-[minmax(0,0.22fr)_120px_minmax(0,1fr)_320px] gap-4 items-start">
             <th className="text-left p-3 text-sm font-medium">
               {t(I18nKey.SETTINGS$NAME)}
             </th>
@@ -52,7 +56,7 @@ export function MCPServerList({
               {t(I18nKey.SETTINGS$MCP_SERVER_DETAILS)}
             </th>
             <th className="text-right p-3 text-sm font-medium">
-              {t(I18nKey.SETTINGS$ACTIONS)}
+              Registry
             </th>
           </tr>
         </thead>
@@ -61,8 +65,14 @@ export function MCPServerList({
             <MCPServerListItem
               key={server.id}
               server={server}
+              preference={getPreference(server)}
               onEdit={() => onEdit(server)}
               onDelete={() => onDelete(server.id)}
+              onToggleEnabled={(enabled) => onToggleEnabled(server, enabled)}
+              onChangePermission={(permission) =>
+                onChangePermission(server, permission)
+              }
+              onTestConnection={() => onTestConnection(server)}
             />
           ))}
         </tbody>

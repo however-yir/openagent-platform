@@ -6,20 +6,7 @@ import { SettingsDropdownInput } from "../settings-dropdown-input";
 import { BrandButton } from "../brand-button";
 import { OptionalTag } from "../optional-tag";
 import { cn } from "#/utils/utils";
-
-type MCPServerType = "sse" | "stdio" | "shttp";
-
-interface MCPServerConfig {
-  id: string;
-  type: MCPServerType;
-  name?: string;
-  url?: string;
-  api_key?: string;
-  timeout?: number;
-  command?: string;
-  args?: string[];
-  env?: Record<string, string>;
-}
+import { MCPServerConfig, MCPServerType } from "./types";
 
 interface MCPServerFormProps {
   mode: "add" | "edit";

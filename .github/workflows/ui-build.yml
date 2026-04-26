@@ -1,4 +1,4 @@
-name: Run UI Component Build
+name: Run ForgePilot UI Build
 
 # * Always run on "main"
 # * Run on PRs that have changes in the "openhands-ui" folder or this workflow
@@ -18,7 +18,7 @@ concurrency:
 
 jobs:
   ui-build:
-    name: Build openhands-ui
+    name: Build ForgePilot UI package
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout

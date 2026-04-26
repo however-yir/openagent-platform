@@ -11,18 +11,20 @@ import { isSettingsPageHidden } from "#/utils/settings-utils";
 import { useMe } from "./query/use-me";
 import { usePermission } from "./organizations/use-permissions";
 import { useOrgTypeAndAccess } from "./use-org-type-and-access";
-import { I18nKey } from "#/i18n/declaration";
 
 // Rendered navigation item types
 export type SettingsNavRenderedItem =
   | { type: "item"; item: SettingsNavItem }
-  | { type: "header"; text: I18nKey }
+  | { type: "header"; text: string }
   | { type: "divider" };
 
 // Section header text mapping
-const SECTION_HEADERS: Partial<Record<SettingsNavSection, I18nKey>> = {
-  org: I18nKey.SETTINGS$ORG_SETTINGS_HEADER,
-  personal: I18nKey.SETTINGS$PERSONAL_SETTINGS_HEADER,
+const SECTION_HEADERS: Record<SettingsNavSection, string> = {
+  model: "模型",
+  runtime: "运行时",
+  security: "安全",
+  team: "团队",
+  integrations: "集成",
 };
 
 /**
@@ -46,7 +48,6 @@ export function useSettingsNavItems(): SettingsNavRenderedItem[] {
   );
   const isSaasMode = config?.app_mode === "saas";
   const featureFlags = config?.feature_flags;
-  const isAdminOrOwner = userRole === "admin" || userRole === "owner";
 
   let items = isSaasMode ? [...SAAS_NAV_ITEMS] : [...OSS_NAV_ITEMS];
 
@@ -58,57 +59,48 @@ export function useSettingsNavItems(): SettingsNavRenderedItem[] {
     items = items.filter((item) => item.to !== "/settings/billing");
   }
 
-  // Hide org routes for personal orgs, missing permissions, or no org selected
-  if (!hasPermission("view_billing") || !organizationId || isPersonalOrg) {
-    items = items.filter((item) => item.to !== "/settings/org");
+  if (isSaasMode) {
+    // Hide org routes for personal orgs, missing permissions, or no org selected
+    if (!hasPermission("view_billing") || !organizationId || isPersonalOrg) {
+      items = items.filter((item) => item.to !== "/settings/org");
+    }
+
+    if (
+      !hasPermission("invite_user_to_organization") ||
+      !organizationId ||
+      isPersonalOrg
+    ) {
+      items = items.filter((item) => item.to !== "/settings/org-members");
+    }
+
+    // Hide user settings for non-members without org context in SaaS mode
+    if (!organizationId) {
+      items = items.filter((item) => item.to !== "/settings/user");
+    }
+  } else {
+    // In OSS mode we don't expose team/billing pages in settings nav
+    items = items.filter(
+      (item) => item.to !== "/settings/org" && item.to !== "/settings/org-members",
+    );
   }
 
-  if (
-    !hasPermission("invite_user_to_organization") ||
-    !organizationId ||
-    isPersonalOrg
-  ) {
-    items = items.filter((item) => item.to !== "/settings/org-members");
-  }
-
-  // For OSS mode or non-SaaS, return flat list without sections
-  if (!isSaasMode) {
-    return items.map((item) => ({ type: "item", item }));
-  }
-
-  // Build rendered items with headers and dividers for SaaS mode
+  // Build rendered items with explicit section headers and dividers
   const renderedItems: SettingsNavRenderedItem[] = [];
   let currentSection: SettingsNavSection | undefined;
   let isFirstSection = true;
 
-  // Determine if we should show section headers (only for admins/owners in team orgs)
-  const showSectionHeaders = isTeamOrg && isAdminOrOwner;
-
   for (const item of items) {
     const itemSection = item.section;
 
-    // Check if we're entering a new section
     if (itemSection && itemSection !== currentSection) {
-      // For personal orgs or members, treat "org" and "personal" sections as one group
-      // (LLM is the only org item visible and should flow with personal items)
-      const isOrgToPersonalWithoutHeaders =
-        (isPersonalOrg || !isAdminOrOwner) &&
-        currentSection === "org" &&
-        itemSection === "personal";
-
-      // Add divider between sections (but not before the first section,
-      // and not between org->personal when section headers aren't shown)
-      if (!isFirstSection && !isOrgToPersonalWithoutHeaders) {
+      if (!isFirstSection) {
         renderedItems.push({ type: "divider" });
       }
 
-      // Add section header for org and personal sections (admins/owners only)
-      if (showSectionHeaders && SECTION_HEADERS[itemSection]) {
-        renderedItems.push({
-          type: "header",
-          text: SECTION_HEADERS[itemSection]!,
-        });
-      }
+      renderedItems.push({
+        type: "header",
+        text: SECTION_HEADERS[itemSection],
+      });
 
       currentSection = itemSection;
       isFirstSection = false;

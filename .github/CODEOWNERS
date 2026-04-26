@@ -1,4 +1,4 @@
-# CODEOWNERS file for OpenHands repository
+# CODEOWNERS file for ForgePilot Studio repository
 # See https://docs.github.com/en/repositories/managing-your-repositorys-settings-and-features/customizing-your-repository/about-code-owners
 
 /frontend/ @hieptl

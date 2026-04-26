@@ -8,4 +8,6 @@ __all__ = [
     "control_plane",
     "runtime_providers",
     "llm_gateway",
+    "audit",
+    "tool_registry",
 ]

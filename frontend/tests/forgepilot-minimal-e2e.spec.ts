@@ -48,7 +48,7 @@ const settingsPayload = {
   email: "",
   email_verified: true,
   mcp_config: {
-    sse_servers: [],
+    sse_servers: ["https://mcp.example.com/sse"],
     stdio_servers: [],
     shttp_servers: [],
   },
@@ -58,7 +58,9 @@ const settingsPayload = {
   sandbox_grouping_strategy: "NO_GROUPING",
 } as const;
 
-test("forgepilot minimal e2e: task console to delivery flow", async ({ page }) => {
+test("forgepilot minimal e2e: task console, protocol badges and mcp registry controls", async ({
+  page,
+}) => {
   await page.route("**/api/v1/web-client/config", async (route) => {
     await route.fulfill({
       status: 200,
@@ -83,6 +85,10 @@ test("forgepilot minimal e2e: task console to delivery flow", async ({ page }) =
   await page.goto("/");
 
   await expect(page.getByRole("heading", { name: "任务台" })).toBeVisible();
+  await expect(page.getByText("Plan")).toBeVisible();
+  await expect(page.getByText("Execute")).toBeVisible();
+  await expect(page.getByText("Verify")).toBeVisible();
+  await expect(page.getByText("Report")).toBeVisible();
 
   await page.getByLabel("任务编排").click();
   await expect(page.getByRole("heading", { name: "任务编排" })).toBeVisible();
@@ -98,4 +104,9 @@ test("forgepilot minimal e2e: task console to delivery flow", async ({ page }) =
 
   await page.getByLabel("成果交付").click();
   await expect(page.getByRole("heading", { name: "成果交付" })).toBeVisible();
+
+  await page.goto("/settings/mcp");
+  await expect(page.getByText("Registry")).toBeVisible();
+  await expect(page.getByRole("checkbox")).toBeChecked();
+  await expect(page.getByRole("button", { name: "测试连接" })).toBeVisible();
 });

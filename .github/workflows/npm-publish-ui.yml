@@ -1,4 +1,4 @@
-name: Publish OpenHands UI Package
+name: Publish ForgePilot UI Package
 
 # * Always run on "main"
 # * Run on PRs that have changes in the "openhands-ui" folder or this workflow
@@ -105,4 +105,4 @@ jobs:
         run: |
           # The prepublishOnly script will run automatically and build the package
           npm publish
-          echo "✅ Successfully published @openhands/ui@${{ needs.check-version.outputs.current-version }} to npm"
+          echo "✅ Successfully published @forgepilot/ui@${{ needs.check-version.outputs.current-version }} to npm"

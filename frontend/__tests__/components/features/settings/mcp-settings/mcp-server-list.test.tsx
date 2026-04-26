@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
 import { MCPServerList } from "#/components/features/settings/mcp-settings/mcp-server-list";
+import { MCPServerConfig } from "#/components/features/settings/mcp-settings/types";
 
 // Mock react-i18next
 vi.mock("react-i18next", () => ({
@@ -24,6 +25,15 @@ const mockServers = [
   },
 ];
 
+const mockGetPreference = (_server: MCPServerConfig) => ({
+  enabled: true,
+  permission: "read" as const,
+  health: "unknown" as const,
+});
+const mockOnToggleEnabled = vi.fn();
+const mockOnChangePermission = vi.fn();
+const mockOnTestConnection = vi.fn();
+
 describe("MCPServerList", () => {
   it("should render servers with proper layout structure", () => {
     const mockOnEdit = vi.fn();
@@ -32,8 +42,12 @@ describe("MCPServerList", () => {
     render(
       <MCPServerList
         servers={mockServers}
+        getPreference={mockGetPreference}
         onEdit={mockOnEdit}
         onDelete={mockOnDelete}
+        onToggleEnabled={mockOnToggleEnabled}
+        onChangePermission={mockOnChangePermission}
+        onTestConnection={mockOnTestConnection}
       />,
     );
 
@@ -60,8 +74,12 @@ describe("MCPServerList", () => {
     render(
       <MCPServerList
         servers={[]}
+        getPreference={mockGetPreference}
         onEdit={mockOnEdit}
         onDelete={mockOnDelete}
+        onToggleEnabled={mockOnToggleEnabled}
+        onChangePermission={mockOnChangePermission}
+        onTestConnection={mockOnTestConnection}
       />,
     );
 
@@ -81,8 +99,12 @@ describe("MCPServerList", () => {
     render(
       <MCPServerList
         servers={[longUrlServer]}
+        getPreference={mockGetPreference}
         onEdit={mockOnEdit}
         onDelete={mockOnDelete}
+        onToggleEnabled={mockOnToggleEnabled}
+        onChangePermission={mockOnChangePermission}
+        onTestConnection={mockOnTestConnection}
       />,
     );
 
@@ -118,8 +140,12 @@ describe("MCPServerList", () => {
     render(
       <MCPServerList
         servers={[stdioServer]}
+        getPreference={mockGetPreference}
         onEdit={mockOnEdit}
         onDelete={mockOnDelete}
+        onToggleEnabled={mockOnToggleEnabled}
+        onChangePermission={mockOnChangePermission}
+        onTestConnection={mockOnTestConnection}
       />,
     );
 
@@ -142,8 +168,12 @@ describe("MCPServerList", () => {
     render(
       <MCPServerList
         servers={[stdioServer]}
+        getPreference={mockGetPreference}
         onEdit={mockOnEdit}
         onDelete={mockOnDelete}
+        onToggleEnabled={mockOnToggleEnabled}
+        onChangePermission={mockOnChangePermission}
+        onTestConnection={mockOnTestConnection}
       />,
     );
 

@@ -12,22 +12,24 @@ import { ConfirmationModal } from "#/components/shared/modals/confirmation-modal
 import { BrandButton } from "#/components/features/settings/brand-button";
 import { MCPConfig } from "#/types/settings";
 import { createPermissionGuard } from "#/utils/org/permission-guard";
+import {
+  MCPPermissionLevel,
+  MCPServerConfig,
+  MCPServerPreference,
+  MCPServerPreferenceMap,
+} from "#/components/features/settings/mcp-settings/types";
+import {
+  getMCPServerRegistryKey,
+  loadMCPServerPreferences,
+  saveMCPServerPreferences,
+  testMCPServerConnection,
+  updateServerEnabled,
+  updateServerHealth,
+  updateServerPermission,
+  withDefaultPreference,
+} from "#/components/features/settings/mcp-settings/registry-preferences";
 
 export const clientLoader = createPermissionGuard("manage_mcp");
-
-type MCPServerType = "sse" | "stdio" | "shttp";
-
-interface MCPServerConfig {
-  id: string;
-  type: MCPServerType;
-  name?: string;
-  url?: string;
-  api_key?: string;
-  timeout?: number;
-  command?: string;
-  args?: string[];
-  env?: Record<string, string>;
-}
 
 function MCPSettingsScreen() {
   const { t } = useTranslation();
@@ -43,6 +45,15 @@ function MCPSettingsScreen() {
   const [confirmationModalIsVisible, setConfirmationModalIsVisible] =
     useState(false);
   const [serverToDelete, setServerToDelete] = useState<string | null>(null);
+  const [preferences, setPreferences] = useState<MCPServerPreferenceMap>({});
+
+  React.useEffect(() => {
+    setPreferences(loadMCPServerPreferences());
+  }, []);
+
+  React.useEffect(() => {
+    saveMCPServerPreferences(preferences);
+  }, [preferences]);
 
   const mcpConfig: MCPConfig = settings?.mcp_config || {
     sse_servers: [],
@@ -127,6 +138,34 @@ function MCPSettingsScreen() {
     setServerToDelete(null);
   };
 
+  const getServerPreference = (server: MCPServerConfig): MCPServerPreference => {
+    const key = getMCPServerRegistryKey(server);
+    return withDefaultPreference(preferences, key);
+  };
+
+  const handleToggleEnabled = (server: MCPServerConfig, enabled: boolean) => {
+    const key = getMCPServerRegistryKey(server);
+    setPreferences((current) => updateServerEnabled(current, key, enabled));
+  };
+
+  const handlePermissionChange = (
+    server: MCPServerConfig,
+    permission: MCPPermissionLevel,
+  ) => {
+    const key = getMCPServerRegistryKey(server);
+    setPreferences((current) => updateServerPermission(current, key, permission));
+  };
+
+  const handleTestConnection = async (server: MCPServerConfig) => {
+    const key = getMCPServerRegistryKey(server);
+    setPreferences((current) => updateServerHealth(current, key, "testing"));
+
+    const result = await testMCPServerConnection(server);
+    setPreferences((current) =>
+      updateServerHealth(current, key, result.health, result.error),
+    );
+  };
+
   if (isLoading) {
     return (
       <div className="flex flex-col gap-5">
@@ -155,8 +194,12 @@ function MCPSettingsScreen() {
 
           <MCPServerList
             servers={allServers}
+            getPreference={getServerPreference}
             onEdit={handleEditClick}
             onDelete={handleDeleteClick}
+            onToggleEnabled={handleToggleEnabled}
+            onChangePermission={handlePermissionChange}
+            onTestConnection={handleTestConnection}
           />
         </>
       )}
