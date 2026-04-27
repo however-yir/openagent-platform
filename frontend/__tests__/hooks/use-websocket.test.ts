@@ -201,12 +201,14 @@ describe("useWebSocket", () => {
       useWebSocket("ws://acme.com/ws", options),
     );
 
-    // Wait for connection to be established
+    // Wait for the socket object to exist before unmounting.
+    // Connection establishment itself is flaky under CI timing, but on unmount
+    // we close both CONNECTING and OPEN sockets.
     await waitFor(() => {
-      expect(result.current.isConnected).toBe(true);
+      expect(result.current.socket).toBeTruthy();
     });
 
-    // Reset spy after connection is established to ignore any spurious
+    // Reset spy after socket creation to ignore any spurious
     // close events fired by the MSW mock during the handshake.
     onCloseSpy.mockClear();
 

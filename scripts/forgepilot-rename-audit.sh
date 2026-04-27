@@ -27,9 +27,18 @@ TARGET_PATHS=(
 echo "ForgePilot rename audit"
 echo "root: ${ROOT_DIR}"
 
+search_fixed_string() {
+  local pattern="$1"
+  if command -v rg >/dev/null 2>&1; then
+    rg -n -F --hidden --glob '!node_modules' --glob '!poetry.lock' --glob '!frontend/public/locales/**' -- "${pattern}" "${TARGET_PATHS[@]}"
+  else
+    grep -RInF --exclude-dir=node_modules --exclude=poetry.lock --exclude-dir=locales -- "${pattern}" "${TARGET_PATHS[@]}"
+  fi
+}
+
 status=0
 for pattern in "${PATTERNS[@]}"; do
-  if rg -n --hidden --glob '!node_modules' --glob '!poetry.lock' --glob '!frontend/public/locales/**' "${pattern}" "${TARGET_PATHS[@]}"; then
+  if search_fixed_string "${pattern}"; then
     status=1
   fi
 done
