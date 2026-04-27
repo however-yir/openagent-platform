@@ -3,8 +3,11 @@
 from .registry import (
     BUILTIN_CONNECTOR_TEMPLATES,
     ConnectorTemplate,
+    HTTPConnectorConfig,
     ToolCallRecord,
+    ToolMockSpec,
     ToolRegistry,
+    build_http_connector_request,
 )
 from .schema import (
     ToolCostBreakdown,
@@ -19,9 +22,12 @@ from .schema import (
 
 __all__ = [
     'ConnectorTemplate',
+    'HTTPConnectorConfig',
+    'ToolMockSpec',
     'ToolCallRecord',
     'ToolRegistry',
     'BUILTIN_CONNECTOR_TEMPLATES',
+    'build_http_connector_request',
     'ToolPermission',
     'ToolExecutionMode',
     'ToolHealthStatus',

@@ -11,6 +11,7 @@ import {
   Network,
   PackageCheck,
   PlayCircle,
+  Rocket,
   ShieldCheck,
   TimerReset,
   WalletCards,
@@ -59,6 +60,13 @@ export interface WorkbenchPageConfig {
   metrics: ConsoleMetric[];
   primaryItems: WorkbenchItem[];
   enableTaskFilters?: boolean;
+  onboardingNotice?: {
+    storageKey: string;
+    title: string;
+    detail: string;
+    actionLabel: string;
+    actionTo: string;
+  };
   secondaryTitle: string;
   secondaryItems: WorkbenchItem[];
   toolCalls?: ToolCallCard[];
@@ -119,6 +127,14 @@ export const workbenchPages: Record<string, WorkbenchPageConfig> = {
       },
     ],
     enableTaskFilters: true,
+    onboardingNotice: {
+      storageKey: "forgepilot_deployment_wizard_completed",
+      title: "首次启动：私有化部署向导",
+      detail:
+        "引导配置模型网关、数据库、沙箱运行时和工作区策略，完成后可生成落地配置摘要。",
+      actionLabel: "打开部署向导",
+      actionTo: "/deployment-wizard",
+    },
     secondaryTitle: "执行协议",
     secondaryItems: [
       { title: "Plan", detail: "拆解目标、风险、边界和验收标准。" },
@@ -499,6 +515,7 @@ export const sidebarNavItems = [
   { to: "/team", label: "团队空间", icon: Layers3 },
   { to: "/templates", label: "模板库", icon: PackageCheck },
   { to: "/policy", label: "执行策略", icon: ShieldCheck },
+  { to: "/deployment-wizard", label: "部署向导", icon: Rocket },
   { to: "/delivery", label: "成果交付", icon: FileCheck2 },
 ];
 

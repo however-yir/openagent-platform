@@ -1,8 +1,13 @@
 from openhands.forgepilot.tool_registry.registry import (
     BUILTIN_CONNECTOR_TEMPLATES,
+    HTTPConnectorConfig,
     ToolRegistry,
+    build_http_connector_request,
 )
-from openhands.forgepilot.tool_registry.schema import ToolHealthStatus
+from openhands.forgepilot.tool_registry.schema import (
+    ToolExecutionMode,
+    ToolHealthStatus,
+)
 
 
 def test_builtin_templates_include_target_connectors():
@@ -66,3 +71,68 @@ def test_record_call_and_cost_aggregation():
     )
     total = registry.aggregate_costs()
     assert total.total_cost_usd == 0.96
+
+
+def test_invoke_uses_mock_response_when_present():
+    registry = ToolRegistry.from_builtin_templates()
+    registry.set_mock_response(
+        'connector.github',
+        output='mock-check-result',
+        duration_ms=55,
+    )
+
+    record = registry.invoke(
+        'connector.github',
+        parameters={'repo': 'however-yir/forgepilot-studio'},
+    )
+    assert record.output_summary == 'mock-check-result'
+    assert record.duration_ms == 55
+
+
+def test_invoke_requires_executor_when_live_mode():
+    registry = ToolRegistry.from_builtin_templates()
+    record = registry.invoke('connector.github', parameters={'repo': 'x'})
+    assert record.error == 'live executor is required when mock mode is disabled'
+
+
+def test_invoke_live_executor_success():
+    registry = ToolRegistry.from_builtin_templates()
+    registry.set_mode('connector.github', ToolExecutionMode.LIVE)
+
+    def executor(tool_id: str, params: dict[str, object]) -> str:
+        return f'ok:{tool_id}:{params["repo"]}'
+
+    record = registry.invoke(
+        'connector.github',
+        parameters={'repo': 'however-yir/forgepilot-studio'},
+        executor=executor,
+    )
+    assert record.error is None
+    assert 'ok:connector.github:however-yir/forgepilot-studio' in record.output_summary
+
+
+def test_build_http_connector_request_from_variables():
+    connector = HTTPConnectorConfig(
+        connector_id='internal-audit-api',
+        base_url='https://audit-gateway.internal',
+        path='/v1/tenants/{{tenant_id}}/exports',
+        method='post',
+        headers={'Authorization': 'Bearer {{token}}'},
+        query_params={'format': '{{format}}'},
+        body={'scope': 'latest'},
+    )
+
+    request = build_http_connector_request(
+        connector,
+        variables={
+            'tenant_id': 'team-alpha',
+            'token': 'secure-token',
+            'format': 'jsonl',
+        },
+    )
+    assert request['method'] == 'POST'
+    assert (
+        request['url'] == 'https://audit-gateway.internal/v1/tenants/team-alpha/exports'
+    )
+    assert request['headers']['Authorization'] == 'Bearer secure-token'
+    assert request['query_params']['format'] == 'jsonl'

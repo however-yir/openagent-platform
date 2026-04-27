@@ -1,6 +1,7 @@
 /* eslint-disable i18next/no-literal-string */
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { Link } from "react-router";
 import { useTranslation } from "react-i18next";
 import { I18nKey } from "#/i18n/declaration";
 import {
@@ -45,6 +46,18 @@ export function WorkbenchPage({ config }: WorkbenchPageProps) {
   const PageIcon = config.icon;
   const [showFailedOnly, setShowFailedOnly] = useState(false);
   const [collapsedStages, setCollapsedStages] = useState<WorkflowStage[]>([]);
+  const [showOnboardingNotice, setShowOnboardingNotice] = useState(false);
+
+  useEffect(() => {
+    if (!config.onboardingNotice || typeof window === "undefined") {
+      setShowOnboardingNotice(false);
+      return;
+    }
+    const completed =
+      window.localStorage.getItem(config.onboardingNotice.storageKey) ===
+      "done";
+    setShowOnboardingNotice(!completed);
+  }, [config.onboardingNotice]);
 
   const filteredItems = useMemo(
     () =>
@@ -78,6 +91,13 @@ export function WorkbenchPage({ config }: WorkbenchPageProps) {
         ? previous.filter((value) => value !== stage)
         : [...previous, stage],
     );
+  };
+
+  const dismissOnboardingNotice = () => {
+    if (config.onboardingNotice && typeof window !== "undefined") {
+      window.localStorage.setItem(config.onboardingNotice.storageKey, "done");
+    }
+    setShowOnboardingNotice(false);
   };
 
   return (
@@ -126,6 +146,36 @@ export function WorkbenchPage({ config }: WorkbenchPageProps) {
           </div>
         ))}
       </section>
+
+      {showOnboardingNotice && config.onboardingNotice ? (
+        <section className="border-b border-white/10 bg-[#0f181b] px-5 py-4 md:px-8">
+          <div className="flex flex-col gap-3 rounded-md border border-[#2dd4bf]/40 bg-[#2dd4bf]/10 p-4 md:flex-row md:items-center md:justify-between">
+            <div>
+              <h2 className="text-sm font-semibold text-white">
+                {config.onboardingNotice.title}
+              </h2>
+              <p className="mt-1 text-sm text-[#b8c3c7]">
+                {config.onboardingNotice.detail}
+              </p>
+            </div>
+            <div className="flex items-center gap-2">
+              <Link
+                to={config.onboardingNotice.actionTo}
+                className="inline-flex h-9 items-center rounded-md border border-[#2dd4bf]/50 bg-[#2dd4bf]/20 px-3 text-sm text-[#dffdf7] hover:bg-[#2dd4bf]/30"
+              >
+                {config.onboardingNotice.actionLabel}
+              </Link>
+              <button
+                type="button"
+                onClick={dismissOnboardingNotice}
+                className="inline-flex h-9 items-center rounded-md border border-white/15 px-3 text-sm text-[#dce7eb] hover:bg-white/10"
+              >
+                稍后处理
+              </button>
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       <section className="grid gap-6 px-5 py-6 md:px-8 xl:grid-cols-[minmax(0,1.5fr)_minmax(320px,0.8fr)]">
         <div className="min-w-0">

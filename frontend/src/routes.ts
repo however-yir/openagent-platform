@@ -20,6 +20,7 @@ export default [
     route("team", "routes/team.tsx"),
     route("templates", "routes/templates.tsx"),
     route("policy", "routes/policy.tsx"),
+    route("deployment-wizard", "routes/deployment-wizard.tsx"),
     route("delivery", "routes/delivery.tsx"),
     route("accept-tos", "routes/accept-tos.tsx"),
     route("launch", "routes/launch.tsx"),

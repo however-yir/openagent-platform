@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 import json
+import time
 from datetime import UTC, datetime
-from typing import Mapping
+from typing import Callable, Mapping
 from uuid import uuid4
 
 from pydantic import BaseModel, Field
@@ -37,6 +38,56 @@ class ToolCallRecord(BaseModel):
     output_summary: str
     error: str | None = None
     mode: ToolExecutionMode = ToolExecutionMode.LIVE
+
+
+class ToolMockSpec(BaseModel):
+    output: str = 'mock response'
+    error: str | None = None
+    duration_ms: int = 20
+
+
+class HTTPConnectorConfig(BaseModel):
+    connector_id: str
+    base_url: str
+    path: str
+    method: str = 'GET'
+    headers: dict[str, str] = Field(default_factory=dict)
+    query_params: dict[str, str] = Field(default_factory=dict)
+    body: dict[str, object] | None = None
+
+
+def _render_template(value: str, variables: Mapping[str, object]) -> str:
+    rendered = value
+    for key, variable in variables.items():
+        rendered = rendered.replace(f'{{{{{key}}}}}', str(variable))
+    return rendered
+
+
+def build_http_connector_request(
+    config: HTTPConnectorConfig,
+    variables: Mapping[str, object] | None = None,
+) -> dict[str, object]:
+    variables = variables or {}
+    path = _render_template(config.path, variables).lstrip('/')
+    base_url = config.base_url.rstrip('/')
+    url = f'{base_url}/{path}' if path else base_url
+
+    headers = {
+        key: _render_template(value, variables) for key, value in config.headers.items()
+    }
+    query_params = {
+        key: _render_template(value, variables)
+        for key, value in config.query_params.items()
+    }
+
+    return {
+        'connector_id': config.connector_id,
+        'method': config.method.upper(),
+        'url': url,
+        'headers': headers,
+        'query_params': query_params,
+        'body': config.body,
+    }
 
 
 BUILTIN_CONNECTOR_TEMPLATES: tuple[ConnectorTemplate, ...] = (
@@ -103,6 +154,7 @@ class ToolRegistry:
     def __init__(self, entries: list[ToolRegistryEntry] | None = None):
         self._entries: dict[str, ToolRegistryEntry] = {}
         self._call_records: list[ToolCallRecord] = []
+        self._mock_specs: dict[str, ToolMockSpec] = {}
         for entry in entries or []:
             self._entries[entry.tool_id] = entry.model_copy(deep=True)
 
@@ -152,6 +204,77 @@ class ToolRegistry:
         entry = self.get_entry(tool_id)
         entry.mode = mode
         return entry
+
+    def set_mock_response(
+        self,
+        tool_id: str,
+        *,
+        output: str = 'mock response',
+        error: str | None = None,
+        duration_ms: int = 20,
+    ) -> ToolMockSpec:
+        self.get_entry(tool_id)
+        spec = ToolMockSpec(output=output, error=error, duration_ms=duration_ms)
+        self._mock_specs[tool_id] = spec
+        return spec
+
+    def clear_mock_response(self, tool_id: str) -> None:
+        self._mock_specs.pop(tool_id, None)
+
+    def invoke(
+        self,
+        tool_id: str,
+        parameters: Mapping[str, object] | str,
+        *,
+        executor: Callable[[str, Mapping[str, object] | str], str] | None = None,
+        trace_id: str | None = None,
+    ) -> ToolCallRecord:
+        entry = self.get_entry(tool_id)
+        mock_spec = self._mock_specs.get(tool_id)
+        use_mock = entry.mode == ToolExecutionMode.MOCK or mock_spec is not None
+
+        if use_mock:
+            active_spec = mock_spec or ToolMockSpec()
+            return self.record_call(
+                tool_id=tool_id,
+                parameters=parameters,
+                output=active_spec.output,
+                duration_ms=active_spec.duration_ms,
+                error=active_spec.error,
+                trace_id=trace_id,
+            )
+
+        if executor is None:
+            return self.record_call(
+                tool_id=tool_id,
+                parameters=parameters,
+                output='',
+                duration_ms=0,
+                error='live executor is required when mock mode is disabled',
+                trace_id=trace_id,
+            )
+
+        started = time.perf_counter()
+        try:
+            output = executor(tool_id, parameters)
+            elapsed_ms = int((time.perf_counter() - started) * 1000)
+            return self.record_call(
+                tool_id=tool_id,
+                parameters=parameters,
+                output=output,
+                duration_ms=elapsed_ms,
+                trace_id=trace_id,
+            )
+        except Exception as exc:
+            elapsed_ms = int((time.perf_counter() - started) * 1000)
+            return self.record_call(
+                tool_id=tool_id,
+                parameters=parameters,
+                output='',
+                duration_ms=elapsed_ms,
+                error=str(exc),
+                trace_id=trace_id,
+            )
 
     def record_call(
         self,

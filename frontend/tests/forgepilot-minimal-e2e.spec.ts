@@ -115,6 +115,11 @@ test("forgepilot minimal e2e: task console, protocol badges and mcp registry con
   await page.getByLabel("审计回放").click();
   await expect(page.getByRole("heading", { name: "审计回放" })).toBeVisible();
 
+  await page.getByLabel("部署向导").click();
+  await expect(
+    page.getByRole("heading", { name: "私有化部署向导" }),
+  ).toBeVisible();
+
   await page.getByLabel("成果交付").click();
   await expect(page.getByRole("heading", { name: "成果交付" })).toBeVisible();
 
