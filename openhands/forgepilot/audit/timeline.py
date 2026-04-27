@@ -7,7 +7,7 @@ a correlated causal chain view for the audit replay dashboard.
 from __future__ import annotations
 
 from collections import defaultdict
-from datetime import UTC, datetime
+from datetime import datetime
 from typing import Any, Iterable
 
 from pydantic import BaseModel, Field
@@ -75,11 +75,10 @@ def _find_preceding(
         if delta < 0 or delta > _CORRELATION_WINDOW_MS:
             continue
         # model responses trigger commands and tool calls
-        if (
-            prev.event_type == AuditEventType.MODEL
-            and event.event_type
-            in {AuditEventType.COMMAND, AuditEventType.TOOL_CALL}
-        ):
+        if prev.event_type == AuditEventType.MODEL and event.event_type in {
+            AuditEventType.COMMAND,
+            AuditEventType.TOOL_CALL,
+        }:
             parents.append(prev.trace_id)
         # commands produce file changes
         elif (
@@ -107,7 +106,7 @@ def build_timeline(events: Iterable[AuditEvent]) -> AuditTimeline:
         return AuditTimeline(task_id='', chains=[], summary='No events recorded.')
 
     task_id = sorted_events[0].task_id or ''
-    events_by_trace: dict[str, AuditEvent] = {e.trace_id: e for e in sorted_events}
+    {e.trace_id: e for e in sorted_events}
 
     # Build nodes with parent-child relationships
     nodes_by_trace: dict[str, TimelineNode] = {}
@@ -198,9 +197,7 @@ def build_timeline(events: Iterable[AuditEvent]) -> AuditTimeline:
     orphan_nodes = [n for n in nodes_by_trace.values() if n.node_id not in visited]
 
     # Compute aggregates
-    total_cost = sum(
-        e.cost_usd for e in sorted_events if e.cost_usd is not None
-    )
+    total_cost = sum(e.cost_usd for e in sorted_events if e.cost_usd is not None)
     total_duration = sum(
         e.duration_ms for e in sorted_events if e.duration_ms is not None
     )

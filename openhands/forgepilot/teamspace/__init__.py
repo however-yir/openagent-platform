@@ -34,14 +34,24 @@ _ROLE_HIERARCHY: dict[SpaceRole, int] = {
 }
 
 _PERMISSION_MATRIX: dict[str, list[SpaceRole]] = {
-    'space:read': [SpaceRole.VIEWER, SpaceRole.MEMBER, SpaceRole.ADMIN, SpaceRole.OWNER],
+    'space:read': [
+        SpaceRole.VIEWER,
+        SpaceRole.MEMBER,
+        SpaceRole.ADMIN,
+        SpaceRole.OWNER,
+    ],
     'space:write': [SpaceRole.MEMBER, SpaceRole.ADMIN, SpaceRole.OWNER],
     'space:manage': [SpaceRole.ADMIN, SpaceRole.OWNER],
     'space:delete': [SpaceRole.OWNER],
     'task:create': [SpaceRole.MEMBER, SpaceRole.ADMIN, SpaceRole.OWNER],
     'task:read': [SpaceRole.VIEWER, SpaceRole.MEMBER, SpaceRole.ADMIN, SpaceRole.OWNER],
     'task:manage': [SpaceRole.ADMIN, SpaceRole.OWNER],
-    'template:read': [SpaceRole.VIEWER, SpaceRole.MEMBER, SpaceRole.ADMIN, SpaceRole.OWNER],
+    'template:read': [
+        SpaceRole.VIEWER,
+        SpaceRole.MEMBER,
+        SpaceRole.ADMIN,
+        SpaceRole.OWNER,
+    ],
     'template:write': [SpaceRole.ADMIN, SpaceRole.OWNER],
     'audit:read': [SpaceRole.MEMBER, SpaceRole.ADMIN, SpaceRole.OWNER],
     'billing:read': [SpaceRole.ADMIN, SpaceRole.OWNER],
@@ -145,9 +155,7 @@ class SpaceRegistry:
         return self._spaces.get(space_id)
 
     def list_user_spaces(self, user_id: str) -> list[TeamSpace]:
-        return [
-            s for s in self._spaces.values() if user_id in s.members
-        ]
+        return [s for s in self._spaces.values() if user_id in s.members]
 
     def add_member(
         self, space_id: str, user_id: str, role: SpaceRole, *, actor_id: str

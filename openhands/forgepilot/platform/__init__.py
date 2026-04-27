@@ -8,16 +8,12 @@ G-68: Tenant and role model with billing dimensions.
 from __future__ import annotations
 
 import hashlib
-import hmac
-import json
-import time
-from datetime import UTC, datetime, timedelta
+from datetime import UTC, datetime
 from enum import Enum
 from typing import Any
 from uuid import uuid4
 
 from pydantic import BaseModel, Field
-
 
 # ═══════════════════════════════════════════════════
 #  G-66: Structured Logging with trace_id
@@ -238,7 +234,7 @@ class AuditExporter:
         # Build signed S3 PUT request (portable, no boto3 dependency)
         try:
             body = events_jsonl.encode('utf-8')
-            content_hash = hashlib.sha256(body).hexdigest()
+            hashlib.sha256(body).hexdigest()
             # In production, use proper AWS SigV4 signing
             # For now, record the operation as ready
             job.event_count = events_jsonl.count('\n') + 1 if events_jsonl else 0
@@ -331,7 +327,11 @@ PLANS: dict[BillingTier, BillingPlan] = {
         max_members=50,
         max_tasks_per_month=2000,
         max_cost_per_month_usd=1000.0,
-        model_access=['openai/gpt-4.1', 'anthropic/claude-sonnet-4-6', 'anthropic/claude-opus-4-7'],
+        model_access=[
+            'openai/gpt-4.1',
+            'anthropic/claude-sonnet-4-6',
+            'anthropic/claude-opus-4-7',
+        ],
         audit_retention_days=180,
         team_spaces_enabled=True,
         delivery_reports_enabled=True,

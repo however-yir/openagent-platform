@@ -8,7 +8,6 @@ from __future__ import annotations
 
 from datetime import UTC, datetime
 from enum import Enum
-from typing import Any, Iterable
 
 from pydantic import BaseModel, Field
 
@@ -203,7 +202,9 @@ class KnowledgeLoader:
         except FileNotFoundError:
             return None
 
-    def build_context(self, task_id: str, workspace_root: str = '.') -> KnowledgeContext:
+    def build_context(
+        self, task_id: str, workspace_root: str = '.'
+    ) -> KnowledgeContext:
         context = KnowledgeContext(task_id=task_id)
         sources_to_check = [
             ('repo_md', f'{workspace_root}/.forgepilot/microagents/repo.md', 3),

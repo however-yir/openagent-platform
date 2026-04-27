@@ -6,15 +6,12 @@ E-43: Wraps tool invocations with runtime permission guards that cannot be bypas
 
 from __future__ import annotations
 
-import copy
 import fnmatch
-import json
 from dataclasses import dataclass, field
 from typing import Any, Callable, Mapping
 
 from .registry import ToolRegistry
 from .schema import ToolExecutionMode, ToolPermission, ToolRegistryEntry
-
 
 # ───────────────────────────────────────────────
 #  E-43: Runtime Permission Enforcement
@@ -186,54 +183,52 @@ class SchemaNode:
     name: str
     type_: str  # 'object', 'string', 'number', 'array', 'boolean'
     required: bool = False
-    children: list["SchemaNode"] = field(default_factory=list)
-    description: str = ""
+    children: list['SchemaNode'] = field(default_factory=list)
+    description: str = ''
 
 
 def _entries_to_graph(entries: list[ToolRegistryEntry]) -> str:
     """Render tool schemas as a Mermaid graph for the MCP Registry dashboard."""
-    lines = ["graph TD", "  TITLE[MCP Tool Registry]"]
+    lines = ['graph TD', '  TITLE[MCP Tool Registry]']
     for entry in entries:
         node_id = _safe_id(entry.tool_id)
-        provider = entry.provider or "unknown"
+        provider = entry.provider or 'unknown'
         permission = entry.permission.value
-        status = "enabled" if entry.enabled else "disabled"
+        status = 'enabled' if entry.enabled else 'disabled'
         lines.append(
             f'  {node_id}["{entry.display_name} ({entry.tool_id})<br/>'
             f'{provider} | {permission} | {status}"]'
         )
         if entry.schema_ref:
-            schema_id = f"{node_id}_schema"
-            lines.append(
-                f'  {schema_id}[("Schema: {entry.schema_ref.schema_type}")]'
-            )
-            lines.append(f"  {node_id} --> {schema_id}")
-    return "\n".join(lines)
+            schema_id = f'{node_id}_schema'
+            lines.append(f'  {schema_id}[("Schema: {entry.schema_ref.schema_type}")]')
+            lines.append(f'  {node_id} --> {schema_id}')
+    return '\n'.join(lines)
 
 
 def _entry_to_json_schema(entry: ToolRegistryEntry) -> dict[str, Any]:
     """Generate a JSON Schema fragment for a tool registry entry."""
     return {
-        "$schema": "https://json-schema.org/draft/2020-12/schema",
-        "title": entry.display_name,
-        "type": "object",
-        "properties": {
-            "tool_id": {"type": "string", "const": entry.tool_id},
-            "provider": {"type": "string", "const": entry.provider},
-            "permission": {
-                "type": "string",
-                "enum": [p.value for p in ToolPermission],
-                "default": entry.permission.value,
+        '$schema': 'https://json-schema.org/draft/2020-12/schema',
+        'title': entry.display_name,
+        'type': 'object',
+        'properties': {
+            'tool_id': {'type': 'string', 'const': entry.tool_id},
+            'provider': {'type': 'string', 'const': entry.provider},
+            'permission': {
+                'type': 'string',
+                'enum': [p.value for p in ToolPermission],
+                'default': entry.permission.value,
             },
-            "enabled": {"type": "boolean", "default": entry.enabled},
-            "mode": {
-                "type": "string",
-                "enum": [m.value for m in ToolExecutionMode],
-                "default": entry.mode.value,
+            'enabled': {'type': 'boolean', 'default': entry.enabled},
+            'mode': {
+                'type': 'string',
+                'enum': [m.value for m in ToolExecutionMode],
+                'default': entry.mode.value,
             },
-            "health_status": {
-                "type": "string",
-                "enum": ["unknown", "healthy", "degraded", "unreachable"],
+            'health_status': {
+                'type': 'string',
+                'enum': ['unknown', 'healthy', 'degraded', 'unreachable'],
             },
         },
     }
@@ -248,13 +243,12 @@ def generate_mermaid_registry_graph(registry: ToolRegistry) -> str:
 def generate_json_schemas(registry: ToolRegistry) -> dict[str, dict[str, Any]]:
     """Generate JSON Schema definitions for every registered tool."""
     return {
-        entry.tool_id: _entry_to_json_schema(entry)
-        for entry in registry.list_entries()
+        entry.tool_id: _entry_to_json_schema(entry) for entry in registry.list_entries()
     }
 
 
 def _safe_id(tool_id: str) -> str:
-    return tool_id.replace(".", "_").replace("-", "_").replace(":", "_")
+    return tool_id.replace('.', '_').replace('-', '_').replace(':', '_')
 
 
 def _meets_permission(actual: ToolPermission, required: ToolPermission) -> bool:

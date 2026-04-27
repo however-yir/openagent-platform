@@ -1,51 +1,47 @@
 """Tests for platform infrastructure: logging, tenant model, audit export (G-66/67/68)."""
 
 from openhands.forgepilot.platform import (
-    BillingPlan,
+    PLANS,
+    AuditExporter,
     BillingTier,
+    ObjectStorageConfig,
+    StructuredLogger,
     Tenant,
     TenantRegistry,
-    TenantRole,
     TraceContext,
-    StructuredLogger,
-    AuditExporter,
-    ObjectStorageConfig,
-    AuditArchivalPolicy,
-    ExportFormat,
-    PLANS,
 )
 
 
 def test_trace_context_generates_ids():
-    ctx = TraceContext(task_id="task-1", space_id="space-1")
+    ctx = TraceContext(task_id='task-1', space_id='space-1')
     assert ctx.trace_id
     assert ctx.span_id
-    assert ctx.task_id == "task-1"
-    assert ctx.space_id == "space-1"
+    assert ctx.task_id == 'task-1'
+    assert ctx.space_id == 'space-1'
 
 
 def test_trace_context_augment():
-    ctx = TraceContext(task_id="task-1")
-    augmented = ctx.augment({"action": "test"})
-    assert augmented["trace_id"] == ctx.trace_id
-    assert augmented["task_id"] == "task-1"
-    assert augmented["action"] == "test"
+    ctx = TraceContext(task_id='task-1')
+    augmented = ctx.augment({'action': 'test'})
+    assert augmented['trace_id'] == ctx.trace_id
+    assert augmented['task_id'] == 'task-1'
+    assert augmented['action'] == 'test'
 
 
 def test_structured_logger_emits_entry():
     logger = StructuredLogger()
-    ctx = TraceContext(task_id="task-test")
-    entry = logger.info("test message", trace_context=ctx, component="test")
+    ctx = TraceContext(task_id='task-test')
+    entry = logger.info('test message', trace_context=ctx, component='test')
     assert entry.trace_id == ctx.trace_id
-    assert entry.message == "test message"
-    assert entry.component == "test"
-    assert entry.task_id == "task-test"
+    assert entry.message == 'test message'
+    assert entry.component == 'test'
+    assert entry.task_id == 'task-test'
 
 
 def test_tenant_billing_check():
     tenant = Tenant(
-        tenant_id="t1",
-        name="Test Corp",
+        tenant_id='t1',
+        name='Test Corp',
         billing_tier=BillingTier.FREE,
     )
     assert tenant.can_create_space()  # FREE has 1 space, 0 created
@@ -59,8 +55,8 @@ def test_tenant_billing_check():
 
 def test_tenant_registry_quota():
     registry = TenantRegistry()
-    registry.create_tenant("t1", "Tenant 1", tier=BillingTier.TEAM)
-    assert registry.check_task_quota("t1")
+    registry.create_tenant('t1', 'Tenant 1', tier=BillingTier.TEAM)
+    assert registry.check_task_quota('t1')
 
 
 def test_tenant_plan_limits():
@@ -72,17 +68,17 @@ def test_tenant_plan_limits():
 
 def test_audit_exporter_creates_job():
     config = ObjectStorageConfig(
-        endpoint="https://s3.example.com",
-        bucket="forgepilot-logs",
-        access_key="test",
-        secret_key="test",
+        endpoint='https://s3.example.com',
+        bucket='forgepilot-logs',
+        access_key='test',
+        secret_key='test',
     )
     exporter = AuditExporter(config)
     job = exporter.export(
         '{"trace_id":"t1"}\n{"trace_id":"t2"}',
-        space_id="space-1",
-        task_id="task-1",
+        space_id='space-1',
+        task_id='task-1',
     )
-    assert job.status == "completed"
+    assert job.status == 'completed'
     assert job.event_count == 2
-    assert "space-1" in job.object_key
+    assert 'space-1' in job.object_key
