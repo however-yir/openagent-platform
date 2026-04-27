@@ -13,12 +13,23 @@ PATTERNS=(
   "AI software engineer"
 )
 
+TARGET_PATHS=(
+  "${ROOT_DIR}/README.md"
+  "${ROOT_DIR}/docker-compose.yml"
+  "${ROOT_DIR}/frontend/README.md"
+  "${ROOT_DIR}/frontend/src/components/features/forgepilot"
+  "${ROOT_DIR}/frontend/src/routes/deployment-wizard.tsx"
+  "${ROOT_DIR}/docs/brand-system.zh-CN.md"
+  "${ROOT_DIR}/docs/repository-profile.md"
+  "${ROOT_DIR}/openhands/core/config/arg_utils.py"
+)
+
 echo "ForgePilot rename audit"
 echo "root: ${ROOT_DIR}"
 
 status=0
 for pattern in "${PATTERNS[@]}"; do
-  if rg -n --hidden --glob '!node_modules' --glob '!poetry.lock' --glob '!frontend/public/locales/**' "${pattern}" "${ROOT_DIR}"; then
+  if rg -n --hidden --glob '!node_modules' --glob '!poetry.lock' --glob '!frontend/public/locales/**' "${pattern}" "${TARGET_PATHS[@]}"; then
     status=1
   fi
 done

@@ -6,6 +6,7 @@
 2. 提供迁移说明（配置项、环境变量、接口变化）。
 3. 更新兼容矩阵（前端、后端、运行时、模型网关版本）。
 4. 准备回滚步骤（镜像 tag、数据库回滚、配置回退）。
+5. 运行 `scripts/forgepilot-release-check.sh` 并保存结果到发布记录。
 
 ## 版本建议
 
@@ -15,7 +16,13 @@
 
 ## 交付物
 
-- 发布说明
-- 升级说明
-- 风险提示
-- 回滚手册
+- 变更日志：`CHANGELOG.md`
+- 兼容矩阵：`docs/compatibility-matrix.zh-CN.md`
+- 回滚手册：`docs/release-rollback-playbook.zh-CN.md`
+- 发布检查脚本：`scripts/forgepilot-release-check.sh`
+
+## 发布前命令
+
+```bash
+scripts/forgepilot-release-check.sh
+```

@@ -1,0 +1,70 @@
+{
+  "replacements": [
+    {
+      "name": "trace_header",
+      "description": "Migrate trace header branding",
+      "old": "X-OpenHands-Trace-Id",
+      "new": "X-ForgePilot-Trace-Id"
+    },
+    {
+      "name": "runtime_header",
+      "description": "Migrate runtime header branding",
+      "old": "X-OpenHands-Runtime",
+      "new": "X-ForgePilot-Runtime"
+    },
+    {
+      "name": "conversation_header",
+      "description": "Migrate server conversation header branding",
+      "old": "X-OpenHands-ServerConversation-ID",
+      "new": "X-ForgePilot-ServerConversation-ID"
+    },
+    {
+      "name": "env_base_url",
+      "description": "Migrate upstream provider base url env var",
+      "old": "OPENHANDS_PROVIDER_BASE_URL",
+      "new": "FORGEPILOT_PROVIDER_BASE_URL"
+    },
+    {
+      "name": "env_runtime_name",
+      "description": "Migrate runtime env var prefix",
+      "old": "OPENHANDS_RUNTIME_NAME",
+      "new": "FORGEPILOT_RUNTIME_NAME"
+    },
+    {
+      "name": "env_image_name",
+      "description": "Migrate image name env var prefix",
+      "old": "OPENHANDS_IMAGE_NAME",
+      "new": "FORGEPILOT_IMAGE_NAME"
+    },
+    {
+      "name": "env_container_name",
+      "description": "Migrate container name env var prefix",
+      "old": "OPENHANDS_CONTAINER_NAME",
+      "new": "FORGEPILOT_CONTAINER_NAME"
+    },
+    {
+      "name": "env_repo",
+      "description": "Migrate repository env var naming",
+      "old": "OPENHANDS_REPO",
+      "new": "FORGEPILOT_REPO"
+    },
+    {
+      "name": "env_docker_tag",
+      "description": "Migrate docker tag env var naming",
+      "old": "OPENHANDS_DOCKER_TAG",
+      "new": "FORGEPILOT_DOCKER_TAG"
+    },
+    {
+      "name": "app_name_class",
+      "description": "Migrate app config class naming",
+      "old": "OpenHandsAppConfig",
+      "new": "ForgePilotAppConfig"
+    },
+    {
+      "name": "execution_class",
+      "description": "Migrate execution config class naming",
+      "old": "OpenHandsExecutionConfig",
+      "new": "ForgePilotExecutionConfig"
+    }
+  ]
+}

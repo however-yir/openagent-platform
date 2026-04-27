@@ -19,6 +19,7 @@ from .schema import (
     ToolSchemaRef,
     summarize_tool_output,
 )
+from .shell_tools import ShellToolResult, ShellToolSpec, execute_shell_tool
 
 __all__ = [
     'ConnectorTemplate',
@@ -36,4 +37,7 @@ __all__ = [
     'ToolCostBreakdown',
     'ToolRegistryEntry',
     'summarize_tool_output',
+    'ShellToolSpec',
+    'ShellToolResult',
+    'execute_shell_tool',
 ]

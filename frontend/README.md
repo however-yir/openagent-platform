@@ -1,8 +1,8 @@
-# Getting Started with the OpenHands Frontend
+# Getting Started with the ForgePilot Frontend
 
 ## Overview
 
-This is the frontend of the OpenHands project. It is a React application that provides a web interface for the OpenHands project.
+This is the frontend of ForgePilot Studio. It is a React application that provides a web interface for the ForgePilot engineering execution workbench.
 
 ## Tech Stack
 
@@ -27,10 +27,10 @@ This is the frontend of the OpenHands project. It is a React application that pr
 
 ```sh
 # Clone the repository
-git clone https://github.com/OpenHands/OpenHands.git
+git clone https://github.com/however-yir/forgepilot-studio.git
 
 # Change the directory to the frontend
-cd OpenHands/frontend
+cd forgepilot-studio/frontend
 
 # Install the dependencies
 npm install

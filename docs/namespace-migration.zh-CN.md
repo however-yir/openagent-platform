@@ -37,7 +37,14 @@
 
 ```bash
 ./scripts/forgepilot-rename-audit.sh
+python scripts/forgepilot-namespace-rename.py --paths openhands/server/routes/mcp.py --apply
 npm --prefix frontend run typecheck
 npm --prefix frontend run build
 python -m compileall openhands enterprise third_party
 ```
+
+## 白名单与回滚
+
+- 白名单文件：`scripts/forgepilot-rename-whitelist.json`
+- 自动改名脚本：`scripts/forgepilot-namespace-rename.py`
+- 回滚补丁：`scripts/forgepilot-rename-rollback.patch`

@@ -70,6 +70,18 @@ jobs:
         working-directory: frontend
         run: npm run build
 
+  naming-and-release-standards:
+    name: Naming and Release Standards
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Verify rename audit
+        run: scripts/forgepilot-rename-audit.sh
+
+      - name: Verify release artifacts
+        run: scripts/forgepilot-release-check.sh
+
   unit:
     name: Unit Tests
     runs-on: ubuntu-22.04
