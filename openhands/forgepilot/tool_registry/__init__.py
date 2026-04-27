@@ -1,5 +1,11 @@
 """ForgePilot tool registry schema and helpers."""
 
+from .enforcement import (
+    PermissionViolation,
+    ToolAccessGuard,
+    generate_json_schemas,
+    generate_mermaid_registry_graph,
+)
 from .registry import (
     BUILTIN_CONNECTOR_TEMPLATES,
     ConnectorTemplate,
@@ -40,4 +46,8 @@ __all__ = [
     'ShellToolSpec',
     'ShellToolResult',
     'execute_shell_tool',
+    'ToolAccessGuard',
+    'PermissionViolation',
+    'generate_mermaid_registry_graph',
+    'generate_json_schemas',
 ]

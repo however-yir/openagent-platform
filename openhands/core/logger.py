@@ -322,7 +322,7 @@ def get_file_handler(
 ) -> TimedRotatingFileHandler:
     """Returns a file handler for logging."""
     os.makedirs(log_dir, exist_ok=True)
-    file_name = 'openhands.log'
+    file_name = 'forgepilot.log'
     file_handler = TimedRotatingFileHandler(
         os.path.join(log_dir, file_name),
         when=when,
@@ -380,7 +380,8 @@ def log_uncaught_exceptions(
 
 
 sys.excepthook = log_uncaught_exceptions
-openhands_logger = logging.getLogger('openhands')
+forgepilot_logger = logging.getLogger('forgepilot')
+openhands_logger = forgepilot_logger  # backward compatibility alias
 current_log_level = logging.INFO
 
 if LOG_LEVEL in logging.getLevelNamesMapping():
@@ -515,11 +516,11 @@ llm_prompt_logger = _setup_llm_logger('prompt', current_log_level)
 llm_response_logger = _setup_llm_logger('response', current_log_level)
 
 
-class OpenHandsLoggerAdapter(logging.LoggerAdapter):
+class ForgePilotLoggerAdapter(logging.LoggerAdapter):
     extra: dict
 
     def __init__(
-        self, logger: logging.Logger = openhands_logger, extra: dict | None = None
+        self, logger: logging.Logger = forgepilot_logger, extra: dict | None = None
     ) -> None:
         self.logger = logger
         self.extra = extra or {}

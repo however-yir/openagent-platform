@@ -10,4 +10,8 @@ __all__ = [
     'llm_gateway',
     'audit',
     'tool_registry',
+    'teamspace',
+    'delivery',
+    'orchestration',
+    'platform',
 ]
