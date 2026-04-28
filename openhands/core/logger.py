@@ -538,6 +538,9 @@ class ForgePilotLoggerAdapter(logging.LoggerAdapter):
         return msg, kwargs
 
 
+OpenHandsLoggerAdapter = ForgePilotLoggerAdapter  # backward compatibility alias
+
+
 def get_uvicorn_json_log_config() -> dict:
     """Returns a uvicorn log config dict for JSON structured logging.
 

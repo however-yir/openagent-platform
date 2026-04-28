@@ -203,7 +203,7 @@ def build_timeline(events: Iterable[AuditEvent]) -> AuditTimeline:
     )
 
     # Build summary
-    event_counts = defaultdict(int)
+    event_counts: dict[str, int] = defaultdict(int)
     for e in sorted_events:
         event_counts[e.event_type.value] += 1
     summary_parts = [f'{v} {k}' for k, v in event_counts.items()]
