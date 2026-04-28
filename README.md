@@ -14,6 +14,8 @@
   <img src="https://img.shields.io/badge/FastAPI-Control%20Plane-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI">
   <img src="https://img.shields.io/badge/React-Operator%20Console-61DAFB?style=for-the-badge&logo=react&logoColor=black" alt="React">
   <img src="https://img.shields.io/badge/Runtime-Docker%20%2F%20K8s-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Runtime">
+  <br/>
+  <img src="https://github.com/however-yir/forgepilot-studio/actions/workflows/forgepilot-ci.yml/badge.svg" alt="CI">
 </div>
 
 ---
