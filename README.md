@@ -6,7 +6,7 @@
 </div>
 
 <p align="center">
-面向研发团队的智能工程执行工作台（CLI / GUI / SDK / Self-Hosted）。
+面向研发团队的可审计 AI 工程执行工作台。
 </p>
 
 <div align="center">
@@ -20,8 +20,62 @@
 
 ---
 
+## 产品预览
+
+ForgePilot Studio 把“创建任务 → 执行命令 → 修改代码 → 验证测试 → 审计回放”收束成团队可治理的工程执行链路。它基于 OpenHands 深改，继承 Agent 与 runtime 基础，同时新增控制平面、任务台、团队权限、审计回放、成本阈值、MCP 工具管理和私有化配置。
+
+<table>
+  <tr>
+    <td width="33%">
+      <img src="docs/assets/screenshots/task-console.png" alt="ForgePilot 任务台截图">
+      <br>
+      <strong>任务台</strong>
+      <br>
+      <sub>计划、执行、验证、报告四段闭环，默认展示任务状态而不是空白聊天。</sub>
+    </td>
+    <td width="33%">
+      <img src="docs/assets/screenshots/runtime-log.png" alt="ForgePilot 运行日志与审计回放截图">
+      <br>
+      <strong>运行日志 / 审计回放</strong>
+      <br>
+      <sub>模型响应、命令、文件修改、工具调用和验证结果统一进入可追溯时间线。</sub>
+    </td>
+    <td width="33%">
+      <img src="docs/assets/screenshots/model-config.png" alt="ForgePilot 模型配置截图">
+      <br>
+      <strong>模型配置</strong>
+      <br>
+      <sub>支持 OpenAI-compatible gateway、Ollama、本地模型和团队私有网关。</sub>
+    </td>
+  </tr>
+</table>
+
+关键文档：
+
+- [差异说明](docs/fork-differentiation.md)：说明哪些能力来自 OpenHands，哪些是 ForgePilot 新增或深改。
+- [上游同步策略](docs/upstream-sync.md)：说明同步策略、保留 `openhands/` 包名的原因、命名空间迁移和冲突处理。
+- [模块职责与测试清单](docs/forgepilot-module-map.md)：梳理 `openhands/forgepilot/*` 的职责和测试覆盖。
+- [本地模型与网关启动指引](docs/local-models-and-gateways.md)：覆盖 Ollama、LiteLLM、OpenAI-compatible gateway 和 Preview 演示路径。
+- [Preview Release 草稿](docs/forgepilot-preview-release.md)：固定“基于 OpenHands 深改”的发布口径和发布前检查项。
+
+## AI 工程作品矩阵
+
+`ForgePilot Studio` 是 however-yir AI 工程作品矩阵中的“AI 工程执行工作台”。这组主项目覆盖企业 RAG、业务 Agent、知识治理、AI 工程执行平台和云原生微服务集成五类方向。
+
+| Repo | 定位 | 核心场景 | 技术重点 |
+|---|---|---|---|
+| [`knowledgeops-agent`](https://github.com/however-yir/knowledgeops-agent) | 企业级 Spring AI RAG 平台 | 企业知识问答、权限治理、可观测部署 | Spring AI、RAG、JWT/RBAC、异步入库、Observability |
+| [`tianji-ai-agent`](https://github.com/however-yir/tianji-ai-agent) | 业务 Agent 工程案例 | 课程咨询、课程推荐、购买流程、多智能体路由 | Java、Spring AI、Tool Calling、MCP、SSE、多模态 |
+| [`nebula-kb`](https://github.com/however-yir/nebula-kb) | 知识运营中枢 | 知识入库、知识治理、检索问答、反馈闭环 | Django、PostgreSQL、Redis、知识资产生命周期 |
+| [`forgepilot-studio`](https://github.com/however-yir/forgepilot-studio) | AI 工程执行工作台 | AI 编程任务、执行编排、审计回放、团队工作台 | Python、FastAPI、React、Runtime Sandbox、MCP |
+| [`however-microservices-lab`](https://github.com/however-yir/however-microservices-lab) | 云原生微服务 + AI 集成实验室 | 多语言微服务、Kubernetes、gRPC、AI 服务接入 | Go、Python、Java、Node.js、C#、K8s、Ollama/Gemini |
+
+---
+
 ## 目录
 
+- [产品预览](#产品预览)
+- [AI 工程作品矩阵](#ai-工程作品矩阵)
 - [1. 项目定位](#1-项目定位)
 - [2. 与上游项目的差异化方向](#2-与上游项目的差异化方向)
 - [3. 功能全景](#3-功能全景)
@@ -40,7 +94,7 @@
 
 ## 1. 项目定位
 
-`ForgePilot Studio` 是一个以“可审计的智能研发执行链路”为核心的工程平台。它更像团队内部的 AI 工程操作台，而不是单纯的聊天式代码助手。
+`ForgePilot Studio` 是面向研发团队的可审计 AI 工程执行工作台。它以“可审计的智能研发执行链路”为核心，更像团队内部的 AI 工程控制台，而不是单纯的聊天式代码助手。
 
 核心能力：
 
@@ -57,18 +111,24 @@
 
 ## 2. 与上游项目的差异化方向
 
-本仓库正在从通用开源 Agent 项目演进为独立的工程执行产品。当前已完成或明确的差异化方向：
+本仓库正在从通用开源 Agent 项目演进为独立的工程执行产品。ForgePilot 明确承认并继承 OpenHands 的 Agent、runtime、LLM/MCP 基础能力，同时把自研价值集中在研发团队使用时必须要有的治理层和产品层。
 
-1. 对外名称改为 `ForgePilot Studio`，强调工程编排与研发执行。
-2. 顶部 Logo、仓库描述、组件库名称与包名统一换成 ForgePilot 品牌。
-3. README 改为中文主叙述，面向私有化交付和团队内部使用场景。
-4. 配置模板集中管理 DB、Redis、Ollama、LLM 网关、镜像与工作区路径。
-5. Docker Compose 支持镜像名、容器名、Agent Server 镜像仓库参数化。
-6. 差异化路线图作为独立文档维护，README 不展开长清单。
+当前已完成或明确的差异化方向：
+
+1. 控制平面：`Plan -> Execute -> Verify -> Report` 任务协议、验收标准、变更边界和执行策略。
+2. 任务台：默认首页聚焦任务队列、阶段状态、失败过滤、预算和私有化部署向导。
+3. 团队权限：`TeamSpace`、owner/admin/member/viewer 权限矩阵和空间隔离模型。
+4. 审计回放：统一 `AuditEvent`、timeline、JSONL/CSV 导出和交付报告证据链。
+5. 成本阈值：把 `max_budget_per_task` 与会话 metrics、任务预算视图连接起来。
+6. MCP 工具管理：工具 registry、权限、mock、schema、健康状态、调用记录和输出摘要。
+7. 私有化配置：集中管理 DB、Redis、Ollama、LLM 网关、镜像与工作区路径。
+8. 上游同步：保留 `openhands/` 包名作为迁移期兼容层，ForgePilot 专属能力放在 `openhands/forgepilot/*`。
 
 上游来源参考：
 
 - Upstream Repo: [OpenHands/OpenHands](https://github.com/OpenHands/OpenHands)
+- 差异说明：[docs/fork-differentiation.md](docs/fork-differentiation.md)
+- 上游同步策略：[docs/upstream-sync.md](docs/upstream-sync.md)
 
 ---
 
@@ -147,6 +207,8 @@ cp .env.fork.example .env
 docker compose up -d --build
 ```
 
+本地模型、Ollama、LiteLLM 和 OpenAI-compatible gateway 的完整指引见 [docs/local-models-and-gateways.md](docs/local-models-and-gateways.md)。
+
 ### 6.3 源码启动（示例）
 
 ```bash
@@ -195,14 +257,20 @@ npm run dev
 
 ## 9. 深度改造路线图
 
-建议按四阶段推进：
+建议按五阶段推进：
 
 1. 品牌层：名称、Logo、README、仓库描述、组件包名。
 2. 配置层：环境模板、密钥治理、配置校验、镜像参数化。
 3. 产品层：任务台、审计台、工具市场、团队权限、成本面板。
 4. 架构层：命名空间迁移、插件系统、CI 完整化、可观测性。
+5. 发布层：Preview release、演示 GIF、上游同步记录和私有化部署说明。
 
-详细清单作为独立文档维护，README 仅保留阶段概览。
+详细清单作为独立文档维护，README 仅保留阶段概览：
+
+- [docs/forgepilot-differentiation-roadmap.zh-CN.md](docs/forgepilot-differentiation-roadmap.zh-CN.md)
+- [docs/forgepilot-module-map.md](docs/forgepilot-module-map.md)
+- [docs/local-models-and-gateways.md](docs/local-models-and-gateways.md)
+- [docs/forgepilot-preview-release.md](docs/forgepilot-preview-release.md)
 
 ---
 
