@@ -47,6 +47,12 @@ export function WorkbenchPage({ config }: WorkbenchPageProps) {
   const [showFailedOnly, setShowFailedOnly] = useState(false);
   const [collapsedStages, setCollapsedStages] = useState<WorkflowStage[]>([]);
   const [showOnboardingNotice, setShowOnboardingNotice] = useState(false);
+  const [showTaskForm, setShowTaskForm] = useState(false);
+  const [demoTaskStarted, setDemoTaskStarted] = useState(false);
+  const [verifyStarted, setVerifyStarted] = useState(false);
+
+  const isTaskConsole = config.title === "任务台";
+  const isAuditReplay = config.title === "审计回放";
 
   useEffect(() => {
     if (!config.onboardingNotice || typeof window === "undefined") {
@@ -98,6 +104,13 @@ export function WorkbenchPage({ config }: WorkbenchPageProps) {
       window.localStorage.setItem(config.onboardingNotice.storageKey, "done");
     }
     setShowOnboardingNotice(false);
+  };
+
+  const startDemoTask = () => {
+    setShowTaskForm(false);
+    setDemoTaskStarted(true);
+    setVerifyStarted(false);
+    window.setTimeout(() => setVerifyStarted(true), 900);
   };
 
   return (
@@ -173,6 +186,244 @@ export function WorkbenchPage({ config }: WorkbenchPageProps) {
                 稍后处理
               </button>
             </div>
+          </div>
+        </section>
+      ) : null}
+
+      {isTaskConsole ? (
+        <section className="border-b border-white/10 bg-[#101417] px-5 py-5 md:px-8">
+          <div className="mb-4 flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <h2 className="text-sm font-semibold uppercase tracking-normal text-[#dce7eb]">
+                任务演示
+              </h2>
+              <p className="mt-1 text-sm text-[#93a2a8]">
+                用固定样例展示新建任务、计划、执行、验证和审计回放链路。
+              </p>
+            </div>
+            <button
+              type="button"
+              data-testid="new-task-button"
+              onClick={() => setShowTaskForm((previous) => !previous)}
+              className="inline-flex h-10 items-center justify-center rounded-md border border-[#2dd4bf]/50 bg-[#2dd4bf]/15 px-4 text-sm font-semibold text-[#dffdf7] hover:bg-[#2dd4bf]/25"
+            >
+              新建任务
+            </button>
+          </div>
+
+          {showTaskForm ? (
+            <form
+              data-testid="new-task-form"
+              className="mb-4 grid gap-3 rounded-md border border-white/10 bg-[#151b1f] p-4"
+              onSubmit={(event) => {
+                event.preventDefault();
+                startDemoTask();
+              }}
+            >
+              <label className="grid gap-1 text-sm text-[#c8d5da]">
+                任务目标
+                <input
+                  name="goal"
+                  defaultValue="修复 login 模块空指针异常"
+                  className="rounded-md border border-white/10 bg-[#0f1518] px-3 py-2 text-white outline-none focus:border-[#2dd4bf]/60"
+                />
+              </label>
+              <div className="grid gap-3 md:grid-cols-3">
+                <label className="grid gap-1 text-sm text-[#c8d5da]">
+                  验收标准
+                  <input
+                    name="acceptance"
+                    defaultValue="登录单测全部通过，错误态有提示"
+                    className="rounded-md border border-white/10 bg-[#0f1518] px-3 py-2 text-white outline-none focus:border-[#2dd4bf]/60"
+                  />
+                </label>
+                <label className="grid gap-1 text-sm text-[#c8d5da]">
+                  变更边界
+                  <input
+                    name="scope"
+                    defaultValue="auth/login 服务与对应测试"
+                    className="rounded-md border border-white/10 bg-[#0f1518] px-3 py-2 text-white outline-none focus:border-[#2dd4bf]/60"
+                  />
+                </label>
+                <label className="grid gap-1 text-sm text-[#c8d5da]">
+                  预算上限
+                  <input
+                    name="budget"
+                    defaultValue="$8"
+                    className="rounded-md border border-white/10 bg-[#0f1518] px-3 py-2 text-white outline-none focus:border-[#2dd4bf]/60"
+                  />
+                </label>
+              </div>
+              <label className="grid gap-1 text-sm text-[#c8d5da]">
+                模型
+                <select
+                  name="model"
+                  defaultValue="OpenAI-compatible gateway"
+                  className="rounded-md border border-white/10 bg-[#0f1518] px-3 py-2 text-white outline-none focus:border-[#2dd4bf]/60"
+                >
+                  <option>OpenAI-compatible gateway</option>
+                  <option>Ollama local</option>
+                  <option>Team private gateway</option>
+                </select>
+              </label>
+              <div className="flex justify-end">
+                <button
+                  type="submit"
+                  data-testid="submit-task-button"
+                  className="inline-flex h-10 items-center rounded-md bg-[#2dd4bf] px-4 text-sm font-semibold text-[#062522] hover:bg-[#5eead4]"
+                >
+                  提交任务
+                </button>
+              </div>
+            </form>
+          ) : null}
+
+          {demoTaskStarted ? (
+            <div
+              data-testid="demo-task-detail"
+              className="grid gap-4 rounded-md border border-[#2dd4bf]/30 bg-[#11191c] p-4 xl:grid-cols-[minmax(0,1.1fr)_minmax(300px,0.9fr)]"
+            >
+              <div className="grid gap-3">
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <h3 className="text-base font-semibold text-white">
+                      修复 login 模块空指针异常
+                    </h3>
+                    <p className="mt-1 text-sm text-[#aebbc0]">
+                      验收标准：登录单测全部通过，错误态有提示；变更边界：auth/login
+                      服务与对应测试。
+                    </p>
+                  </div>
+                  <StatusPill
+                    label={verifyStarted ? "Verify" : "Execute"}
+                    className={
+                      verifyStarted
+                        ? TASK_STATE_STYLES.verified
+                        : TASK_STATE_STYLES.running
+                    }
+                  />
+                </div>
+                <div className="grid gap-3 md:grid-cols-2">
+                  <article className="rounded-md border border-emerald-400/40 bg-emerald-400/10 p-3">
+                    <p className="text-sm font-semibold text-emerald-100">
+                      Plan 完成
+                    </p>
+                    <p className="mt-1 text-xs text-emerald-50/80">
+                      已拆解根因、风险和最小修改范围。
+                    </p>
+                  </article>
+                  <article className="rounded-md border border-sky-400/40 bg-sky-400/10 p-3">
+                    <p className="text-sm font-semibold text-sky-100">
+                      Execute {verifyStarted ? "完成" : "进行中"}
+                    </p>
+                    <p className="mt-1 text-xs text-sky-50/80">
+                      正在执行命令、编辑文件并记录工具调用。
+                    </p>
+                  </article>
+                </div>
+                <div className="rounded-md border border-white/10 bg-[#0c1113] p-3">
+                  <p className="mb-2 text-xs font-semibold uppercase tracking-normal text-[#8ee8d9]">
+                    命令输出
+                  </p>
+                  <pre className="whitespace-pre-wrap text-xs leading-6 text-[#dce7eb]">
+                    {`$ git checkout -b fix/login-npe
+Switched to a new branch 'fix/login-npe'
+
+$ pytest tests/unit/test_login.py
+${verifyStarted ? "12 passed / 0 failed / 1 skipped" : "collecting ... running tests/unit/test_login.py::test_empty_profile"}`}
+                  </pre>
+                </div>
+              </div>
+              <aside className="grid gap-3">
+                <div className="rounded-md border border-white/10 bg-[#0c1113] p-3">
+                  <p className="mb-2 text-xs font-semibold uppercase tracking-normal text-[#8ee8d9]">
+                    文件 Diff
+                  </p>
+                  <div className="grid gap-2 text-xs text-[#c8d5da]">
+                    <span>auth/login_service.py · +12 / -3</span>
+                    <span>tests/unit/test_login.py · +28 / -0</span>
+                    <span className="text-emerald-200">
+                      + if user.profile is None: return LoginError(...)
+                    </span>
+                  </div>
+                </div>
+                <div className="rounded-md border border-white/10 bg-[#0c1113] p-3">
+                  <p className="mb-2 text-xs font-semibold uppercase tracking-normal text-[#8ee8d9]">
+                    工具调用记录
+                  </p>
+                  <div className="grid gap-2 text-xs text-[#c8d5da]">
+                    <span>bash · git checkout -b fix/login-npe · success</span>
+                    <span>file_edit · auth/login_service.py · success</span>
+                    <span>
+                      bash · pytest tests/unit/test_login.py ·{" "}
+                      {verifyStarted ? "success" : "running"}
+                    </span>
+                  </div>
+                </div>
+                <div className="rounded-md border border-white/10 bg-[#0c1113] p-3">
+                  <p className="mb-2 text-xs font-semibold uppercase tracking-normal text-[#8ee8d9]">
+                    Verify
+                  </p>
+                  <p className="text-sm text-white">
+                    {verifyStarted
+                      ? "12 passed / 0 failed / 1 skipped"
+                      : "等待 Execute 完成后自动开始"}
+                  </p>
+                </div>
+                <Link
+                  to="/audit"
+                  data-testid="audit-link"
+                  className="inline-flex h-10 items-center justify-center rounded-md border border-white/15 bg-white/[0.04] text-sm font-semibold text-[#dce7eb] hover:bg-white/10"
+                >
+                  打开审计回放
+                </Link>
+              </aside>
+            </div>
+          ) : null}
+        </section>
+      ) : null}
+
+      {isAuditReplay ? (
+        <section className="border-b border-white/10 bg-[#101417] px-5 py-5 md:px-8">
+          <h2 className="text-sm font-semibold uppercase tracking-normal text-[#dce7eb]">
+            login 修复任务时间线
+          </h2>
+          <div className="mt-4 grid gap-3">
+            {[
+              ["模型响应", "识别 login 模块空指针来自 user.profile 未初始化。"],
+              ["命令执行", "git checkout -b fix/login-npe"],
+              ["文件修改", "auth/login_service.py +12 / -3"],
+              ["工具调用", "bash, file_edit, bash"],
+              ["验证结果", "12 passed / 0 failed / 1 skipped"],
+            ].map(([title, detail], index) => (
+              <details
+                key={title}
+                open={index === 0 || index === 4}
+                className="rounded-md border border-white/10 bg-[#151b1f] p-3"
+              >
+                <summary className="cursor-pointer text-sm font-semibold text-white">
+                  {title}
+                  {" -> "}
+                  {detail}
+                </summary>
+                <pre className="mt-3 overflow-x-auto rounded bg-[#0c1113] p-3 text-xs leading-6 text-[#c8d5da]">
+                  {JSON.stringify(
+                    {
+                      event: title,
+                      task: "修复 login 模块空指针异常",
+                      status: index === 4 ? "verified" : "recorded",
+                      input: detail,
+                      output:
+                        index === 4
+                          ? "pytest tests/unit/test_login.py: 12 passed / 0 failed / 1 skipped"
+                          : "recorded in audit timeline",
+                    },
+                    null,
+                    2,
+                  )}
+                </pre>
+              </details>
+            ))}
           </div>
         </section>
       ) : null}
