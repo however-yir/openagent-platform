@@ -50,6 +50,8 @@ ForgePilot Studio 把“创建任务 → 执行命令 → 修改代码 → 验�
   </tr>
 </table>
 
+![Demo](docs/assets/screenshots/demo.gif)
+
 关键文档：
 
 - [差异说明](docs/fork-differentiation.md)：说明哪些能力来自 OpenHands，哪些是 ForgePilot 新增或深改。
