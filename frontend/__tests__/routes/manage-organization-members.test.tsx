@@ -606,7 +606,6 @@ describe("Manage Organization Members Route", () => {
     expect(screen.queryByText("charlie@acme.org")).not.toBeInTheDocument();
   });
 
-
   describe("Inviting Organization Members", () => {
     it("should render an invite organization member button", async () => {
       await setupInviteTest();
@@ -724,7 +723,7 @@ describe("Manage Organization Members Route", () => {
 
     it("should not show invite button when user lacks canInviteUsers permission (User role)", async () => {
       const userData = {
-        org_id: "1",
+        org_id: "2",
         user_id: "1",
         email: "test@example.com",
         role: "member" as const,
@@ -736,16 +735,25 @@ describe("Manage Organization Members Route", () => {
         status: "active" as const,
       };
 
-      // Set mock and remove cached query before rendering
-      getMeSpy.mockResolvedValue(userData);
-      // Remove any cached "me" queries so fresh data is fetched
-      queryClient.removeQueries({ queryKey: ["organizations"] });
+      const loaderUserData = {
+        ...userData,
+        role: "admin" as const,
+      };
 
-      await setupTestWithOrg(0);
+      // Let the settings route loader pass, then verify the rendered component
+      // hides invite controls for a member role returned by useMe().
+      mockQueryClient.setQueryData(
+        ["organizations", "2", "me"],
+        loaderUserData,
+      );
+      getMeSpy.mockResolvedValue(userData);
+      queryClient.setQueryData(["organizations", "2", "me"], userData);
+
+      await setupTestWithOrg(1);
 
       // Directly set the query data to force component re-render with user role
       // This ensures the component uses the user role data instead of cached admin data
-      queryClient.setQueryData(["organizations", "1", "me"], userData);
+      queryClient.setQueryData(["organizations", "2", "me"], userData);
 
       // Wait for the component to update with the new query data
       await waitFor(
