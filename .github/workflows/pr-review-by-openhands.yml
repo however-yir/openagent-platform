@@ -2,10 +2,6 @@
 name: PR Review by OpenHands
 
 on:
-    # TEMPORARY MITIGATION (Clinejection hardening)
-    #
-    # We temporarily avoid `pull_request_target` here. We'll restore it after the PR review
-    # workflow is fully hardened for untrusted execution.
     pull_request:
         types: [opened, ready_for_review, labeled, review_requested]
 
@@ -16,10 +12,10 @@ permissions:
 
 jobs:
     pr-review:
-        # Note: fork PRs will not have access to repository secrets under `pull_request`.
-        # Skip forks to avoid noisy failures until we restore a hardened `pull_request_target` flow.
+        # Skip when LLM_API_KEY is not configured (preview/unfunded repos)
         if: |
             github.event.pull_request.head.repo.full_name == github.repository &&
+            vars.LLM_API_KEY_CONFIGURED == 'true' &&
             (
                 (github.event.action == 'opened' && github.event.pull_request.draft == false) ||
                 github.event.action == 'ready_for_review' ||
