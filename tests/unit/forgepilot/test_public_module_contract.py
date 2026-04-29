@@ -1,6 +1,11 @@
 import openhands.forgepilot as forgepilot
-from openhands.forgepilot import audit, control_plane, llm_gateway, runtime_providers
-from openhands.forgepilot import teamspace
+from openhands.forgepilot import (
+    audit,
+    control_plane,
+    llm_gateway,
+    runtime_providers,
+    teamspace,
+)
 
 
 def test_forgepilot_package_exports_product_modules():
