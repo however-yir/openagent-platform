@@ -221,6 +221,10 @@ test_results*
 frontend/build
 frontend/dist
 
+# Local copy/conflict artifacts
+* 2
+* 2.*
+
 # misc
 .DS_Store
 .env.local
