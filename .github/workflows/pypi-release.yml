@@ -22,6 +22,8 @@ jobs:
     if: |
       (github.event_name == 'workflow_dispatch' && github.event.inputs.reason == 'app server')
       || (github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v'))
+    env:
+      PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
     steps:
       - uses: actions/checkout@v6
       - uses: actions/setup-python@v5
@@ -37,5 +39,5 @@ jobs:
       - name: Build poetry project
         run: ./build.sh
       - name: publish
-        if: ${{ secrets.PYPI_TOKEN != '' }}
-        run: poetry publish -u __token__ -p ${{ secrets.PYPI_TOKEN }}
+        if: env.PYPI_TOKEN != ''
+        run: poetry publish -u __token__ -p "$PYPI_TOKEN"
