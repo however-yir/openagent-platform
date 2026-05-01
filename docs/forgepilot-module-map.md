@@ -12,8 +12,8 @@
 | `teamspace` | 建模个人/团队/共享模板空间，提供角色权限矩阵和空间注册表。 | `TeamSpace`、`SpaceRole`、`SpacePermissionGuard` |
 | `llm_gateway` | 识别模型供应商前缀，统一 OpenAI、Anthropic、Ollama、LiteLLM、ForgePilot Gateway 的路由口径。 | `LLMGatewayProvider`、`detect_provider()` |
 | `runtime_providers` | 抽象 local、Docker、Kubernetes、remote runtime 能力与策略支持度。 | `RuntimeProviderSpec`、`get_runtime_provider()` |
-| `delivery` | 从审计事件生成 PR 描述、测试报告、回放链接、文件变更摘要和 commit message。 | `generate_delivery_artifact()` |
-| `orchestration` | 定义多 Agent 角色模板与知识注入上下文。 | `OrchestrationTemplate`、`KnowledgeLoader` |
+| `delivery` | 从审计事件生成 PR 描述、测试报告、回放链接、文件变更摘要和 commit message。 | `generate_delivery_artifact()` — `__init__.py` only, planned for v0.3.0 |
+| `orchestration` | 定义多 Agent 角色模板与知识注入上下文。 | `OrchestrationTemplate`、`KnowledgeLoader` — `__init__.py` only, planned for v0.3.0 |
 | `platform` | 提供结构化日志、trace_id 传播、审计归档策略、对象存储导出和平台级模型。 | `StructuredLogger`、`TraceContext`、`AuditExporter` |
 
 ## 测试覆盖现状

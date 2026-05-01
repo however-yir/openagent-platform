@@ -9,6 +9,9 @@
 面向研发团队的可审计 AI 工程执行工作台。
 </p>
 
+> **Based on [OpenHands](https://github.com/OpenHands/OpenHands), deep-customized with:**
+> Control Plane (Plan→Execute→Verify→Report) · Task Console · TeamSpace RBAC · Audit Replay · Cost Thresholds · MCP Tool Registry · Private Deployment
+
 <div align="center">
   <img src="https://img.shields.io/badge/Python-3.12%2B-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python">
   <img src="https://img.shields.io/badge/FastAPI-Control%20Plane-009688?style=for-the-badge&logo=fastapi&logoColor=white" alt="FastAPI">
