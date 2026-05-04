@@ -8,6 +8,7 @@ This pack collects the shortest public proof path for reviewing the AI engineeri
 - Primary CI: `.github/workflows/forgepilot-ci.yml`
 - GHCR build workflow: `.github/workflows/ghcr-build.yml`
 - UI build: `.github/workflows/ui-build.yml`
+- Baseline release: `AI Matrix Baseline 2026.05`
 - Release: `v0.2.0 Milestone - Control Plane & Task Console`
 
 ## Product And Architecture Evidence
@@ -28,4 +29,3 @@ This pack collects the shortest public proof path for reviewing the AI engineeri
 - Confirm model configuration supports OpenAI-compatible gateways and local models.
 - Check MCP/tool governance documentation.
 - Open the latest GitHub Actions run and confirm the primary CI is green.
-
