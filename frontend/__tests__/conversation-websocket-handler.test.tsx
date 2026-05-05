@@ -72,9 +72,10 @@ afterEach(() => {
   mswServer.resetHandlers();
   // Clean up any React components
   cleanup();
-  // Reset stores to prevent state leakage between tests
+  // Reset ALL stores to prevent state leakage between tests
   useErrorMessageStore.getState().removeErrorMessage();
   useEventStore.getState().clearEvents();
+  useCommandStore.getState().clearTerminal();
 });
 
 afterAll(async () => {
