@@ -7,3 +7,7 @@
 ## How This Repository Fits
 
 `forgepilot-studio` is the AI engineering execution slice. It proves the product and governance layer around coding agents: task protocol, team spaces, tool registry, runtime logs, audit replay, and private deployment configuration.
+
+## Integrated Assets
+
+- `third_party/star-graph`: migrated ComfyUI Java client integration. It is preserved as a reference integration module and is not wired into the ForgePilot Python/frontend runtime by default.

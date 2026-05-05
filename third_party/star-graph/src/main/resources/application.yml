@@ -1,0 +1,5 @@
+comfyui:
+  base-url: ${COMFYUI_BASE_URL:http://127.0.0.1:8188}
+  ws-url: ${COMFYUI_WS_URL:ws://127.0.0.1:8188/ws?clientId=star-graph}
+  connect-timeout-seconds: ${COMFYUI_CONNECT_TIMEOUT_SECONDS:30}
+  http-log-level: ${COMFYUI_HTTP_LOG_LEVEL:BODY}
