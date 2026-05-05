@@ -6,7 +6,6 @@ updates:
       interval: "daily"
     open-pull-requests-limit: 5
     groups:
-      # put packages in their own group if they have a history of breaking the build or needing to be reverted
       pre-commit:
         patterns:
           - "pre-commit"
@@ -30,6 +29,30 @@ updates:
     schedule:
       interval: "daily"
     open-pull-requests-limit: 5
+    ignore:
+      # Block major version upgrades that break the build
+      - dependency-name: "vite"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@tailwindcss/vite"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "tailwindcss"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@heroui/react"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "i18next"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "i18next-http-backend"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react-i18next"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "react-router"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "@react-router/*"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "vite-plugin-svgr"
+        update-types: ["version-update:semver-major"]
+      - dependency-name: "vite-tsconfig-paths"
+        update-types: ["version-update:semver-major"]
     groups:
       docusaurus:
         patterns:
