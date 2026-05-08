@@ -7,7 +7,9 @@ E-43: Wraps tool invocations with runtime permission guards that cannot be bypas
 from __future__ import annotations
 
 import fnmatch
+import os
 from dataclasses import dataclass, field
+from pathlib import Path
 from typing import Any, Callable, Mapping
 
 from .registry import ToolRegistry
@@ -31,16 +33,27 @@ class ToolAccessGuard:
 
     Cannot be bypassed — wraps the ToolRegistry.invoke() entrypoint so that
     every call path (shell, HTTP, MCP, script) goes through the same check.
+
+    When *workspace_root* is provided the guard resolves every *target_path*
+    to a canonical absolute path (resolving symlinks and ``..`` components),
+    confirms it stays within the workspace, then converts it to a relative
+    path for allowlist / blocklist matching.  This prevents path-traversal
+    attacks via ``../``, absolute paths, symlinks, and Windows-style
+    separators.
     """
 
     def __init__(
         self,
         registry: ToolRegistry,
         *,
+        workspace_root: str | Path | None = None,
         path_allowlist: list[str] | None = None,
         path_blocklist: list[str] | None = None,
     ) -> None:
         self._registry = registry
+        self._workspace_root: Path | None = (
+            Path(workspace_root).resolve() if workspace_root is not None else None
+        )
         self._path_allowlist = path_allowlist or []
         self._path_blocklist = path_blocklist or []
         self._violations: list[PermissionViolation] = []
@@ -49,6 +62,86 @@ class ToolAccessGuard:
     @property
     def violations(self) -> list[PermissionViolation]:
         return list(self._violations)
+
+    # ── path helpers ──────────────────────────────────
+
+    def _resolve_target_path(self, raw_path: str) -> tuple[Path | None, str | None]:
+        """Resolve *raw_path* and confirm it is inside the workspace.
+
+        Returns ``(resolved_relative, None)`` on success or
+        ``(None, error_detail)`` when the path escapes the workspace.
+
+        The resolved relative path normalises backslashes so that
+        fnmatch patterns written with ``/`` also match on Windows.
+        """
+        if self._workspace_root is None:
+            # No workspace configured — normalise separators but skip
+            # the boundary check.
+            normalised = raw_path.replace(os.sep, '/')
+            return Path(normalised), None
+
+        # Normalise Windows separators before joining so that
+        # "src\\..\\..\\etc" is handled identically on all platforms.
+        normalised_input = raw_path.replace('\\', '/')
+
+        # Resolve against workspace root so that absolute paths and
+        # bare relative paths are both handled uniformly.
+        candidate = (self._workspace_root / normalised_input).resolve()
+
+        # Confirm the canonical path is still inside the workspace.
+        # Use a try/except for Python <3.12 compat (is_relative_to
+        # raises ValueError on mismatch in 3.9-3.11).
+        try:
+            relative = candidate.relative_to(self._workspace_root)
+        except ValueError:
+            return None, (
+                f'path {raw_path!r} escapes workspace '
+                f'(resolved to {candidate})'
+            )
+
+        # Normalise to forward-slash form for consistent matching.
+        relative_str = str(relative).replace(os.sep, '/')
+        return Path(relative_str), None
+
+    def _check_path_rules(
+        self,
+        tool_id: str,
+        required: ToolPermission,
+        entry: ToolRegistryEntry,
+        resolved_path: str,
+    ) -> bool:
+        """Apply blocklist / allowlist fnmatch rules against *resolved_path*."""
+        if self._path_blocklist and any(
+            fnmatch.fnmatch(resolved_path, pattern)
+            for pattern in self._path_blocklist
+        ):
+            self._violations.append(
+                PermissionViolation(
+                    tool_id=tool_id,
+                    required_permission=required,
+                    actual_permission=entry.permission,
+                    detail=f'path {resolved_path} is blocked',
+                )
+            )
+            return False
+
+        if self._path_allowlist and not any(
+            fnmatch.fnmatch(resolved_path, pattern)
+            for pattern in self._path_allowlist
+        ):
+            self._violations.append(
+                PermissionViolation(
+                    tool_id=tool_id,
+                    required_permission=required,
+                    actual_permission=entry.permission,
+                    detail=f'path {resolved_path} is not in allowlist',
+                )
+            )
+            return False
+
+        return True
+
+    # ── main check ───────────────────────────────────
 
     def check(
         self,
@@ -97,34 +190,26 @@ class ToolAccessGuard:
             )
             return False
 
-        # Path boundary check
+        # Path boundary check — resolve, verify workspace containment,
+        # then apply allowlist / blocklist against the normalised
+        # relative path.
         if target_path is not None:
-            if self._path_blocklist and any(
-                fnmatch.fnmatch(target_path, pattern)
-                for pattern in self._path_blocklist
-            ):
+            resolved, err_detail = self._resolve_target_path(target_path)
+            if err_detail is not None:
                 self._violations.append(
                     PermissionViolation(
                         tool_id=tool_id,
                         required_permission=required,
                         actual_permission=entry.permission,
-                        detail=f'path {target_path} is blocked',
+                        detail=err_detail,
                     )
                 )
                 return False
 
-            if self._path_allowlist and not any(
-                fnmatch.fnmatch(target_path, pattern)
-                for pattern in self._path_allowlist
-            ):
-                self._violations.append(
-                    PermissionViolation(
-                        tool_id=tool_id,
-                        required_permission=required,
-                        actual_permission=entry.permission,
-                        detail=f'path {target_path} is not in allowlist',
-                    )
-                )
+            assert resolved is not None
+            resolved_str = str(resolved)
+
+            if not self._check_path_rules(tool_id, required, entry, resolved_str):
                 return False
 
         return True

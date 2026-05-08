@@ -4,12 +4,15 @@ import shlex
 import subprocess
 import time
 from pathlib import Path
-from typing import Mapping
+from typing import TYPE_CHECKING, Mapping
 
 from pydantic import BaseModel, Field
 
 from .registry import ToolRegistry
 from .schema import ToolPermission
+
+if TYPE_CHECKING:
+    from .enforcement import ToolAccessGuard
 
 
 class ShellToolSpec(BaseModel):
@@ -58,46 +61,81 @@ def execute_shell_tool(
     trace_id: str | None = None,
     workspace_root: Path | None = None,
     confirmed: bool = False,
+    guard: ToolAccessGuard | None = None,
 ) -> tuple[ShellToolResult, object]:
     parameters = parameters or {}
     entry = registry.get_entry(spec.tool_id)
     command = _build_command(spec, parameters)
     command_line = shlex.join(command)
 
-    if not entry.enabled:
-        result = ShellToolResult(
-            exit_code=126,
-            stdout='',
-            stderr='tool is disabled',
-            command_line=command_line,
-        )
-        record = registry.record_call(
-            spec.tool_id,
-            parameters=parameters,
-            output=_summarize_result(result),
-            duration_ms=0,
-            error='tool is disabled',
-            trace_id=trace_id,
-        )
-        return result, record
+    # ── permission / enablement checks ────────────────
+    # When a ToolAccessGuard is provided, delegate all permission and
+    # enablement decisions to it so every tool-call entry point enforces
+    # the same policy.  The inline checks below serve as the backwards-
+    # compatible fallback for callers that do not supply a guard.
 
-    if entry.permission not in {ToolPermission.EXECUTE, ToolPermission.CONFIRM}:
-        result = ShellToolResult(
-            exit_code=126,
-            stdout='',
-            stderr=f'permission {entry.permission.value} does not allow shell execution',
-            command_line=command_line,
-        )
-        record = registry.record_call(
+    if guard is not None:
+        # Resolve cwd for workspace boundary checking.
+        target = str(spec.cwd) if spec.cwd else None
+        if not guard.check(
             spec.tool_id,
-            parameters=parameters,
-            output=_summarize_result(result),
-            duration_ms=0,
-            error='permission denied',
-            trace_id=trace_id,
-        )
-        return result, record
+            required=ToolPermission.EXECUTE,
+            target_path=target,
+        ):
+            detail = guard.violations[-1].detail if guard.violations else 'denied'
+            result = ShellToolResult(
+                exit_code=126,
+                stdout='',
+                stderr=detail,
+                command_line=command_line,
+            )
+            record = registry.record_call(
+                spec.tool_id,
+                parameters=parameters,
+                output=_summarize_result(result),
+                duration_ms=0,
+                error=detail,
+                trace_id=trace_id,
+            )
+            return result, record
+    else:
+        # Inline checks (legacy path — no guard available).
+        if not entry.enabled:
+            result = ShellToolResult(
+                exit_code=126,
+                stdout='',
+                stderr='tool is disabled',
+                command_line=command_line,
+            )
+            record = registry.record_call(
+                spec.tool_id,
+                parameters=parameters,
+                output=_summarize_result(result),
+                duration_ms=0,
+                error='tool is disabled',
+                trace_id=trace_id,
+            )
+            return result, record
 
+        if entry.permission not in {ToolPermission.EXECUTE, ToolPermission.CONFIRM}:
+            result = ShellToolResult(
+                exit_code=126,
+                stdout='',
+                stderr=f'permission {entry.permission.value} does not allow shell execution',
+                command_line=command_line,
+            )
+            record = registry.record_call(
+                spec.tool_id,
+                parameters=parameters,
+                output=_summarize_result(result),
+                duration_ms=0,
+                error='permission denied',
+                trace_id=trace_id,
+            )
+            return result, record
+
+    # CONFIRM check applies regardless of guard presence — it is a
+    # runtime user-confirmation gate, not a permission-level gate.
     if entry.permission == ToolPermission.CONFIRM and not confirmed:
         result = ShellToolResult(
             exit_code=126,
