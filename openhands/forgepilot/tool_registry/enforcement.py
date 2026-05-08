@@ -95,8 +95,7 @@ class ToolAccessGuard:
             relative = candidate.relative_to(self._workspace_root)
         except ValueError:
             return None, (
-                f'path {raw_path!r} escapes workspace '
-                f'(resolved to {candidate})'
+                f'path {raw_path!r} escapes workspace (resolved to {candidate})'
             )
 
         # Normalise to forward-slash form for consistent matching.
@@ -112,8 +111,7 @@ class ToolAccessGuard:
     ) -> bool:
         """Apply blocklist / allowlist fnmatch rules against *resolved_path*."""
         if self._path_blocklist and any(
-            fnmatch.fnmatch(resolved_path, pattern)
-            for pattern in self._path_blocklist
+            fnmatch.fnmatch(resolved_path, pattern) for pattern in self._path_blocklist
         ):
             self._violations.append(
                 PermissionViolation(
@@ -126,8 +124,7 @@ class ToolAccessGuard:
             return False
 
         if self._path_allowlist and not any(
-            fnmatch.fnmatch(resolved_path, pattern)
-            for pattern in self._path_allowlist
+            fnmatch.fnmatch(resolved_path, pattern) for pattern in self._path_allowlist
         ):
             self._violations.append(
                 PermissionViolation(
