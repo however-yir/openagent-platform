@@ -19,6 +19,10 @@ from openhands.forgepilot.tool_registry.schema import (
     ToolPermission,
     ToolRegistryEntry,
 )
+from openhands.forgepilot.tool_registry.shell_tools import (
+    ShellToolSpec,
+    execute_shell_tool,
+)
 
 
 # ── helpers ───────────────────────────────────────────
@@ -261,6 +265,24 @@ class TestPathRules:
         (workspace / '__pycache__' / 'app.pyc').write_text('x')
         assert guard.check('file.read', target_path='__pycache__/app.pyc') is False
 
+    def test_blocklist_takes_priority_over_allowlist(self, workspace: Path):
+        """Blocklist must win when a path matches both allowlist and blocklist."""
+        registry = _make_registry()
+        guard = ToolAccessGuard(
+            registry,
+            workspace_root=workspace,
+            path_allowlist=['*'],
+            path_blocklist=['src/*'],
+        )
+        # src/app.py matches both allowlist '*' and blocklist 'src/*' — must be blocked
+        assert guard.check('file.read', target_path='src/app.py') is False
+        assert 'blocked' in guard.violations[-1].detail
+
+        # A path that matches allowlist but not blocklist should still pass
+        (workspace / 'docs').mkdir()
+        (workspace / 'docs' / 'readme.md').write_text('hi')
+        assert guard.check('file.read', target_path='docs/readme.md') is True
+
 
 # ── guard_invoke integration ────────────────────────
 
@@ -304,3 +326,114 @@ class TestGuardInvoke:
         )
         assert 'permission denied' in record.error
         assert 'escapes workspace' in record.error
+
+
+# ── entry point integration: shell ────────────────
+
+
+class TestShellEntryPoint:
+    """Shell tool entry point must go through ToolAccessGuard."""
+
+    def test_shell_guard_blocks_cwd_escape(self, workspace: Path):
+        """A shell tool whose cwd escapes the workspace must be rejected."""
+        registry = ToolRegistry()
+        registry.register(
+            ToolRegistryEntry(
+                tool_id='shell.echo',
+                display_name='Echo',
+                provider='shell',
+                permission=ToolPermission.EXECUTE,
+                mode=ToolExecutionMode.LIVE,
+            )
+        )
+        guard = ToolAccessGuard(registry, workspace_root=workspace)
+        spec = ShellToolSpec(
+            tool_id='shell.echo',
+            display_name='Echo',
+            command='echo',
+            args=['hello'],
+            cwd=str(workspace.parent),  # outside workspace
+        )
+        result, record = execute_shell_tool(
+            registry, spec, guard=guard,
+        )
+        assert result.exit_code == 126
+        assert 'escapes workspace' in result.stderr
+
+    def test_shell_guard_allows_cwd_inside(self, workspace: Path):
+        """A shell tool whose cwd is inside workspace must succeed."""
+        registry = ToolRegistry()
+        registry.register(
+            ToolRegistryEntry(
+                tool_id='shell.echo',
+                display_name='Echo',
+                provider='shell',
+                permission=ToolPermission.EXECUTE,
+                mode=ToolExecutionMode.LIVE,
+            )
+        )
+        guard = ToolAccessGuard(registry, workspace_root=workspace)
+        spec = ShellToolSpec(
+            tool_id='shell.echo',
+            display_name='Echo',
+            command='echo',
+            args=['hello'],
+            cwd=str(workspace / 'src'),
+        )
+        result, record = execute_shell_tool(
+            registry, spec, guard=guard,
+        )
+        assert result.exit_code == 0
+        assert 'hello' in result.stdout
+        assert record.error is None
+
+    def test_shell_legacy_path_without_guard(self, workspace: Path):
+        """Without a guard, shell_tools falls back to inline permission checks."""
+        registry = ToolRegistry()
+        registry.register(
+            ToolRegistryEntry(
+                tool_id='shell.echo',
+                display_name='Echo',
+                provider='shell',
+                permission=ToolPermission.READ,  # insufficient for EXECUTE
+                mode=ToolExecutionMode.LIVE,
+            )
+        )
+        spec = ShellToolSpec(
+            tool_id='shell.echo',
+            display_name='Echo',
+            command='echo',
+            args=['hello'],
+        )
+        result, record = execute_shell_tool(registry, spec)
+        assert result.exit_code == 126
+        assert 'does not allow shell execution' in result.stderr
+
+
+# ── entry point integration: HTTP/MCP via guard_invoke ──
+
+
+class TestHTTPEndPoint:
+    """HTTP/MCP tool calls go through guard_invoke → registry.invoke."""
+
+    def test_http_invoke_via_guard_blocks_traversal(self, workspace: Path):
+        registry = _make_registry()
+        guard = ToolAccessGuard(registry, workspace_root=workspace)
+        with pytest.raises(PermissionError, match='escapes workspace'):
+            guard.guard_invoke(
+                'file.read',
+                {'url': 'http://example.com'},
+                target_path='../../etc/passwd',
+            )
+
+    def test_http_invoke_via_guard_allows_valid(self, workspace: Path):
+        registry = _make_registry()
+        guard = ToolAccessGuard(
+            registry, workspace_root=workspace, path_allowlist=['*'],
+        )
+        record = guard.guard_invoke(
+            'file.read',
+            {'url': 'http://example.com'},
+            target_path='src/app.py',
+        )
+        assert record.error is None
