@@ -9,8 +9,8 @@
 面向研发团队的可审计 AI 工程执行工作台。
 </p>
 
-> **Based on [OpenHands](https://github.com/OpenHands/OpenHands), deep-customized with:**
-> Control Plane (Plan→Execute→Verify→Report) · Task Console · TeamSpace RBAC · Audit Replay · Cost Thresholds · MCP Tool Registry · Private Deployment
+> **[OpenHands](https://github.com/OpenHands/OpenHands) 深度分叉 (deep fork)，在 Agent 与 runtime 基础上自研：**
+> **控制平面** (Plan→Execute→Verify→Report) · **任务台** · **审计回放** · TeamSpace RBAC · Cost Thresholds · MCP Tool Registry · Private Deployment
 
 <div align="center">
   <img src="https://img.shields.io/badge/Python-3.12%2B-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python">
@@ -25,7 +25,7 @@
 
 ## 产品预览
 
-ForgePilot Studio 把“创建任务 → 执行命令 → 修改代码 → 验证测试 → 审计回放”收束成团队可治理的工程执行链路。它基于 OpenHands 深改，继承 Agent 与 runtime 基础，同时新增控制平面、任务台、团队权限、审计回放、成本阈值、MCP 工具管理和私有化配置。
+ForgePilot Studio 把”创建任务 → 执行命令 → 修改代码 → 验证测试 → 审计回放”收束成团队可治理的工程执行链路。它是 [OpenHands](https://github.com/OpenHands/OpenHands) 的深度分叉 (deep fork)，继承 Agent 与 runtime 基础，同时自研**控制平面**、**任务台**、**审计回放**、团队权限、成本阈值、MCP 工具管理和私有化配置。
 
 <table>
   <tr>
