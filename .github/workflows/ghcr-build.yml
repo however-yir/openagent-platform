@@ -47,7 +47,7 @@ jobs:
           else
             platforms="linux/amd64,linux/arm64"
             json=$(jq -n -c --arg platforms "$platforms" '[
-                { image: "nikolaik/python-nodejs:python3.12-nodejs22-slim", tag: "nikolaik", platforms: $platforms },
+                { image: "nikolaik/python-nodejs:python3.12-nodejs22-slim", tag: "nikolaik", platforms: "linux/amd64" },
                 { image: "ubuntu:24.04", tag: "ubuntu", platforms: $platforms }
               ]')
           fi
