@@ -25,7 +25,7 @@ dependencies = [
   "anthropic[vertex]",
   "anyio==4.9",
   "asyncpg>=0.30",
-  "authlib>=1.6.9",
+  "authlib>=1.6.12",
   "bashlex>=0.18",
   "boto3",
   "browsergym-core==0.13.3",
